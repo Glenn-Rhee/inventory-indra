@@ -1,3 +1,3 @@
 export default function HomePage() {
-  return <div>Hello Ariel Rizki Muh</div>;
+  return <div>Hello Ariel Rizki Muhta</div>;
 }
