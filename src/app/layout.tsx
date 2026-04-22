@@ -3,6 +3,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +42,10 @@ export default function RootLayout({
             }
           >
             <AppSidebar variant="inset" />
-            <SidebarInset>{children}</SidebarInset>
+            <SidebarInset>
+              <SiteHeader />
+              {children}
+            </SidebarInset>
           </SidebarProvider>
         </TooltipProvider>
       </body>
