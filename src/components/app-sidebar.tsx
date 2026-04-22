@@ -30,6 +30,7 @@ import {
   FileIcon,
   CommandIcon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const data = {
   user: {
@@ -134,6 +135,16 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  if (
+    pathname !== "/" &&
+    pathname !== "/products" &&
+    pathname !== "/stocks" &&
+    pathname !== "/transactions" &&
+    pathname !== "/settings"
+  ) {
+    return null;
+  }
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="mt-2">

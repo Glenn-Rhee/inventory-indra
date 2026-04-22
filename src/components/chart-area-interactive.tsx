@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Card,
   CardAction,
@@ -11,120 +11,117 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+} from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export const description = "An interactive area chart"
+export const description = "An interactive area chart";
 
 const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-  { date: "2024-04-03", desktop: 167, mobile: 120 },
-  { date: "2024-04-04", desktop: 242, mobile: 260 },
-  { date: "2024-04-05", desktop: 373, mobile: 290 },
-  { date: "2024-04-06", desktop: 301, mobile: 340 },
-  { date: "2024-04-07", desktop: 245, mobile: 180 },
-  { date: "2024-04-08", desktop: 409, mobile: 320 },
-  { date: "2024-04-09", desktop: 59, mobile: 110 },
-  { date: "2024-04-10", desktop: 261, mobile: 190 },
-  { date: "2024-04-11", desktop: 327, mobile: 350 },
-  { date: "2024-04-12", desktop: 292, mobile: 210 },
-  { date: "2024-04-13", desktop: 342, mobile: 380 },
-  { date: "2024-04-14", desktop: 137, mobile: 220 },
-  { date: "2024-04-15", desktop: 120, mobile: 170 },
-  { date: "2024-04-16", desktop: 138, mobile: 190 },
-  { date: "2024-04-17", desktop: 446, mobile: 360 },
-  { date: "2024-04-18", desktop: 364, mobile: 410 },
-  { date: "2024-04-19", desktop: 243, mobile: 180 },
-  { date: "2024-04-20", desktop: 89, mobile: 150 },
-  { date: "2024-04-21", desktop: 137, mobile: 200 },
-  { date: "2024-04-22", desktop: 224, mobile: 170 },
-  { date: "2024-04-23", desktop: 138, mobile: 230 },
-  { date: "2024-04-24", desktop: 387, mobile: 290 },
-  { date: "2024-04-25", desktop: 215, mobile: 250 },
-  { date: "2024-04-26", desktop: 75, mobile: 130 },
-  { date: "2024-04-27", desktop: 383, mobile: 420 },
-  { date: "2024-04-28", desktop: 122, mobile: 180 },
-  { date: "2024-04-29", desktop: 315, mobile: 240 },
-  { date: "2024-04-30", desktop: 454, mobile: 380 },
-  { date: "2024-05-01", desktop: 165, mobile: 220 },
-  { date: "2024-05-02", desktop: 293, mobile: 310 },
-  { date: "2024-05-03", desktop: 247, mobile: 190 },
-  { date: "2024-05-04", desktop: 385, mobile: 420 },
-  { date: "2024-05-05", desktop: 481, mobile: 390 },
-  { date: "2024-05-06", desktop: 498, mobile: 520 },
-  { date: "2024-05-07", desktop: 388, mobile: 300 },
-  { date: "2024-05-08", desktop: 149, mobile: 210 },
-  { date: "2024-05-09", desktop: 227, mobile: 180 },
-  { date: "2024-05-10", desktop: 293, mobile: 330 },
-  { date: "2024-05-11", desktop: 335, mobile: 270 },
-  { date: "2024-05-12", desktop: 197, mobile: 240 },
-  { date: "2024-05-13", desktop: 197, mobile: 160 },
-  { date: "2024-05-14", desktop: 448, mobile: 490 },
-  { date: "2024-05-15", desktop: 473, mobile: 380 },
-  { date: "2024-05-16", desktop: 338, mobile: 400 },
-  { date: "2024-05-17", desktop: 499, mobile: 420 },
-  { date: "2024-05-18", desktop: 315, mobile: 350 },
-  { date: "2024-05-19", desktop: 235, mobile: 180 },
-  { date: "2024-05-20", desktop: 177, mobile: 230 },
-  { date: "2024-05-21", desktop: 82, mobile: 140 },
-  { date: "2024-05-22", desktop: 81, mobile: 120 },
-  { date: "2024-05-23", desktop: 252, mobile: 290 },
-  { date: "2024-05-24", desktop: 294, mobile: 220 },
-  { date: "2024-05-25", desktop: 201, mobile: 250 },
-  { date: "2024-05-26", desktop: 213, mobile: 170 },
-  { date: "2024-05-27", desktop: 420, mobile: 460 },
-  { date: "2024-05-28", desktop: 233, mobile: 190 },
-  { date: "2024-05-29", desktop: 78, mobile: 130 },
-  { date: "2024-05-30", desktop: 340, mobile: 280 },
-  { date: "2024-05-31", desktop: 178, mobile: 230 },
-  { date: "2024-06-01", desktop: 178, mobile: 200 },
-  { date: "2024-06-02", desktop: 470, mobile: 410 },
-  { date: "2024-06-03", desktop: 103, mobile: 160 },
-  { date: "2024-06-04", desktop: 439, mobile: 380 },
-  { date: "2024-06-05", desktop: 88, mobile: 140 },
-  { date: "2024-06-06", desktop: 294, mobile: 250 },
-  { date: "2024-06-07", desktop: 323, mobile: 370 },
-  { date: "2024-06-08", desktop: 385, mobile: 320 },
-  { date: "2024-06-09", desktop: 438, mobile: 480 },
-  { date: "2024-06-10", desktop: 155, mobile: 200 },
-  { date: "2024-06-11", desktop: 92, mobile: 150 },
-  { date: "2024-06-12", desktop: 492, mobile: 420 },
-  { date: "2024-06-13", desktop: 81, mobile: 130 },
-  { date: "2024-06-14", desktop: 426, mobile: 380 },
-  { date: "2024-06-15", desktop: 307, mobile: 350 },
-  { date: "2024-06-16", desktop: 371, mobile: 310 },
-  { date: "2024-06-17", desktop: 475, mobile: 520 },
-  { date: "2024-06-18", desktop: 107, mobile: 170 },
-  { date: "2024-06-19", desktop: 341, mobile: 290 },
-  { date: "2024-06-20", desktop: 408, mobile: 450 },
-  { date: "2024-06-21", desktop: 169, mobile: 210 },
-  { date: "2024-06-22", desktop: 317, mobile: 270 },
-  { date: "2024-06-23", desktop: 480, mobile: 530 },
-  { date: "2024-06-24", desktop: 132, mobile: 180 },
-  { date: "2024-06-25", desktop: 141, mobile: 190 },
-  { date: "2024-06-26", desktop: 434, mobile: 380 },
-  { date: "2024-06-27", desktop: 448, mobile: 490 },
-  { date: "2024-06-28", desktop: 149, mobile: 200 },
-  { date: "2024-06-29", desktop: 103, mobile: 160 },
-  { date: "2024-06-30", desktop: 446, mobile: 400 },
-]
+  { date: "2024-04-01", medicine: 222, houseHold: 150 },
+  { date: "2024-04-02", medicine: 97, houseHold: 180 },
+  { date: "2024-04-03", medicine: 167, houseHold: 120 },
+  { date: "2024-04-04", medicine: 242, houseHold: 260 },
+  { date: "2024-04-05", medicine: 373, houseHold: 290 },
+  { date: "2024-04-06", medicine: 301, houseHold: 340 },
+  { date: "2024-04-07", medicine: 245, houseHold: 180 },
+  { date: "2024-04-08", medicine: 409, houseHold: 320 },
+  { date: "2024-04-09", medicine: 59, houseHold: 110 },
+  { date: "2024-04-10", medicine: 261, houseHold: 190 },
+  { date: "2024-04-11", medicine: 327, houseHold: 350 },
+  { date: "2024-04-12", medicine: 292, houseHold: 210 },
+  { date: "2024-04-13", medicine: 342, houseHold: 380 },
+  { date: "2024-04-14", medicine: 137, houseHold: 220 },
+  { date: "2024-04-15", medicine: 120, houseHold: 170 },
+  { date: "2024-04-16", medicine: 138, houseHold: 190 },
+  { date: "2024-04-17", medicine: 446, houseHold: 360 },
+  { date: "2024-04-18", medicine: 364, houseHold: 410 },
+  { date: "2024-04-19", medicine: 243, houseHold: 180 },
+  { date: "2024-04-20", medicine: 89, houseHold: 150 },
+  { date: "2024-04-21", medicine: 137, houseHold: 200 },
+  { date: "2024-04-22", medicine: 224, houseHold: 170 },
+  { date: "2024-04-23", medicine: 138, houseHold: 230 },
+  { date: "2024-04-24", medicine: 387, houseHold: 290 },
+  { date: "2024-04-25", medicine: 215, houseHold: 250 },
+  { date: "2024-04-26", medicine: 75, houseHold: 130 },
+  { date: "2024-04-27", medicine: 383, houseHold: 420 },
+  { date: "2024-04-28", medicine: 122, houseHold: 180 },
+  { date: "2024-04-29", medicine: 315, houseHold: 240 },
+  { date: "2024-04-30", medicine: 454, houseHold: 380 },
+  { date: "2024-05-01", medicine: 165, houseHold: 220 },
+  { date: "2024-05-02", medicine: 293, houseHold: 310 },
+  { date: "2024-05-03", medicine: 247, houseHold: 190 },
+  { date: "2024-05-04", medicine: 385, houseHold: 420 },
+  { date: "2024-05-05", medicine: 481, houseHold: 390 },
+  { date: "2024-05-06", medicine: 498, houseHold: 520 },
+  { date: "2024-05-07", medicine: 388, houseHold: 300 },
+  { date: "2024-05-08", medicine: 149, houseHold: 210 },
+  { date: "2024-05-09", medicine: 227, houseHold: 180 },
+  { date: "2024-05-10", medicine: 293, houseHold: 330 },
+  { date: "2024-05-11", medicine: 335, houseHold: 270 },
+  { date: "2024-05-12", medicine: 197, houseHold: 240 },
+  { date: "2024-05-13", medicine: 197, houseHold: 160 },
+  { date: "2024-05-14", medicine: 448, houseHold: 490 },
+  { date: "2024-05-15", medicine: 473, houseHold: 380 },
+  { date: "2024-05-16", medicine: 338, houseHold: 400 },
+  { date: "2024-05-17", medicine: 499, houseHold: 420 },
+  { date: "2024-05-18", medicine: 315, houseHold: 350 },
+  { date: "2024-05-19", medicine: 235, houseHold: 180 },
+  { date: "2024-05-20", medicine: 177, houseHold: 230 },
+  { date: "2024-05-21", medicine: 82, houseHold: 140 },
+  { date: "2024-05-22", medicine: 81, houseHold: 120 },
+  { date: "2024-05-23", medicine: 252, houseHold: 290 },
+  { date: "2024-05-24", medicine: 294, houseHold: 220 },
+  { date: "2024-05-25", medicine: 201, houseHold: 250 },
+  { date: "2024-05-26", medicine: 213, houseHold: 170 },
+  { date: "2024-05-27", medicine: 420, houseHold: 460 },
+  { date: "2024-05-28", medicine: 233, houseHold: 190 },
+  { date: "2024-05-29", medicine: 78, houseHold: 130 },
+  { date: "2024-05-30", medicine: 340, houseHold: 280 },
+  { date: "2024-05-31", medicine: 178, houseHold: 230 },
+  { date: "2024-06-01", medicine: 178, houseHold: 200 },
+  { date: "2024-06-02", medicine: 470, houseHold: 410 },
+  { date: "2024-06-03", medicine: 103, houseHold: 160 },
+  { date: "2024-06-04", medicine: 439, houseHold: 380 },
+  { date: "2024-06-05", medicine: 88, houseHold: 140 },
+  { date: "2024-06-06", medicine: 294, houseHold: 250 },
+  { date: "2024-06-07", medicine: 323, houseHold: 370 },
+  { date: "2024-06-08", medicine: 385, houseHold: 320 },
+  { date: "2024-06-09", medicine: 438, houseHold: 480 },
+  { date: "2024-06-10", medicine: 155, houseHold: 200 },
+  { date: "2024-06-11", medicine: 92, houseHold: 150 },
+  { date: "2024-06-12", medicine: 492, houseHold: 420 },
+  { date: "2024-06-13", medicine: 81, houseHold: 130 },
+  { date: "2024-06-14", medicine: 426, houseHold: 380 },
+  { date: "2024-06-15", medicine: 307, houseHold: 350 },
+  { date: "2024-06-16", medicine: 371, houseHold: 310 },
+  { date: "2024-06-17", medicine: 475, houseHold: 520 },
+  { date: "2024-06-18", medicine: 107, houseHold: 170 },
+  { date: "2024-06-19", medicine: 341, houseHold: 290 },
+  { date: "2024-06-20", medicine: 408, houseHold: 450 },
+  { date: "2024-06-21", medicine: 169, houseHold: 210 },
+  { date: "2024-06-22", medicine: 317, houseHold: 270 },
+  { date: "2024-06-23", medicine: 480, houseHold: 530 },
+  { date: "2024-06-24", medicine: 132, houseHold: 180 },
+  { date: "2024-06-25", medicine: 141, houseHold: 190 },
+  { date: "2024-06-26", medicine: 434, houseHold: 380 },
+  { date: "2024-06-27", medicine: 448, houseHold: 490 },
+  { date: "2024-06-28", medicine: 149, houseHold: 200 },
+  { date: "2024-06-29", medicine: 103, houseHold: 160 },
+  { date: "2024-06-30", medicine: 446, houseHold: 400 },
+];
 
 const chartConfig = {
   visitors: {
@@ -138,39 +135,44 @@ const chartConfig = {
     label: "Mobile",
     color: "var(--primary)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartAreaInteractive() {
-  const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const isMobile = useIsMobile();
+  const [timeRange, setTimeRange] = React.useState("90d");
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange("7d")
+      setTimeRange("7d");
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
-    let daysToSubtract = 90
+    const date = new Date(item.date);
+    const referenceDate = new Date("2024-06-30");
+    let daysToSubtract = 90;
     if (timeRange === "30d") {
-      daysToSubtract = 30
+      daysToSubtract = 30;
     } else if (timeRange === "7d") {
-      daysToSubtract = 7
+      daysToSubtract = 7;
     }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+    return date >= startDate;
+  });
 
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
+        <CardTitle>Total Penjualan</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
+            Total Penjualan{" "}
+            {timeRange === "90d"
+              ? "3 bulan terakhir"
+              : timeRange === "30d"
+                ? "30 hari terakhir"
+                : "7 hari terakhir"}
           </span>
           <span className="@[540px]/card:hidden">Last 3 months</span>
         </CardDescription>
@@ -211,7 +213,7 @@ export function ChartAreaInteractive() {
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-62.5 w-full"
         >
           <AreaChart data={filteredData}>
             <defs>
@@ -248,11 +250,11 @@ export function ChartAreaInteractive() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
             <ChartTooltip
@@ -263,21 +265,21 @@ export function ChartAreaInteractive() {
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                    })
+                    });
                   }}
                   indicator="dot"
                 />
               }
             />
             <Area
-              dataKey="mobile"
+              dataKey="medicine"
               type="natural"
               fill="url(#fillMobile)"
               stroke="var(--color-mobile)"
               stackId="a"
             />
             <Area
-              dataKey="desktop"
+              dataKey="houseHold"
               type="natural"
               fill="url(#fillDesktop)"
               stroke="var(--color-desktop)"
@@ -287,5 +289,5 @@ export function ChartAreaInteractive() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }
