@@ -48,7 +48,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Drawer,
   DrawerClose,
@@ -94,7 +93,6 @@ import {
   EllipsisVerticalIcon,
   Columns3Icon,
   ChevronDownIcon,
-  PlusIcon,
   ChevronsLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -139,34 +137,8 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => <DragHandle id={row.original.id} />,
   },
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "header",
-    header: "Header",
+    accessorKey: "productName",
+    header: "Product",
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />;
     },
@@ -174,7 +146,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "type",
-    header: "Section Type",
+    header: "Type",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -184,22 +156,8 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === "Done" ? (
-          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
-        ) : (
-          <LoaderIcon />
-        )}
-        {row.original.status}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    accessorKey: "stock",
+    header: "Stock",
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -212,10 +170,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         }}
       >
         <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
+          Stock
         </Label>
         <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+          className="h-8 w-16 border-transparent bg-transparent text-left shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
           defaultValue={row.original.target}
           id={`${row.original.id}-target`}
         />
@@ -223,65 +181,28 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     ),
   },
   {
-    accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
+    accessorKey: "price",
+    header: "Price",
+    cell: () => "Rp100.000",
+  },
+  {
+    accessorKey: "statusExp",
+    header: "Status Expired",
     cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
+      <Badge variant="outline" className="px-1.5 text-muted-foreground">
+        {row.original.status === "Done" ? (
+          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
+        ) : (
+          <LoaderIcon />
+        )}
+        {row.original.status}
+      </Badge>
     ),
   },
   {
-    accessorKey: "reviewer",
-    header: "Reviewer",
-    cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer";
-
-      if (isAssigned) {
-        return row.original.reviewer;
-      }
-
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectGroup>
-                <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                <SelectItem value="Jamik Tashpulatov">
-                  Jamik Tashpulatov
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </>
-      );
-    },
+    accessorKey: "expiredDate",
+    header: "Expired Date",
+    cell: ({ row }) => row.original.reviewer,
   },
   {
     id: "actions",
@@ -299,8 +220,6 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
         </DropdownMenuContent>
@@ -363,6 +282,7 @@ export function DataTable({
     [data],
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
@@ -401,14 +321,14 @@ export function DataTable({
 
   return (
     <Tabs
-      defaultValue="outline"
+      defaultValue="products"
       className="w-full flex-col justify-start gap-6"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
-        <Select defaultValue="outline">
+        <Select defaultValue="products">
           <SelectTrigger
             className="flex w-fit @4xl/main:hidden"
             size="sm"
@@ -418,15 +338,15 @@ export function DataTable({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="outline">Outline</SelectItem>
-              <SelectItem value="past-performance">Past Performance</SelectItem>
+              <SelectItem value="products">Products</SelectItem>
+              <SelectItem value="transactions">Transactions</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
         <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
+          <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="transactions">
+            Transactions <Badge variant="secondary">3</Badge>
           </TabsTrigger>
         </TabsList>
         <div className="flex items-center gap-2">
@@ -465,7 +385,7 @@ export function DataTable({
         </div>
       </div>
       <TabsContent
-        value="outline"
+        value="products"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
@@ -599,10 +519,7 @@ export function DataTable({
           </div>
         </div>
       </TabsContent>
-      <TabsContent
-        value="past-performance"
-        className="flex flex-col px-4 lg:px-6"
-      >
+      <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
       <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
