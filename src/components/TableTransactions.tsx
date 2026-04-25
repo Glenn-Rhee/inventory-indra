@@ -9,7 +9,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useId, useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 import z from "zod";
 import { schemaTransactions } from "./data-table";
 import {
@@ -26,9 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { flexRender, type Table as TableType } from "@tanstack/react-table";
 import { DraggableRow } from "./DraggabaleRow";
-import { columnsProduct } from "@/lib/columns-table";
+import { columnsProduct, columnsTransaction } from "@/lib/columns-table";
 import { Label } from "./ui/label";
 import {
   Select,
@@ -45,25 +44,34 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from "lucide-react";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
 
 interface TableProductsProps {
   data: z.infer<typeof schemaTransactions>[];
   setData: React.Dispatch<
     React.SetStateAction<z.infer<typeof schemaTransactions>[]>
   >;
-  table: TableType<{
-    product_id: number;
-    transaction_type: "IN" | "OUT";
-    quantity: number;
-    price: number;
-    total: number;
-    transaction_date: string;
-  }>;
 }
 
 export default function TableTransactions(props: TableProductsProps) {
-  const { data, setData, table } = props;
-
+  const { data, setData } = props;
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const sortableId = useId();
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -75,6 +83,28 @@ export default function TableTransactions(props: TableProductsProps) {
     () => data?.map(({ product_id }) => product_id) || [],
     [data],
   );
+
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const table = useReactTable({
+    data,
+    columns: columnsTransaction,
+    state: {
+      sorting,
+      columnVisibility,
+      pagination,
+    },
+    getRowId: (row) => row.product_id.toString(),
+    enableRowSelection: true,
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
@@ -143,11 +173,7 @@ export default function TableTransactions(props: TableProductsProps) {
           </Table>
         </DndContext>
       </div>
-      <div className="flex items-center justify-between px-4">
-        <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+      <div className="flex items-center justify-end px-4">
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
             <Label htmlFor="rows-per-page" className="text-sm font-medium">
