@@ -16,15 +16,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TableProducts from "./TableProducts";
 import data_transactions from "@/app/data_transactions.json";
 import TableTransactions from "./TableTransactions";
+import data_products from "@/app/data_products.json";
 
 export const schema = z.object({
   id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
+  name: z.string(),
+  category: z.enum(["MEDICINE", "ESSENTIALS"]),
+  stock: z.number(),
+  price: z.number(),
+  expired_status: z.enum(["SAFE", "WARNING", "EXPIRED"]),
+  expired_date: z.string(),
 });
 
 export const schemaTransactions = z.object({
@@ -36,19 +37,17 @@ export const schemaTransactions = z.object({
   transaction_date: z.string(),
 });
 
-export function DataTable({
-  data: initialData,
-}: {
-  data: z.infer<typeof schema>[];
-}) {
-  const [data, setData] = React.useState(() => initialData);
+export function DataTable() {
+  const [data, setData] = React.useState<z.infer<typeof schema>[]>(
+    () => data_products as z.infer<typeof schema>[],
+  );
   const [dataTransactions, setDataTrasactions] = React.useState<
     z.infer<typeof schemaTransactions>[]
   >(() => data_transactions as z.infer<typeof schemaTransactions>[]);
 
   return (
     <Tabs
-      defaultValue="transactions"
+      defaultValue="products"
       className="w-full flex-col justify-start gap-6"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
@@ -70,7 +69,7 @@ export function DataTable({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
+        <TabsList className="hiddean **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="transactions">
             Transactions <Badge variant="secondary">3</Badge>

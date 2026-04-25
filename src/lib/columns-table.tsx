@@ -11,11 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  CircleCheckIcon,
-  EllipsisVerticalIcon,
-  LoaderIcon,
-} from "lucide-react";
+import { EllipsisVerticalIcon } from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
 
@@ -34,12 +30,12 @@ export const columnsProduct: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: "category",
+    header: "Category",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
-          {row.original.type}
+          {row.original.category}
         </Badge>
       </div>
     ),
@@ -47,31 +43,37 @@ export const columnsProduct: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "stock",
     header: "Stock",
-    cell: ({ row }) => <div>{row.original.limit}</div>,
+    cell: ({ row }) => <div>{row.original.stock}</div>,
   },
   {
     accessorKey: "price",
     header: "Price",
-    cell: () => "Rp100.000",
+    cell: ({ row }) => (
+      <div>Rp{row.original.price.toLocaleString("id-ID")}</div>
+    ),
   },
   {
     accessorKey: "statusExp",
     header: "Status Expired",
     cell: ({ row }) => (
-      <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === "Done" ? (
-          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
-        ) : (
-          <LoaderIcon />
-        )}
-        {row.original.status}
+      <Badge
+        variant={
+          row.original.expired_status === "EXPIRED"
+            ? "destructive"
+            : row.original.expired_status === "WARNING"
+              ? "warning"
+              : "secondary"
+        }
+        className={cn("px-1.5 text-white", "")}
+      >
+        {row.original.expired_status}
       </Badge>
     ),
   },
   {
     accessorKey: "expiredDate",
     header: "Expired Date",
-    cell: ({ row }) => row.original.reviewer,
+    cell: ({ row }) => row.original.expired_date,
   },
   {
     id: "actions",
@@ -155,7 +157,7 @@ export const columnsTransaction: ColumnDef<
     accessorKey: "transaction_date",
     header: "Transaction Date",
     cell: ({ row }) => (
-      <div className="text-left">Rp{row.original.transaction_date}</div>
+      <div className="text-left">{row.original.transaction_date}</div>
     ),
   },
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
