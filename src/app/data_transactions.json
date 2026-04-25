@@ -1,6 +1,7 @@
 [
   {
     "product_id": 1,
+    "product_name": "Paracetamol",
     "transaction_type": "IN",
     "quantity": 50,
     "price": 5000,
@@ -9,6 +10,7 @@
   },
   {
     "product_id": 2,
+    "product_name": "Amoxicillin",
     "transaction_type": "OUT",
     "quantity": 10,
     "price": 7000,
@@ -17,6 +19,7 @@
   },
   {
     "product_id": 3,
+    "product_name": "Vitamin C",
     "transaction_type": "IN",
     "quantity": 30,
     "price": 12000,
@@ -25,6 +28,7 @@
   },
   {
     "product_id": 4,
+    "product_name": "Ibuprofen",
     "transaction_type": "OUT",
     "quantity": 5,
     "price": 15000,
@@ -33,6 +37,7 @@
   },
   {
     "product_id": 5,
+    "product_name": "Antasida",
     "transaction_type": "IN",
     "quantity": 100,
     "price": 3000,
@@ -41,6 +46,7 @@
   },
   {
     "product_id": 6,
+    "product_name": "Minyak Kayu Putih",
     "transaction_type": "OUT",
     "quantity": 20,
     "price": 5000,
@@ -49,6 +55,7 @@
   },
   {
     "product_id": 7,
+    "product_name": "Betadine",
     "transaction_type": "IN",
     "quantity": 40,
     "price": 7000,
@@ -57,6 +64,7 @@
   },
   {
     "product_id": 8,
+    "product_name": "OBH Combi",
     "transaction_type": "OUT",
     "quantity": 8,
     "price": 12000,
@@ -65,6 +73,7 @@
   },
   {
     "product_id": 9,
+    "product_name": "Tolak Angin",
     "transaction_type": "IN",
     "quantity": 60,
     "price": 15000,
@@ -73,6 +82,7 @@
   },
   {
     "product_id": 10,
+    "product_name": "Panadol",
     "transaction_type": "OUT",
     "quantity": 15,
     "price": 3000,
@@ -81,6 +91,7 @@
   },
   {
     "product_id": 11,
+    "product_name": "Bodrex",
     "transaction_type": "IN",
     "quantity": 25,
     "price": 10000,
@@ -89,6 +100,7 @@
   },
   {
     "product_id": 12,
+    "product_name": "Enervon-C",
     "transaction_type": "OUT",
     "quantity": 12,
     "price": 8000,
@@ -97,6 +109,7 @@
   },
   {
     "product_id": 13,
+    "product_name": "Promag",
     "transaction_type": "IN",
     "quantity": 70,
     "price": 4000,
@@ -105,6 +118,7 @@
   },
   {
     "product_id": 14,
+    "product_name": "FreshCare",
     "transaction_type": "OUT",
     "quantity": 9,
     "price": 11000,
@@ -113,6 +127,7 @@
   },
   {
     "product_id": 15,
+    "product_name": "Neozep",
     "transaction_type": "IN",
     "quantity": 45,
     "price": 6000,
@@ -121,6 +136,7 @@
   },
   {
     "product_id": 16,
+    "product_name": "Hansaplast",
     "transaction_type": "OUT",
     "quantity": 7,
     "price": 10000,
@@ -129,6 +145,7 @@
   },
   {
     "product_id": 17,
+    "product_name": "Diapet",
     "transaction_type": "IN",
     "quantity": 55,
     "price": 8000,
@@ -137,6 +154,7 @@
   },
   {
     "product_id": 18,
+    "product_name": "Salonpas",
     "transaction_type": "OUT",
     "quantity": 20,
     "price": 4000,
@@ -145,6 +163,7 @@
   },
   {
     "product_id": 19,
+    "product_name": "CTM",
     "transaction_type": "IN",
     "quantity": 35,
     "price": 11000,
@@ -153,6 +172,7 @@
   },
   {
     "product_id": 20,
+    "product_name": "Termometer Digital",
     "transaction_type": "OUT",
     "quantity": 18,
     "price": 6000,

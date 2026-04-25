@@ -113,6 +113,13 @@ export const columnsTransaction: ColumnDef<
     cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
   },
   {
+    accessorKey: "product_name",
+    header: "Product Name",
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.product_name}</div>
+    ),
+  },
+  {
     accessorKey: "transaction_type",
     header: "Transaction Type",
     cell: ({ row }) => (

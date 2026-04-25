@@ -30,6 +30,7 @@ export const schema = z.object({
 
 export const schemaTransactions = z.object({
   product_id: z.number(),
+  product_name: z.string(),
   transaction_type: z.enum(["IN", "OUT"]),
   quantity: z.number(),
   price: z.number(),
