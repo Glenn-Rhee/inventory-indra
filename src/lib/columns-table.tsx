@@ -121,9 +121,7 @@ export const columnsTransaction: ColumnDef<
           variant={
             row.original.transaction_type === "IN" ? "secondary" : "destructive"
           }
-          className={cn("px-1.5 text-muted-foreground", {
-            "text-white": row.original.transaction_type === "IN",
-          })}
+          className={"px-1.5 text-white w-10"}
         >
           {row.original.transaction_type}
         </Badge>
