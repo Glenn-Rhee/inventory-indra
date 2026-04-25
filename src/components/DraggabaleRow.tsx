@@ -1,4 +1,4 @@
-import { Cell, flexRender, Row } from "@tanstack/react-table";
+import { Cell, flexRender } from "@tanstack/react-table";
 import { useSortable } from "@dnd-kit/sortable";
 import { TableCell, TableRow } from "./ui/table";
 import { CSS } from "@dnd-kit/utilities";

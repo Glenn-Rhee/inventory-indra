@@ -132,7 +132,7 @@ export function DataTable({
 
   return (
     <Tabs
-      defaultValue="products"
+      defaultValue="transactions"
       className="w-full flex-col justify-start gap-6"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
@@ -201,11 +201,12 @@ export function DataTable({
       >
         <TableProducts data={data} setData={setData} table={tableProducts} />
       </TabsContent>
-      <TabsContent
-        value="transactions"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <TableTransactions data={dataTransactions} setData={setDataTrasactions} table={tableTransactions}  />
+      <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
+        <TableTransactions
+          data={dataTransactions}
+          setData={setDataTrasactions}
+          table={tableTransactions}
+        />
       </TabsContent>
     </Tabs>
   );

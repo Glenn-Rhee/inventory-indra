@@ -17,6 +17,7 @@ import {
   LoaderIcon,
 } from "lucide-react";
 import z from "zod";
+import { cn } from "./utils";
 
 export const columnsProduct: ColumnDef<z.infer<typeof schema>>[] = [
   {
@@ -107,20 +108,20 @@ export const columnsTransaction: ColumnDef<
   {
     accessorKey: "product_id",
     header: "Product ID",
-    cell: ({ row }) => (
-      <div className="text-right">{row.original.quantity}</div>
-    ),
+    cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
   },
   {
     accessorKey: "transaction_type",
     header: "Transaction Type",
     cell: ({ row }) => (
-      <div className="w-32">
+      <div className="w-32 flex items-center justify-center">
         <Badge
           variant={
             row.original.transaction_type === "IN" ? "secondary" : "destructive"
           }
-          className="px-1.5 text-muted-foreground"
+          className={cn("px-1.5 text-muted-foreground", {
+            "text-white": row.original.transaction_type === "IN",
+          })}
         >
           {row.original.transaction_type}
         </Badge>
@@ -130,15 +131,13 @@ export const columnsTransaction: ColumnDef<
   {
     accessorKey: "quantity",
     header: "Quantity",
-    cell: ({ row }) => (
-      <div className="text-right">{row.original.quantity}</div>
-    ),
+    cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
   },
   {
     accessorKey: "price",
     header: "Price",
     cell: ({ row }) => (
-      <div className="text-right">
+      <div className="text-left">
         Rp{row.original.price.toLocaleString("id-ID")}
       </div>
     ),
@@ -147,7 +146,7 @@ export const columnsTransaction: ColumnDef<
     accessorKey: "total",
     header: "Total Price",
     cell: ({ row }) => (
-      <div className="text-right">
+      <div className="text-left">
         Rp{row.original.total.toLocaleString("id-ID")}
       </div>
     ),
@@ -156,7 +155,7 @@ export const columnsTransaction: ColumnDef<
     accessorKey: "transaction_date",
     header: "Transaction Date",
     cell: ({ row }) => (
-      <div className="text-right">Rp{row.original.transaction_date}</div>
+      <div className="text-left">Rp{row.original.transaction_date}</div>
     ),
   },
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
