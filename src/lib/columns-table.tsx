@@ -1,4 +1,4 @@
-import { schema } from "@/components/data-table";
+import { schema, schemaTransactions } from "@/components/data-table";
 import { DragHandle } from "@/components/drag-handle";
 import TableCellViewer from "@/components/TableCellViewer";
 import { Badge } from "@/components/ui/badge";
@@ -95,3 +95,68 @@ export const columnsProduct: ColumnDef<z.infer<typeof schema>>[] = [
     ),
   },
 ];
+
+export const columnsTransaction: ColumnDef<
+  z.infer<typeof schemaTransactions>
+>[] = [
+  {
+    id: "drag",
+    header: () => null,
+    cell: ({ row }) => <DragHandle id={row.original.product_id} />,
+  },
+  {
+    accessorKey: "product_id",
+    header: "Product ID",
+    cell: ({ row }) => (
+      <div className="text-right">{row.original.quantity}</div>
+    ),
+  },
+  {
+    accessorKey: "transaction_type",
+    header: "Transaction Type",
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Badge
+          variant={
+            row.original.transaction_type === "IN" ? "secondary" : "destructive"
+          }
+          className="px-1.5 text-muted-foreground"
+        >
+          {row.original.transaction_type}
+        </Badge>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "quantity",
+    header: "Quantity",
+    cell: ({ row }) => (
+      <div className="text-right">{row.original.quantity}</div>
+    ),
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+    cell: ({ row }) => (
+      <div className="text-right">
+        Rp{row.original.price.toLocaleString("id-ID")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "total",
+    header: "Total Price",
+    cell: ({ row }) => (
+      <div className="text-right">
+        Rp{row.original.total.toLocaleString("id-ID")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "transaction_date",
+    header: "Transaction Date",
+    cell: ({ row }) => (
+      <div className="text-right">Rp{row.original.transaction_date}</div>
+    ),
+  },
+] as ColumnDef<z.infer<typeof schemaTransactions>>[];

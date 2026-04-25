@@ -34,8 +34,10 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Columns3Icon, ChevronDownIcon } from "lucide-react";
-import { columnsProduct } from "@/lib/columns-table";
+import { columnsProduct, columnsTransaction } from "@/lib/columns-table";
 import TableProducts from "./TableProducts";
+import data_transactions from "@/app/data_transactions.json";
+import TableTransactions from "./TableTransactions";
 
 export const schema = z.object({
   id: z.number(),
@@ -47,12 +49,24 @@ export const schema = z.object({
   reviewer: z.string(),
 });
 
+export const schemaTransactions = z.object({
+  product_id: z.number(),
+  transaction_type: z.enum(["IN", "OUT"]),
+  quantity: z.number(),
+  price: z.number(),
+  total: z.number(),
+  transaction_date: z.string(),
+});
+
 export function DataTable({
   data: initialData,
 }: {
   data: z.infer<typeof schema>[];
 }) {
   const [data, setData] = React.useState(() => initialData);
+  const [dataTransactions, setDataTrasactions] = React.useState<
+    z.infer<typeof schemaTransactions>[]
+  >(() => data_transactions as z.infer<typeof schemaTransactions>[]);
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -77,6 +91,31 @@ export function DataTable({
       pagination,
     },
     getRowId: (row) => row.id.toString(),
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
+  const tableTransactions = useReactTable({
+    data: dataTransactions,
+    columns: columnsTransaction,
+    state: {
+      sorting,
+      columnVisibility,
+      rowSelection,
+      columnFilters,
+      pagination,
+    },
+    getRowId: (row) => row.product_id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -165,7 +204,9 @@ export function DataTable({
       <TabsContent
         value="transactions"
         className="flex flex-col px-4 lg:px-6"
-      ></TabsContent>
+      >
+        <TableTransactions data={dataTransactions} setData={setDataTrasactions} table={tableTransactions}  />
+      </TabsContent>
     </Tabs>
   );
 }

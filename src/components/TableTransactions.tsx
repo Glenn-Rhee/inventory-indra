@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { useId, useMemo } from "react";
 import z from "zod";
-import { schema } from "./data-table";
+import { schemaTransactions } from "./data-table";
 import {
   arrayMove,
   SortableContext,
@@ -47,20 +47,21 @@ import {
 } from "lucide-react";
 
 interface TableProductsProps {
-  data: z.infer<typeof schema>[];
-  setData: React.Dispatch<React.SetStateAction<z.infer<typeof schema>[]>>;
+  data: z.infer<typeof schemaTransactions>[];
+  setData: React.Dispatch<
+    React.SetStateAction<z.infer<typeof schemaTransactions>[]>
+  >;
   table: TableType<{
-    id: number;
-    header: string;
-    type: string;
-    status: string;
-    target: string;
-    limit: string;
-    reviewer: string;
+    product_id: number;
+    transaction_type: "IN" | "OUT";
+    quantity: number;
+    price: number;
+    total: number;
+    transaction_date: string;
   }>;
 }
 
-export default function TableProducts(props: TableProductsProps) {
+export default function TableTransactions(props: TableProductsProps) {
   const { data, setData, table } = props;
 
   const sortableId = useId();
@@ -71,7 +72,7 @@ export default function TableProducts(props: TableProductsProps) {
   );
 
   const dataIds = useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
+    () => data?.map(({ product_id }) => product_id) || [],
     [data],
   );
   function handleDragEnd(event: DragEndEvent) {
@@ -124,7 +125,7 @@ export default function TableProducts(props: TableProductsProps) {
                       key={row.id}
                       getIsSelected={row.getIsSelected}
                       getVisibleCells={row.getVisibleCells}
-                      id={row.original.id}
+                      id={row.original.product_id}
                     />
                   ))}
                 </SortableContext>
