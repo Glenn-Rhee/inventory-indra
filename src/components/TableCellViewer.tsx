@@ -134,12 +134,12 @@ export default function TableCellViewer({
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
               <Label htmlFor="header">Product Name</Label>
-              <Input id="header" defaultValue={item.name} />
+              <Input disabled id="header" defaultValue={item.name} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="type">Category</Label>
-                <Select defaultValue={item.category}>
+                <Select disabled defaultValue={item.category}>
                   <SelectTrigger id="type" className="w-full">
                     <SelectValue placeholder="Select a type" />
                   </SelectTrigger>
@@ -153,7 +153,7 @@ export default function TableCellViewer({
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Expired Status</Label>
-                <Select defaultValue={item.expired_status}>
+                <Select disabled defaultValue={item.expired_status}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
@@ -170,23 +170,26 @@ export default function TableCellViewer({
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="stock">Stock</Label>
-                <Input id="stock" defaultValue={item.stock} />
+                <Input disabled id="stock" defaultValue={item.stock} />
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="price">Price</Label>
-                <Input id="price" defaultValue={item.price} />
+                <Input disabled id="price" defaultValue={item.price} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
               <Label htmlFor="expired_date">Expired Date</Label>{" "}
-              <Input id="expired_date" defaultValue={item.expired_date} />
+              <Input
+                disabled
+                id="expired_date"
+                defaultValue={item.expired_date}
+              />
             </div>
           </form>
         </div>
         <DrawerFooter>
-          <Button>Submit</Button>
           <DrawerClose asChild>
-            <Button variant="outline">Done</Button>
+            <Button>Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
