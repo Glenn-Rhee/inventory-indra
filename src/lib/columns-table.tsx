@@ -20,6 +20,7 @@ import {
 import z from "zod";
 import { cn } from "./utils";
 import DialogEditProduct from "@/components/pages/products/DialogEditProduct";
+import DialogDelete from "@/components/DialogDelete";
 
 export function getColumnsProduct(
   isPageProduct: boolean,
@@ -166,7 +167,12 @@ export function getColumnsProduct(
                 <DialogEditProduct product={row.original} />
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => e.preventDefault()}
+                variant="destructive"
+              >
+                <DialogDelete />
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),

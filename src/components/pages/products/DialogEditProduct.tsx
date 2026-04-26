@@ -31,7 +31,6 @@ interface DialogEditProductProps {
 
 export default function DialogEditProduct(props: DialogEditProductProps) {
   const { product } = props;
-  console.log(product);
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
     product.category,
   );
