@@ -13,30 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import TableProducts from "./TableProducts";
 import data_transactions from "@/app/data_transactions.json";
 import TableTransactions from "./TableTransactions";
 import data_products from "@/app/data_products.json";
-
-export const schema = z.object({
-  id: z.number(),
-  name: z.string(),
-  category: z.enum(["MEDICINE", "ESSENTIALS"]),
-  stock: z.number(),
-  price: z.number(),
-  expired_status: z.enum(["SAFE", "WARNING", "EXPIRED"]),
-  expired_date: z.string(),
-});
-
-export const schemaTransactions = z.object({
-  product_id: z.number(),
-  product_name: z.string(),
-  transaction_type: z.enum(["IN", "OUT"]),
-  quantity: z.number(),
-  price: z.number(),
-  total: z.number(),
-  transaction_date: z.string(),
-});
+import TableProducts from "./pages/products/TableProducts";
+import { schema, schemaTransactions } from "@/model/schema-table";
 
 export function DataTable() {
   const [dataTransactions, setDataTrasactions] = React.useState<

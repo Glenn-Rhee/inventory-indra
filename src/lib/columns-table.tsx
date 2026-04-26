@@ -1,4 +1,3 @@
-import { schema, schemaTransactions } from "@/components/data-table";
 import { DragHandle } from "@/components/drag-handle";
 import TableCellViewer from "@/components/TableCellViewer";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +20,7 @@ import z from "zod";
 import { cn } from "./utils";
 import DialogEditProduct from "@/components/pages/products/DialogEditProduct";
 import DialogDelete from "@/components/DialogDelete";
+import { schema, schemaStocks, schemaTransactions } from "@/model/schema-table";
 
 export function getColumnsProduct(
   isPageProduct: boolean,
@@ -250,3 +250,100 @@ export const columnsTransaction: ColumnDef<
     ),
   },
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
+
+export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
+  {
+    id: "drag",
+    header: () => null,
+    cell: ({ row }) => <DragHandle id={row.original.id} />,
+  },
+  {
+    accessorKey: "product_name",
+    header: ({ column }) => (
+      <Button
+        variant={"ghost"}
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Product Name
+        {column.getIsSorted() === "asc" ? (
+          <ArrowUp className="w-2 h-2" />
+        ) : column.getIsSorted() === "desc" ? (
+          <ArrowDown />
+        ) : (
+          <ArrowUpDown />
+        )}
+      </Button>
+    ),
+    enableSorting: true,
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.product_name}</div>
+    ),
+  },
+  {
+    accessorKey: "stock",
+    header: ({ column }) => (
+      <Button
+        variant={"ghost"}
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Stock
+        {column.getIsSorted() === "asc" ? (
+          <ArrowUp className="w-2 h-2" />
+        ) : column.getIsSorted() === "desc" ? (
+          <ArrowDown />
+        ) : (
+          <ArrowUpDown />
+        )}
+      </Button>
+    ),
+    enableSorting: true,
+    cell: ({ row }) => <div className="text-left">{row.original.stock}</div>,
+  },
+  {
+    accessorKey: "expired_status",
+    header: ({ column }) => (
+      <Button
+        variant={"ghost"}
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Expired Status
+        {column.getIsSorted() === "asc" ? (
+          <ArrowUp className="w-2 h-2" />
+        ) : column.getIsSorted() === "desc" ? (
+          <ArrowDown />
+        ) : (
+          <ArrowUpDown />
+        )}
+      </Button>
+    ),
+    enableSorting: true,
+    cell: ({ row }) => (
+      <Badge
+        variant={
+          row.original.expired_status === "EXPIRED"
+            ? "destructive"
+            : row.original.expired_status === "WARNING"
+              ? "warning"
+              : "secondary"
+        }
+        className={cn("px-1.5 text-white", "")}
+      >
+        {row.original.expired_status}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "expired_date",
+    header: "Expired Date",
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.expired_date}</div>
+    ),
+  },
+  {
+    accessorKey: "last_updated",
+    header: "Last Updated",
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.last_updated}</div>
+    ),
+  },
+];

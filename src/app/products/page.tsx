@@ -1,10 +1,10 @@
 import DialogAddProduct from "@/components/pages/products/DialogAddProduct";
 import SearchBar from "@/components/SearchBar";
-import TableProducts from "@/components/TableProducts";
 import { Metadata } from "next";
 import data_products from "@/app/data_products.json";
-import { schema } from "@/components/data-table";
 import z from "zod";
+import TableProducts from "@/components/pages/products/TableProducts";
+import { schema } from "@/model/schema-table";
 
 export const metadata: Metadata = {
   title: "Products",
