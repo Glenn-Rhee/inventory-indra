@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { DraggableRow } from "./DraggabaleRow";
-import { columnsProduct, columnsTransaction } from "@/lib/columns-table";
+import { columnsTransaction } from "@/lib/columns-table";
 import { Label } from "./ui/label";
 import {
   Select,
@@ -162,7 +162,7 @@ export default function TableTransactions(props: TableProductsProps) {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columnsProduct.length}
+                    colSpan={columnsTransaction.length}
                     className="h-24 text-center"
                   >
                     No results.

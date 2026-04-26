@@ -1,6 +1,10 @@
 import DialogAddProduct from "@/components/DialogAddProduct";
 import SearchBar from "@/components/SearchBar";
+import TableProducts from "@/components/TableProducts";
 import { Metadata } from "next";
+import data_products from "@/app/data_products.json";
+import { schema } from "@/components/data-table";
+import z from "zod";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -17,6 +21,10 @@ export default function ProductsPage() {
             <SearchBar />
             <DialogAddProduct />
           </div>
+          <TableProducts
+            isPageProduct
+            data={data_products as z.infer<typeof schema>[]}
+          />
         </div>
       </div>
     </div>

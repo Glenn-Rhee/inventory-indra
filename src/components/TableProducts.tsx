@@ -1,3 +1,4 @@
+"use client";
 import {
   closestCenter,
   DndContext,
@@ -39,7 +40,6 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { DraggableRow } from "./DraggabaleRow";
-import { columnsProduct } from "@/lib/columns-table";
 import { Label } from "./ui/label";
 import {
   Select,
@@ -56,14 +56,18 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from "lucide-react";
+import { getColumnsProduct } from "@/lib/columns-table";
 
 interface TableProductsProps {
   data: z.infer<typeof schema>[];
-  setData: React.Dispatch<React.SetStateAction<z.infer<typeof schema>[]>>;
+  isPageProduct?: boolean;
 }
 
 export default function TableProducts(props: TableProductsProps) {
-  const { data, setData } = props;
+  const { data: initialData, isPageProduct } = props;
+  const [data, setData] = useState<z.infer<typeof schema>[]>(
+    () => initialData as z.infer<typeof schema>[],
+  );
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
@@ -73,7 +77,7 @@ export default function TableProducts(props: TableProductsProps) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const tableProducts = useReactTable({
     data,
-    columns: columnsProduct,
+    columns: getColumnsProduct(!!isPageProduct),
     state: {
       sorting,
       columnVisibility,
@@ -160,7 +164,7 @@ export default function TableProducts(props: TableProductsProps) {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columnsProduct.length}
+                    colSpan={getColumnsProduct(!!isPageProduct).length}
                     className="h-24 text-center"
                   >
                     No results.

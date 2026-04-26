@@ -15,90 +15,96 @@ import { EllipsisVerticalIcon } from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
 
-export const columnsProduct: ColumnDef<z.infer<typeof schema>>[] = [
-  {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
-  },
-  {
-    accessorKey: "productName",
-    header: "Product",
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
+export function getColumnsProduct(
+  isPageProduct: boolean,
+): ColumnDef<z.infer<typeof schema>>[] {
+  let columns: ColumnDef<z.infer<typeof schema>>[] = [
+    {
+      id: "drag",
+      header: () => null,
+      cell: ({ row }) => <DragHandle id={row.original.id} />,
     },
-    enableHiding: false,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="px-1.5 text-muted-foreground">
-          {row.original.category}
+    {
+      accessorKey: "productName",
+      header: "Product",
+      cell: ({ row }) => {
+        return <TableCellViewer item={row.original} />;
+      },
+      enableHiding: false,
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
+      cell: ({ row }) => (
+        <div className="w-32">
+          <Badge variant="outline" className="px-1.5 text-muted-foreground">
+            {row.original.category}
+          </Badge>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "price",
+      header: "Price",
+      cell: ({ row }) => (
+        <div>Rp{row.original.price.toLocaleString("id-ID")}</div>
+      ),
+    },
+    {
+      accessorKey: "statusExp",
+      header: "Status Expired",
+      cell: ({ row }) => (
+        <Badge
+          variant={
+            row.original.expired_status === "EXPIRED"
+              ? "destructive"
+              : row.original.expired_status === "WARNING"
+                ? "warning"
+                : "secondary"
+          }
+          className={cn("px-1.5 text-white", "")}
+        >
+          {row.original.expired_status}
         </Badge>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "stock",
-    header: "Stock",
-    cell: ({ row }) => <div>{row.original.stock}</div>,
-  },
-  {
-    accessorKey: "price",
-    header: "Price",
-    cell: ({ row }) => (
-      <div>Rp{row.original.price.toLocaleString("id-ID")}</div>
-    ),
-  },
-  {
-    accessorKey: "statusExp",
-    header: "Status Expired",
-    cell: ({ row }) => (
-      <Badge
-        variant={
-          row.original.expired_status === "EXPIRED"
-            ? "destructive"
-            : row.original.expired_status === "WARNING"
-              ? "warning"
-              : "secondary"
-        }
-        className={cn("px-1.5 text-white", "")}
-      >
-        {row.original.expired_status}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "expiredDate",
-    header: "Expired Date",
-    cell: ({ row }) => row.original.expired_date,
-  },
-  {
-    id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-            size="icon"
-          >
-            <EllipsisVerticalIcon />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-];
+      ),
+    },
+    {
+      accessorKey: "expiredDate",
+      header: "Expired Date",
+      cell: ({ row }) => row.original.expired_date,
+    },
+  ];
 
+  if (isPageProduct) {
+    columns = [
+      ...columns,
+      {
+        id: "actions",
+        cell: () => (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+                size="icon"
+              >
+                <EllipsisVerticalIcon />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-32">
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ),
+      },
+    ];
+  }
+
+  return columns;
+}
 export const columnsTransaction: ColumnDef<
   z.infer<typeof schemaTransactions>
 >[] = [

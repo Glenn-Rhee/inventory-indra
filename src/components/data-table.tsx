@@ -39,9 +39,6 @@ export const schemaTransactions = z.object({
 });
 
 export function DataTable() {
-  const [data, setData] = React.useState<z.infer<typeof schema>[]>(
-    () => data_products as z.infer<typeof schema>[],
-  );
   const [dataTransactions, setDataTrasactions] = React.useState<
     z.infer<typeof schemaTransactions>[]
   >(() => data_transactions as z.infer<typeof schemaTransactions>[]);
@@ -81,7 +78,7 @@ export function DataTable() {
         value="products"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <TableProducts data={data} setData={setData} />
+        <TableProducts data={data_products as z.infer<typeof schema>[]} />
       </TabsContent>
       <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
         <TableTransactions
