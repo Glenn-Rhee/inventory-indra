@@ -11,7 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVerticalIcon } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  EllipsisVerticalIcon,
+} from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
 
@@ -25,8 +30,23 @@ export function getColumnsProduct(
       cell: ({ row }) => <DragHandle id={row.original.id} />,
     },
     {
-      accessorKey: "productName",
-      header: "Product",
+      accessorKey: "name",
+      header: ({ column }) => (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Product Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="w-2 h-2" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown />
+          ) : (
+            <ArrowUpDown />
+          )}
+        </Button>
+      ),
+      enableSorting: true,
       cell: ({ row }) => {
         return <TableCellViewer item={row.original} />;
       },
@@ -34,7 +54,22 @@ export function getColumnsProduct(
     },
     {
       accessorKey: "category",
-      header: "Category",
+      header: ({ column }) => (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="w-2 h-2" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown />
+          ) : (
+            <ArrowUpDown />
+          )}
+        </Button>
+      ),
+      enableSorting: true,
       cell: ({ row }) => (
         <div className="w-32">
           <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -45,14 +80,44 @@ export function getColumnsProduct(
     },
     {
       accessorKey: "price",
-      header: "Price",
+      header: ({ column }) => (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="w-2 h-2" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown />
+          ) : (
+            <ArrowUpDown />
+          )}
+        </Button>
+      ),
+      enableSorting: true,
       cell: ({ row }) => (
         <div>Rp{row.original.price.toLocaleString("id-ID")}</div>
       ),
     },
     {
-      accessorKey: "statusExp",
-      header: "Status Expired",
+      accessorKey: "expired_status",
+      header: ({ column }) => (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status Expired
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="w-2 h-2" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown />
+          ) : (
+            <ArrowUpDown />
+          )}
+        </Button>
+      ),
+      enableSorting: true,
       cell: ({ row }) => (
         <Badge
           variant={

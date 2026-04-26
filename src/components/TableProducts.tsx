@@ -86,6 +86,7 @@ export default function TableProducts(props: TableProductsProps) {
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
+    enableSorting: true,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
