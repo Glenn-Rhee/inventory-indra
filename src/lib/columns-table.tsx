@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
+import DialogEditProduct from "@/components/pages/products/DialogEditProduct";
 
 export function getColumnsProduct(
   isPageProduct: boolean,
@@ -145,7 +146,7 @@ export function getColumnsProduct(
       ...columns,
       {
         id: "actions",
-        cell: () => (
+        cell: ({ row }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -158,7 +159,12 @@ export function getColumnsProduct(
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => e.preventDefault()}
+                className="focus:text-white hover:text-white active:bg-primary active:text-white"
+              >
+                <DialogEditProduct product={row.original} />
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
             </DropdownMenuContent>

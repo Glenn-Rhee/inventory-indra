@@ -13,7 +13,6 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PlusIcon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -21,38 +20,41 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../../ui/select";
 import { useState } from "react";
-import { DatePicker } from "./DatePicker";
-import { useIsMobile } from "@/hooks/use-mobile";
+import z from "zod";
+import { schema } from "@/components/data-table";
 
-export default function DialogProduct() {
+interface DialogEditProductProps {
+  product: z.infer<typeof schema>;
+}
+
+export default function DialogEditProduct(props: DialogEditProductProps) {
+  const { product } = props;
+  console.log(product);
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
-    "MEDICINE",
+    product.category,
   );
-  const isMobile = useIsMobile();
   const [unit, setUnit] = useState(category === "MEDICINE" ? "STRIP" : "ITEM");
-  
+
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button className="py-4.5 text-sm">
-          <PlusIcon /> {isMobile ? "Add" : "Add Product"}
-        </Button>
+      <DialogTrigger className="w-full text-start hover:text-white">
+        <span>Edit</span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <form action="">
           <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
+            <DialogTitle>Edit Product</DialogTitle>
             <DialogDescription>
-              Fill in the details for the new product. Click save when
-              you&apos;re done.
+              Update the details for the product. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
           <FieldGroup className="my-4">
             <Field>
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Paracetamol" />
+              <Input id="name" name="name" placeholder={product.name} />
             </Field>
             <Field>
               <Label htmlFor="category">Category</Label>
@@ -136,11 +138,11 @@ export default function DialogProduct() {
                 Price per {unit[0]}
                 {unit.slice(1).toLowerCase()}
               </Label>
-              <Input id="price" name="price" placeholder="100000" />
-            </Field>
-            <Field>
-              <Label htmlFor="expiredDate">Expired Date</Label>
-              <DatePicker />
+              <Input
+                id="price"
+                name="price"
+                placeholder={product.price.toLocaleString("id-ID")}
+              />
             </Field>
           </FieldGroup>
           <DialogFooter>

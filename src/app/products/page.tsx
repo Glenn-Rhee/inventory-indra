@@ -1,4 +1,4 @@
-import DialogProduct from "@/components/DialogProduct";
+import DialogAddProduct from "@/components/pages/products/DialogAddProduct";
 import SearchBar from "@/components/SearchBar";
 import TableProducts from "@/components/TableProducts";
 import { Metadata } from "next";
@@ -19,7 +19,7 @@ export default function ProductsPage() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           <div className="flex w-full justify-between">
             <SearchBar />
-            <DialogProduct />
+            <DialogAddProduct />
           </div>
           <TableProducts
             isPageProduct
