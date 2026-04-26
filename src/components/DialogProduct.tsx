@@ -26,7 +26,7 @@ import { useState } from "react";
 import { DatePicker } from "./DatePicker";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export default function DialogAddProduct() {
+export default function DialogProduct() {
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
     "MEDICINE",
   );

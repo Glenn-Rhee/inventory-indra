@@ -105,6 +105,7 @@ export function getColumnsProduct(
 
   return columns;
 }
+
 export const columnsTransaction: ColumnDef<
   z.infer<typeof schemaTransactions>
 >[] = [
