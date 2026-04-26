@@ -27,7 +27,7 @@ export function SectionCards() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+        <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <div className="line-clamp-1 flex gap-2 font-medium">
             Meningkat bulan ini <TrendingUpIcon className="size-4" />
           </div>
@@ -47,7 +47,7 @@ export function SectionCards() {
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+        <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <div className="line-clamp-1 flex gap-2 font-medium">
             Turun 20% dari minggu lalu <TrendingDownIcon className="size-4" />
           </div>
@@ -63,7 +63,7 @@ export function SectionCards() {
             2.450
           </CardTitle>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+        <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <div className="line-clamp-1 flex gap-2 font-medium">Stok Aman</div>
           <div className="text-muted-foreground">
             Tidak ada kekurangan stok yang signifikan
@@ -77,7 +77,7 @@ export function SectionCards() {
             Paracetamol
           </CardTitle>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+        <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <div className="line-clamp-1 flex gap-2 font-medium">
             Penjualan tertinggi bulan ini <TrendingUpIcon className="size-4" />
           </div>
