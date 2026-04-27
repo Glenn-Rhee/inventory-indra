@@ -4,7 +4,6 @@ import * as React from "react";
 
 import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -20,7 +19,6 @@ import {
   ListIcon,
   ChartBarIcon,
   FolderIcon,
-  Settings2Icon,
   DatabaseIcon,
   FileChartColumnIcon,
   CommandIcon,
@@ -53,13 +51,6 @@ const data = {
       title: "Transactions",
       url: "/transactions",
       icon: <FolderIcon />,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: <Settings2Icon />,
     },
   ],
   documents: [
@@ -107,7 +98,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
