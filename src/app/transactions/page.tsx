@@ -4,6 +4,13 @@ import TableTransactions from "@/components/TableTransactions";
 import table_transactions from "@/app/data_transactions.json";
 import z from "zod";
 import { schemaTransactions } from "@/model/schema-table";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Transactions",
+  description:
+    "Kelola dan pantau seluruh aktivitas transaksi produk, baik pemasukan maupun pengeluaran. Analisis pergerakan stok, hitung total transaksi, dan pastikan setiap perubahan tercatat dengan akurat.",
+};
 
 export default function TransactionsPage() {
   return (
