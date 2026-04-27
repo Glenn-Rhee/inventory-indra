@@ -56,12 +56,10 @@ const data = {
   documents: [
     {
       name: "Data Medicines",
-      url: "#",
       icon: <DatabaseIcon />,
     },
     {
       name: "Reports",
-      url: "#",
       icon: <FileChartColumnIcon />,
     },
   ],

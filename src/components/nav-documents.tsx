@@ -28,7 +28,6 @@ export function NavDocuments({
 }: {
   items: {
     name: string;
-    url: string;
     icon: React.ReactNode;
   }[];
 }) {
@@ -39,18 +38,21 @@ export function NavDocuments({
       <SidebarGroupLabel>Documents</SidebarGroupLabel>
       <SidebarMenu className="flex flex-col">
         {items.map((item) => (
-          <SidebarMenuItem className="py-2" key={item.name}>
+          <SidebarMenuItem
+            className="py-2"
+            key={item.name}
+          >
             <SidebarMenuButton className="py-6" asChild>
-              <a href={item.url}>
+              <div>
                 {item.icon}
                 <span>{item.name}</span>
-              </a>
+              </div>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction
                   showOnHover
-                  className="rounded-sm data-[state=open]:bg-accent"
+                  className="rounded-sm data-[state=open]:bg-accent bottom-1/2 translate-y-1/2"
                 >
                   <MoreHorizontalIcon />
                   <span className="sr-only">More</span>
