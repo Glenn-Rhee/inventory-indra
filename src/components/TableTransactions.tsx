@@ -1,3 +1,4 @@
+"use client";
 import {
   closestCenter,
   DndContext,
@@ -11,7 +12,6 @@ import {
 } from "@dnd-kit/core";
 import { useId, useMemo, useState } from "react";
 import z from "zod";
-import { schemaTransactions } from "./data-table";
 import {
   arrayMove,
   SortableContext,
@@ -56,16 +56,17 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import { schemaTransactions } from "@/model/schema-table";
 
 interface TableProductsProps {
   data: z.infer<typeof schemaTransactions>[];
-  setData: React.Dispatch<
-    React.SetStateAction<z.infer<typeof schemaTransactions>[]>
-  >;
 }
 
 export default function TableTransactions(props: TableProductsProps) {
-  const { data, setData } = props;
+  const { data: initialData } = props;
+  const [data, setData] = useState<z.infer<typeof schemaTransactions>[]>(
+    () => initialData,
+  );
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({

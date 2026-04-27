@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +19,6 @@ import TableProducts from "./pages/products/TableProducts";
 import { schema, schemaTransactions } from "@/model/schema-table";
 
 export function DataTable() {
-  const [dataTransactions, setDataTrasactions] = React.useState<
-    z.infer<typeof schemaTransactions>[]
-  >(() => data_transactions as z.infer<typeof schemaTransactions>[]);
-
   return (
     <Tabs
       defaultValue="products"
@@ -63,8 +58,7 @@ export function DataTable() {
       </TabsContent>
       <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
         <TableTransactions
-          data={dataTransactions}
-          setData={setDataTrasactions}
+          data={data_transactions as z.infer<typeof schemaTransactions>[]}
         />
       </TabsContent>
     </Tabs>

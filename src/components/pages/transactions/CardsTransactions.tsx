@@ -7,14 +7,14 @@ import {
 } from "@/components/ui/card";
 import { TrendingUp } from "lucide-react";
 
-export default function Cards() {
+export default function CardsTransactions() {
   return (
     <>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Product</CardDescription>
+          <CardDescription>Total Transactions</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            120
+            150
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
@@ -22,39 +22,39 @@ export default function Cards() {
             Naik 12.5% dari bulan lalu <TrendingUp className="size-4" />
           </p>
           <p className="text-muted-foreground">
-            Pertumbuhan positif dalam jumlah produk.
+            Aktivitas transaksi meningkat.
           </p>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Stock Menipis</CardDescription>
+          <CardDescription>Total Revenue</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            5
+            Rp 12.500.000
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <p className="line-clamp-1 flex gap-2 font-medium">
-            5 produk mendekati habis
+            +8% dari periode sebelumnya <TrendingUp className="size-4" />
           </p>
           <p className="text-muted-foreground">
-            Paracetamol, Amoxicillin, Vitamin C, Ibuprofen, dan Cetirizine.
+            Pendapatan dari penjualan meningkat.
           </p>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Product Expired</CardDescription>
+          <CardDescription>Total Purchase</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            2
+            Rp8.000.000
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <p className="line-clamp-1 flex gap-2 font-medium">
-            2 produk sudah kadaluarsa
+            Restock bulan ini meningkat 15% <TrendingUp className="size-4" />
           </p>
           <p className="text-muted-foreground">
-            Paracetamol dan Amoxicillin sudah kadaluarsa.
+            Pengeluaran untuk pembelian stok meningkat.
           </p>
         </CardFooter>
       </Card>

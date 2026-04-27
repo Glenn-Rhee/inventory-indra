@@ -1,10 +1,11 @@
 import SearchBarStocks from "@/components/pages/stocks/SearchBarStocks";
-import SectionCardsStocks from "@/components/pages/stocks/SectionCardsStocks";
+import SectionCards from "@/components/SectionCards";
 import TableStocks from "@/components/pages/stocks/TableStocks";
 import { Metadata } from "next";
 import data_stocks from "@/app/data_stocks.json";
 import z from "zod";
 import { schemaStocks } from "@/model/schema-table";
+import Cards from "@/components/pages/stocks/Cards";
 export const metadata: Metadata = {
   title: "Stocks",
   description:
@@ -20,7 +21,9 @@ export default function StocksPage() {
             <h1 className="text-xl font-bold lg:text-3xl">Kelola Stocks</h1>
             <p>Pantau dan kelola stok produk secara real-time</p>
           </div>
-          <SectionCardsStocks />
+          <SectionCards>
+            <Cards />
+          </SectionCards>
           <SearchBarStocks />
           <TableStocks data={data_stocks as z.infer<typeof schemaStocks>[]} />
         </div>

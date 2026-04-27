@@ -1,6 +1,5 @@
 "use client";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Cards from "./Cards";
 import {
   Collapsible,
   CollapsibleContent,
@@ -8,7 +7,12 @@ import {
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 
-export default function SectionCardsStocks() {
+interface SectionCardsProps {
+  children: React.ReactNode;
+}
+
+export default function SectionCards(props: SectionCardsProps) {
+  const { children } = props;
   const isMobile = useIsMobile();
   return (
     <div className="grid grid-cols-1 gap-3 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-3 dark:*:data-[slot=card]:bg-card">
@@ -18,12 +22,10 @@ export default function SectionCardsStocks() {
             <span>Lihat Detail</span>
             <ChevronDown className="size-4" />
           </CollapsibleTrigger>
-          <CollapsibleContent>
-            <Cards />
-          </CollapsibleContent>
+          <CollapsibleContent>{children}</CollapsibleContent>
         </Collapsible>
       ) : (
-        <Cards />
+        children
       )}
     </div>
   );
