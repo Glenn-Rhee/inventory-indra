@@ -15,6 +15,7 @@ import {
   ArrowUp,
   ArrowUpDown,
   EllipsisVerticalIcon,
+  PlusIcon,
 } from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
@@ -344,6 +345,14 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
     header: "Last Updated",
     cell: ({ row }) => (
       <div className="text-left">{row.original.last_updated}</div>
+    ),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <Button onClick={() => console.log(row.original.id)} className="text-sm">
+        <PlusIcon className="size-3" /> Restock
+      </Button>
     ),
   },
 ];

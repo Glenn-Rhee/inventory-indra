@@ -23,11 +23,8 @@ import {
   CameraIcon,
   FileTextIcon,
   Settings2Icon,
-  CircleHelpIcon,
-  SearchIcon,
   DatabaseIcon,
   FileChartColumnIcon,
-  FileIcon,
   CommandIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -113,11 +110,6 @@ const data = {
       title: "Settings",
       url: "/settings",
       icon: <Settings2Icon />,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: <SearchIcon />,
     },
   ],
   documents: [
