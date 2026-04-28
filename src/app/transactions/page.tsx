@@ -5,6 +5,7 @@ import table_transactions from "@/app/data_transactions.json";
 import z from "zod";
 import { schemaTransactions } from "@/model/schema-table";
 import { Metadata } from "next";
+import SearchBar from "@/components/SearchBar";
 
 export const metadata: Metadata = {
   title: "Transactions",
@@ -26,6 +27,9 @@ export default function TransactionsPage() {
           <SectionCards>
             <CardsTransactions />
           </SectionCards>
+          <div className="w-full flex items-center justify-between">
+            <SearchBar placeholder="Find Transactions..."/>
+          </div>
           <TableTransactions
             data={table_transactions as z.infer<typeof schemaTransactions>[]}
           />

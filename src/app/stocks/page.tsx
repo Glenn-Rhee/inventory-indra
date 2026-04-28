@@ -1,4 +1,4 @@
-import SearchBarStocks from "@/components/pages/stocks/SearchBarStocks";
+import SearchBar from "@/components/SearchBar";
 import SectionCards from "@/components/SectionCards";
 import TableStocks from "@/components/pages/stocks/TableStocks";
 import { Metadata } from "next";
@@ -24,7 +24,7 @@ export default function StocksPage() {
           <SectionCards>
             <Cards />
           </SectionCards>
-          <SearchBarStocks />
+          <SearchBar placeholder="Find Product Stocks..." />
           <TableStocks data={data_stocks as z.infer<typeof schemaStocks>[]} />
         </div>
       </div>
