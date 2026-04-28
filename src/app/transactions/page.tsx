@@ -6,6 +6,7 @@ import z from "zod";
 import { schemaTransactions } from "@/model/schema-table";
 import { Metadata } from "next";
 import SearchBar from "@/components/SearchBar";
+import DialogAddTransactions from "@/components/pages/transactions/DialogAddTransactions";
 
 export const metadata: Metadata = {
   title: "Transactions",
@@ -28,7 +29,8 @@ export default function TransactionsPage() {
             <CardsTransactions />
           </SectionCards>
           <div className="w-full flex items-center justify-between">
-            <SearchBar placeholder="Find Transactions..."/>
+            <SearchBar placeholder="Find Transactions..." />
+            <DialogAddTransactions />
           </div>
           <TableTransactions
             data={table_transactions as z.infer<typeof schemaTransactions>[]}
