@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -16,7 +15,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { EllipsisVerticalIcon, BellIcon, LogOutIcon } from "lucide-react";
+import { EllipsisVerticalIcon, LogOutIcon } from "lucide-react";
 
 export function NavUser({
   user,
@@ -70,14 +69,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="text-sm">
-                <BellIcon />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-sm">
+            <DropdownMenuItem variant="destructive" className="text-sm">
               <LogOutIcon />
               Log out
             </DropdownMenuItem>
