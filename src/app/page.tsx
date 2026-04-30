@@ -4,7 +4,7 @@ import { SectionCards } from "@/components/section-cards";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard Pag",
+  title: "Dashboard Page",
   description:
     "Dashboard manajemen toko obat untuk memantau stok, penjualan, dan data obat secara real-time dengan sistem yang efisien dan terintegrasi.",
 };
