@@ -4,12 +4,13 @@ import { SectionCards } from "@/components/section-cards";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard Page!",
+  title: "Dashboard",
   description:
     "Dashboard manajemen toko obat untuk memantau stok, penjualan, dan data obat secara real-time dengan sistem yang efisien dan terintegrasi.",
 };
 
-export default function Page() { // Component
+export default function Page() {
+  // Component
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
