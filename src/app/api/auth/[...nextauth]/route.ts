@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
         }
 
         try {
-          const res = await fetch(process.env.BASE_URL + "/check-user", {
+          const res = await fetch(process.env.BASE_SERVER_URL + "/login", {
             method: "POST",
             body: JSON.stringify({
               username: credentials.username,
@@ -76,6 +76,7 @@ export const authOptions: AuthOptions = {
             username: Username,
           };
         } catch (error) {
+          console.log(error);
           if (error instanceof ResponseError) {
             throw new Error(error.message);
           }

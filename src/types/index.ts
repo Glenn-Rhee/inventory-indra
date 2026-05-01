@@ -15,3 +15,4 @@ export interface DataUser {
   username: string;
   imageUrl: string;
 }
+

@@ -11,6 +11,12 @@ import ValidationForm from "@/model/validation-form";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import ResponseError from "@/error/ResponseError";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
+import { useRouter } from "next/navigation";
 
 export default function FormLogin() {
   type CREATEUSER = z.infer<typeof ValidationForm.CREATEUSER>;
@@ -22,8 +28,35 @@ export default function FormLogin() {
       username: "",
     },
   });
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  async function handleSubmit(data: CREATEUSER) {}
+  async function handleSubmit(data: CREATEUSER) {
+    setLoading(true);
+    try {
+      const res = await signIn("credentials", {
+        ...data,
+        callbackUrl: "/",
+        redirect: false,
+      });
+
+      if (!res?.ok && res?.status && res?.error) {
+        throw new ResponseError(res?.status, res?.error);
+      }
+
+      router.push("/");
+      toast.success("Successfully login!");
+    } catch (error) {
+      let message = "An error occured!";
+      if (error instanceof ResponseError) {
+        message = error.message;
+      }
+
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -65,8 +98,15 @@ export default function FormLogin() {
           )}
         />
 
-        <Button className="py-4.5 text-lg font-medium" type="submit">
-          Login
+        <Button disabled={loading} className="py-4.5 font-medium" type="submit">
+          {loading ? (
+            <>
+              <Spinner />
+              Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
         </Button>
       </FieldGroup>
     </form>
