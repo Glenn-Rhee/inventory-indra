@@ -15,9 +15,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useUserStore } from "@/store/user-store";
 import { EllipsisVerticalIcon, LogOutIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
@@ -25,7 +24,8 @@ import { Skeleton } from "./ui/skeleton";
 export function NavUser() {
   const { isMobile } = useSidebar();
   const router = useRouter();
-  const { user: dataUser } = useUserStore();
+  const { data: session } = useSession();
+
   async function handleLogout() {
     try {
       await signOut();
@@ -44,23 +44,23 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              {dataUser ? (
+              {session ? (
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
                   <AvatarImage
-                    src={dataUser.imageUrl || ""}
-                    alt={dataUser.username + " Profile"}
+                    src={session.user.imageUrl || ""}
+                    alt={session.user.username + " Profile"}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {dataUser?.username?.slice(0, 2).toUpperCase()}
+                    {session.user.username?.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               ) : (
                 <Skeleton className="h-8 w-8 rounded-lg aspect-square grayscale" />
               )}
-              {dataUser ? (
+              {session ? (
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {dataUser.username}
+                    {session.user.username}
                   </span>
                 </div>
               ) : (
@@ -79,16 +79,16 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={dataUser?.imageUrl || ""}
-                    alt={dataUser?.username + " Profile" || ""}
+                    src={session?.user.imageUrl || ""}
+                    alt={session?.user.username + " Profile" || ""}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {dataUser?.username?.slice(0, 2).toUpperCase()}
+                    {session?.user.username?.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {dataUser?.username}
+                    {session?.user.username}
                   </span>
                 </div>
               </div>

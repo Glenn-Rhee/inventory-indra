@@ -2,8 +2,6 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/Providers";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -11,19 +9,18 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const dataSession = await getServerSession(authOptions);
   return (
     <html
       lang="en"
       className={`${poppins.variable} font-sans h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers user={dataSession?.user ?? null}>{children}</Providers>
+        <Providers>{children}</Providers>
         <Toaster
           position="top-center"
           toastOptions={{
