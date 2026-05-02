@@ -52,14 +52,20 @@ export default function FormLogin() {
         message = error.message;
       }
 
-      toast.error(message);
-    } finally {
       setLoading(false);
+      toast.error(message);
     }
   }
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)}>
+    <form
+      onSubmit={(e) => {
+        console.log("ok");
+        e.preventDefault();
+
+        form.handleSubmit(handleSubmit)();
+      }}
+    >
       <FieldGroup className="space-y-2">
         <Controller
           name="username"
