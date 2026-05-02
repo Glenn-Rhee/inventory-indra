@@ -9,8 +9,7 @@ export const metadata: Metadata = {
     "Dashboard manajemen toko obat untuk memantau stok, penjualan, dan data obat secara real-time dengan sistem yang efisien dan terintegrasi.",
 };
 
-export default function Page() {
-  // Component
+export default async function Page() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
