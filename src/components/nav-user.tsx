@@ -20,6 +20,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
+import DialogEditUser from "./DialogEditUser";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -75,7 +76,7 @@ export function NavUser() {
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
+            <DropdownMenuLabel className="py-0 pe-4 font-normal flex items-center justify-between">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
@@ -92,6 +93,7 @@ export function NavUser() {
                   </span>
                 </div>
               </div>
+              <DialogEditUser />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
