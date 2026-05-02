@@ -16,6 +16,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { EllipsisVerticalIcon, LogOutIcon } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function NavUser({
   user,
@@ -27,7 +30,16 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
-
+  const router = useRouter();
+  async function handleLogout() {
+    try {
+      await signOut();
+      router.push("/auth/login");
+    } catch (error) {
+      console.log(error);
+      toast.error("An error while logout");
+    }
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -69,7 +81,11 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" className="text-sm">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              variant="destructive"
+              className="text-sm"
+            >
               <LogOutIcon />
               Log out
             </DropdownMenuItem>
