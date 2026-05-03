@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { Spinner } from "./ui/spinner";
 import { useSession } from "next-auth/react";
 import { ResponsePayload } from "@/types";
+import { useImageUrl } from "@/store/image-url-store";
 const BASEURL = process.env.NEXT_PUBLIC_BASE_SERVER_URL;
 
 export default function DialogEditUser() {
@@ -30,6 +31,7 @@ export default function DialogEditUser() {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setImageUrl } = useImageUrl();
   const handleSubmit = async () => {
     try {
       const uploaded = await startUpload(files);
@@ -59,6 +61,7 @@ export default function DialogEditUser() {
 
       toast.success("Successfully update your profile image!");
       setOpenDialog(false);
+      setImageUrl(uploaded[0].ufsUrl);
     } catch (error) {
       if (error instanceof ResponseError) {
         toast.error(error.message);

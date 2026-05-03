@@ -21,15 +21,18 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
 import DialogEditUser from "./DialogEditUser";
+import { useImageUrl } from "@/store/image-url-store";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const router = useRouter();
   const { data: session } = useSession();
+  const { imageUrl, setImageUrl } = useImageUrl();
 
   async function handleLogout() {
     try {
       await signOut();
+      setImageUrl("");
       router.push("/auth/login");
     } catch (error) {
       console.log(error);
@@ -46,9 +49,9 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               {session ? (
-                <Avatar className="h-8 w-8 rounded-lg grayscale">
+                <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={session.user.imageUrl || ""}
+                    src={imageUrl || session.user.imageUrl || ""}
                     alt={session.user.username + " Profile"}
                   />
                   <AvatarFallback className="rounded-lg">
@@ -56,7 +59,7 @@ export function NavUser() {
                   </AvatarFallback>
                 </Avatar>
               ) : (
-                <Skeleton className="h-8 w-8 rounded-lg aspect-square grayscale" />
+                <Skeleton className="h-8 w-8 rounded-lg aspect-square" />
               )}
               {session ? (
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -78,20 +81,28 @@ export function NavUser() {
           >
             <DropdownMenuLabel className="py-0 pe-4 font-normal flex items-center justify-between">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage
-                    src={session?.user.imageUrl || ""}
-                    alt={session?.user.username + " Profile" || ""}
-                  />
-                  <AvatarFallback className="rounded-lg">
-                    {session?.user.username?.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {session?.user.username}
-                  </span>
-                </div>
+                {session ? (
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage
+                      src={imageUrl || session.user.imageUrl || ""}
+                      alt={session.user.username + " Profile" || ""}
+                    />
+                    <AvatarFallback className="rounded-lg">
+                      {session.user.username?.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Skeleton className="h-8 w-8 rounded-lg aspect-square grayscale" />
+                )}
+                {session ? (
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">
+                      {session.user.username}
+                    </span>
+                  </div>
+                ) : (
+                  <Skeleton className="h-1.5 w-3/4" />
+                )}
               </div>
               <DialogEditUser />
             </DropdownMenuLabel>
