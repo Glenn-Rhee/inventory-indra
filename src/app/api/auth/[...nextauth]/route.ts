@@ -12,7 +12,7 @@ export const authOptions: AuthOptions = {
   adapter: {
     createUser: async (data: DataOauth) => {
       try {
-        const res = await fetch(process.env.BASE_URL + "/user", {
+        const res = await fetch(process.env.BASE_SERVER_URL + "/user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
