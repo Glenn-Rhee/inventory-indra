@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import z from "zod";
-import { schema } from "./data-table";
+import { schema } from "@/model/schema-table";
 
 const chartConfig = {
   desktop: {
@@ -63,12 +63,12 @@ export default function TableCellViewer({
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="w-fit px-0 text-left text-foreground">
-          {item.name}
+          {item.Name}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.name}</DrawerTitle>
+          <DrawerTitle>{item.Name}</DrawerTitle>
           <DrawerDescription>
             Showing total visitors for the last 6 months
           </DrawerDescription>
@@ -134,12 +134,12 @@ export default function TableCellViewer({
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
               <Label htmlFor="header">Product Name</Label>
-              <Input disabled id="header" defaultValue={item.name} />
+              <Input disabled id="header" defaultValue={item.Name} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="type">Category</Label>
-                <Select disabled defaultValue={item.category}>
+                <Select disabled defaultValue={item.Category}>
                   <SelectTrigger id="type" className="w-full">
                     <SelectValue placeholder="Select a type" />
                   </SelectTrigger>
@@ -153,7 +153,7 @@ export default function TableCellViewer({
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Expired Status</Label>
-                <Select disabled defaultValue={item.expired_status}>
+                <Select disabled defaultValue={item.StatusExpired}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
@@ -169,12 +169,8 @@ export default function TableCellViewer({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="stock">Stock</Label>
-                <Input disabled id="stock" defaultValue={item.stock} />
-              </div>
-              <div className="flex flex-col gap-3">
                 <Label htmlFor="price">Price</Label>
-                <Input disabled id="price" defaultValue={item.price} />
+                <Input disabled id="price" defaultValue={item.Price} />
               </div>
             </div>
             <div className="flex flex-col gap-3">
@@ -182,7 +178,7 @@ export default function TableCellViewer({
               <Input
                 disabled
                 id="expired_date"
-                defaultValue={item.expired_date}
+                defaultValue={item.ExpiredDate.toString()}
               />
             </div>
           </form>

@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { Button } from "./ui/button";
 import { GripVerticalIcon } from "lucide-react";
 
-export function DragHandle({ id }: { id: number }) {
+export function DragHandle({ id }: { id: string }) {
   const { attributes, listeners } = useSortable({
     id,
   });

@@ -30,7 +30,7 @@ export function getColumnsProduct(
     {
       id: "drag",
       header: () => null,
-      cell: ({ row }) => <DragHandle id={row.original.id} />,
+      cell: ({ row }) => <DragHandle id={row.original.Id} />,
     },
     {
       accessorKey: "name",
@@ -76,7 +76,7 @@ export function getColumnsProduct(
       cell: ({ row }) => (
         <div className="w-32">
           <Badge variant="outline" className="px-1.5 text-muted-foreground">
-            {row.original.category}
+            {row.original.Category}
           </Badge>
         </div>
       ),
@@ -100,11 +100,11 @@ export function getColumnsProduct(
       ),
       enableSorting: true,
       cell: ({ row }) => (
-        <div>Rp{row.original.price.toLocaleString("id-ID")}</div>
+        <div>Rp{row.original.Price.toLocaleString("id-ID")}</div>
       ),
     },
     {
-      accessorKey: "expired_status",
+      accessorKey: "StatusExpired",
       header: ({ column }) => (
         <Button
           variant={"ghost"}
@@ -124,22 +124,22 @@ export function getColumnsProduct(
       cell: ({ row }) => (
         <Badge
           variant={
-            row.original.expired_status === "EXPIRED"
+            row.original.StatusExpired === "EXPIRED"
               ? "destructive"
-              : row.original.expired_status === "WARNING"
+              : row.original.StatusExpired === "WARNING"
                 ? "warning"
                 : "secondary"
           }
           className={cn("px-1.5 text-white", "")}
         >
-          {row.original.expired_status}
+          {row.original.StatusExpired}
         </Badge>
       ),
     },
     {
       accessorKey: "expiredDate",
       header: "Expired Date",
-      cell: ({ row }) => row.original.expired_date,
+      cell: ({ row }) => row.original.ExpiredDate,
     },
   ];
 

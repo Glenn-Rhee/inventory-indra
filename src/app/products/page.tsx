@@ -1,10 +1,9 @@
 import DialogAddProduct from "@/components/pages/products/DialogAddProduct";
 import { Metadata } from "next";
-import data_products from "@/app/data_products.json";
-import z from "zod";
 import TableProducts from "@/components/pages/products/TableProducts";
-import { schema } from "@/model/schema-table";
 import SearchBar from "@/components/SearchBar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -12,7 +11,8 @@ export const metadata: Metadata = {
     "Kelola data produk obat-obatan dan kebutuhan pokok. Tambah, edit, dan pantau stok produk secara efisien.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -21,10 +21,7 @@ export default function ProductsPage() {
             <SearchBar placeholder="Find Your Products..." />
             <DialogAddProduct />
           </div>
-          <TableProducts
-            isPageProduct
-            data={data_products as z.infer<typeof schema>[]}
-          />
+          <TableProducts userId={session?.user.id || ""} isPageProduct />
         </div>
       </div>
     </div>

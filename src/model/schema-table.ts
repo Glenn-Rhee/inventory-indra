@@ -1,17 +1,16 @@
 import z from "zod";
 
 export const schema = z.object({
-  id: z.number(),
-  name: z.string(),
-  category: z.enum(["MEDICINE", "ESSENTIALS"]),
-  stock: z.number(),
-  price: z.number(),
-  expired_status: z.enum(["SAFE", "WARNING", "EXPIRED"]),
-  expired_date: z.string(),
+  Id: z.string(),
+  Name: z.string(),
+  Category: z.enum(["MEDICINE", "ESSENTIALS"]),
+  Price: z.number(),
+  StatusExpired: z.enum(["SAFE", "WARNING", "EXPIRED"]),
+  ExpiredDate: z.coerce.date(),
 });
 
 export const schemaTransactions = z.object({
-  product_id: z.number(),
+  product_id: z.string(),
   product_name: z.string(),
   transaction_type: z.enum(["IN", "OUT"]),
   quantity: z.number(),
@@ -21,7 +20,7 @@ export const schemaTransactions = z.object({
 });
 
 export const schemaStocks = z.object({
-  id: z.number(),
+  id: z.string(),
   product_name: z.string(),
   stock: z.number(),
   expired_date: z.string(),

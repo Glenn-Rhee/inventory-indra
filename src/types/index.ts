@@ -16,3 +16,11 @@ export interface DataUser {
   imageUrl: string;
 }
 
+export interface DataProductResponse {
+  Id: string;
+  Name: string;
+  Category: "MEDICINE" | "ESSENTIALS";
+  Price: number;
+  StatusExpired: "SAFE" | "WARNING" | "EXPIRED";
+  ExpiredDate: Date;
+}

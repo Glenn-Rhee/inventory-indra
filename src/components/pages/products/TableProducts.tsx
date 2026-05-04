@@ -10,7 +10,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import z from "zod";
 import {
   arrayMove,
@@ -57,23 +57,37 @@ import {
 } from "lucide-react";
 import { getColumnsProduct } from "@/lib/columns-table";
 import { schema } from "@/model/schema-table";
+import { useProducts } from "@/lib/product-queries";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TableProductsProps {
-  data: z.infer<typeof schema>[];
   isPageProduct?: boolean;
+  userId: string;
 }
 
 export default function TableProducts(props: TableProductsProps) {
-  const { data: initialData, isPageProduct } = props;
-  const [data, setData] = useState<z.infer<typeof schema>[]>(
-    () => initialData as z.infer<typeof schema>[],
-  );
+  const { isPageProduct, userId } = props;
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const { data: initialData, isLoading } = useProducts({
+    userId: userId,
+    limit: pagination.pageSize,
+    page: pagination.pageIndex + 1,
+  });
+
+  const [data, setData] = useState<z.infer<typeof schema>[]>([]);
+
+  useEffect(() => {
+    if (initialData) {
+      setData(initialData || []);
+    }
+  }, [initialData]);
+
   // eslint-disable-next-line react-hooks/incompatible-library
   const tableProducts = useReactTable({
     data,
@@ -83,7 +97,7 @@ export default function TableProducts(props: TableProductsProps) {
       columnVisibility,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.Id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
     enableSorting: true,
@@ -105,7 +119,7 @@ export default function TableProducts(props: TableProductsProps) {
   );
 
   const dataIds = useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
+    () => data?.map(({ Id }) => Id) || [],
     [data],
   );
   function handleDragEnd(event: DragEndEvent) {
@@ -148,7 +162,19 @@ export default function TableProducts(props: TableProductsProps) {
               ))}
             </TableHeader>
             <TableBody className="**:data-[slot=table-cell]:first:w-8">
-              {tableProducts.getRowModel().rows?.length ? (
+              {isLoading ? (
+                Array.from({ length: pagination.pageSize }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({
+                      length: getColumnsProduct(!!isPageProduct).length,
+                    }).map((_, i) => (
+                      <TableCell key={i} className="h-12 text-center">
+                        <Skeleton className="w-full h-full" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : tableProducts.getRowModel().rows?.length ? (
                 <SortableContext
                   items={dataIds}
                   strategy={verticalListSortingStrategy}
@@ -158,7 +184,7 @@ export default function TableProducts(props: TableProductsProps) {
                       key={row.id}
                       getIsSelected={row.getIsSelected}
                       getVisibleCells={row.getVisibleCells}
-                      id={row.original.id}
+                      id={row.original.Id}
                     />
                   ))}
                 </SortableContext>

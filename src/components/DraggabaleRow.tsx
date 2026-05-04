@@ -8,7 +8,7 @@ export function DraggableRow<T>({
   getVisibleCells,
   id,
 }: {
-  id: number;
+  id: string;
   getIsSelected: () => boolean;
   getVisibleCells: () => Cell<T, unknown>[];
 }) {
