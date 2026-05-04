@@ -22,6 +22,7 @@ import { cn } from "./utils";
 import DialogEditProduct from "@/components/pages/products/DialogEditProduct";
 import DialogDelete from "@/components/DialogDelete";
 import { schema, schemaStocks, schemaTransactions } from "@/model/schema-table";
+import { getFormatDate } from "@/helper/getFormatDate";
 
 export function getColumnsProduct(
   isPageProduct: boolean,
@@ -139,7 +140,9 @@ export function getColumnsProduct(
     {
       accessorKey: "expiredDate",
       header: "Expired Date",
-      cell: ({ row }) => row.original.ExpiredDate,
+      cell: ({ row }) => {
+        return <span>{getFormatDate(row.original.ExpiredDate)}</span>;
+      },
     },
   ];
 
