@@ -27,19 +27,22 @@ export function useProducts(params: UseProducts) {
           },
         );
 
-        const json = (await res.json()) as ResponsePayload<DataProductResponse[]>;
+        const json = (await res.json()) as ResponsePayload<DataProductResponse>;
         if (json.status === "failed") {
           throw new ResponseError(res.status, "Failed get data products!");
         }
 
-        return json.data;
+        return json.data as DataProductResponse;
       } catch (error) {
         if (error instanceof ResponseError) {
           toast.error(error.message);
         } else {
           toast.error("An error occured!");
         }
-        return null;
+        return {
+          Product: [],
+          TotalPages: 0,
+        } as DataProductResponse;
       }
     },
   });

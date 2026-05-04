@@ -7,6 +7,8 @@ import { schemaTransactions } from "@/model/schema-table";
 import { Metadata } from "next";
 import SearchBar from "@/components/SearchBar";
 import DialogAddTransactions from "@/components/pages/transactions/DialogAddTransactions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   title: "Transactions",
@@ -14,7 +16,8 @@ export const metadata: Metadata = {
     "Kelola dan pantau seluruh aktivitas transaksi produk, baik pemasukan maupun pengeluaran. Analisis pergerakan stok, hitung total transaksi, dan pastikan setiap perubahan tercatat dengan akurat.",
 };
 
-export default function TransactionsPage() {
+export default async function TransactionsPage() {
+  const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -30,7 +33,7 @@ export default function TransactionsPage() {
           </SectionCards>
           <div className="w-full flex items-center justify-between">
             <SearchBar placeholder="Find Transactions..." />
-            <DialogAddTransactions />
+            <DialogAddTransactions userId={session?.user.id || ""} />
           </div>
           <TableTransactions
             data={table_transactions as z.infer<typeof schemaTransactions>[]}

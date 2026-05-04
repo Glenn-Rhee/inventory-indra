@@ -11,11 +11,8 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Check, ChevronDownIcon, PlusIcon } from "lucide-react";
-import data_products from "@/app/data_products.json";
-import z from "zod";
-import { schema } from "@/model/schema-table";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -39,14 +36,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { useProducts } from "@/lib/product-queries";
+import { Separator } from "@/components/ui/separator";
 
-export default function DialogAddTransactions() {
+interface DialogAddTransactionsProps {
+  userId: string;
+}
+
+export default function DialogAddTransactions(
+  props: DialogAddTransactionsProps,
+) {
+  const { userId } = props;
   const isMobile = useIsMobile();
-  const products = data_products as z.infer<typeof schema>[];
-  const products_name = products.map((product) => product.name);
+  const { data, isLoading } = useProducts({ userId });
   const [open, setOpen] = useState(false);
   const [selectedProductName, setSelectedProductName] = useState("");
   const [transactionType, setTransactionType] = useState<"IN" | "OUT">("IN");
+  const [productsName, setProductsName] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      const names = data.Product.map((p) => p.Name);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProductsName(names);
+    }
+  }, [data, isLoading]);
 
   return (
     <Dialog>
@@ -86,29 +100,32 @@ export default function DialogAddTransactions() {
                     <CommandList>
                       <CommandEmpty>No Product Found.</CommandEmpty>
                       <CommandGroup className="max-h-50 overflow-y-auto">
-                        {products_name.map((item) => (
-                          <CommandItem
-                            key={item}
-                            value={item}
-                            onSelect={(currentValue) => {
-                              setSelectedProductName(
-                                currentValue === selectedProductName
-                                  ? ""
-                                  : currentValue,
-                              );
-                              setOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                selectedProductName === item
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {item}
-                          </CommandItem>
+                        {productsName.map((item) => (
+                          <Fragment key={item}>
+                            <CommandItem
+                              key={item}
+                              value={item}
+                              onSelect={(currentValue) => {
+                                setSelectedProductName(
+                                  currentValue === selectedProductName
+                                    ? ""
+                                    : currentValue,
+                                );
+                                setOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  selectedProductName === item
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {item}
+                            </CommandItem>
+                            <Separator className="w-full h-1" />
+                          </Fragment>
                         ))}
                       </CommandGroup>
                     </CommandList>

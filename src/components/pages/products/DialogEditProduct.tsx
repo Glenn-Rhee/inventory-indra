@@ -23,7 +23,7 @@ import {
 } from "../../ui/select";
 import { useState } from "react";
 import z from "zod";
-import { schema } from "@/components/data-table";
+import { schema } from "@/model/schema-table";
 
 interface DialogEditProductProps {
   product: z.infer<typeof schema>;
@@ -32,7 +32,7 @@ interface DialogEditProductProps {
 export default function DialogEditProduct(props: DialogEditProductProps) {
   const { product } = props;
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
-    product.category,
+    product.Category,
   );
   const [unit, setUnit] = useState(category === "MEDICINE" ? "STRIP" : "ITEM");
 
@@ -53,7 +53,7 @@ export default function DialogEditProduct(props: DialogEditProductProps) {
           <FieldGroup className="my-4">
             <Field>
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder={product.name} />
+              <Input id="name" name="name" placeholder={product.Name} />
             </Field>
             <Field>
               <Label htmlFor="category">Category</Label>
@@ -140,7 +140,7 @@ export default function DialogEditProduct(props: DialogEditProductProps) {
               <Input
                 id="price"
                 name="price"
-                placeholder={product.price.toLocaleString("id-ID")}
+                placeholder={product.Price.toLocaleString("id-ID")}
               />
             </Field>
           </FieldGroup>

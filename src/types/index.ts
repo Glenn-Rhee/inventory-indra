@@ -17,10 +17,13 @@ export interface DataUser {
 }
 
 export interface DataProductResponse {
-  Id: string;
-  Name: string;
-  Category: "MEDICINE" | "ESSENTIALS";
-  Price: number;
-  StatusExpired: "SAFE" | "WARNING" | "EXPIRED";
-  ExpiredDate: Date;
+  TotalPages: number;
+  Product: {
+    Id: string;
+    Name: string;
+    Category: "MEDICINE" | "ESSENTIALS";
+    Price: number;
+    StatusExpired: "SAFE" | "WARNING" | "EXPIRED";
+    ExpiredDate: Date;
+  }[];
 }
