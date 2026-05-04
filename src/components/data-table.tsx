@@ -14,11 +14,15 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import data_transactions from "@/app/data_transactions.json";
 import TableTransactions from "./TableTransactions";
-import data_products from "@/app/data_products.json";
 import TableProducts from "./pages/products/TableProducts";
-import { schema, schemaTransactions } from "@/model/schema-table";
+import { schemaTransactions } from "@/model/schema-table";
 
-export function DataTable() {
+interface DataTableProps {
+  userId: string;
+}
+
+export function DataTable(props: DataTableProps) {
+  const { userId } = props;
   return (
     <Tabs
       defaultValue="products"
@@ -54,7 +58,7 @@ export function DataTable() {
         value="products"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <TableProducts data={data_products as z.infer<typeof schema>[]} />
+        <TableProducts userId={userId} />
       </TabsContent>
       <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
         <TableTransactions
