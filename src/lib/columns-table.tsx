@@ -27,7 +27,14 @@ export function getColumnsProduct(
   isPageProduct: boolean,
 ): ColumnDef<z.infer<typeof schema>>[] {
   let columns: ColumnDef<z.infer<typeof schema>>[] = [
-    { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
+    {
+      id: "no",
+      header: "No",
+      cell: ({ row, table }) => {
+        const { pageIndex, pageSize } = table.getState().pagination;
+        return <span>{pageIndex * pageSize + row.index + 1}</span>;
+      },
+    },
     {
       accessorKey: "name",
       header: ({ column }) => (

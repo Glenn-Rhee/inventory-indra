@@ -33,8 +33,6 @@ export function useProducts(params: UseProducts) {
           throw new ResponseError(res.status, "Failed get data products!");
         }
 
-        console.log("Cihuy fetch");
-
         return json.data as DataProductResponse;
       } catch (error) {
         if (error instanceof ResponseError) {
