@@ -1,23 +1,5 @@
 "use client";
-import {
-  closestCenter,
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  UniqueIdentifier,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { useEffect, useId, useMemo, useState } from "react";
-import z from "zod";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -38,7 +20,6 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { DraggableRow } from "../../DraggabaleRow";
 import { Label } from "../../ui/label";
 import {
   Select,
@@ -56,7 +37,6 @@ import {
   ChevronsRightIcon,
 } from "lucide-react";
 import { getColumnsProduct } from "@/lib/columns-table";
-import { schema } from "@/model/schema-table";
 import { useProducts } from "@/lib/product-queries";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -80,13 +60,7 @@ export default function TableProducts(props: TableProductsProps) {
     page: pagination.pageIndex + 1,
   });
 
-  const [data, setData] = useState<z.infer<typeof schema>[]>([]);
-
-  useEffect(() => {
-    if (initialData) {
-      setData(initialData || []);
-    }
-  }, [initialData]);
+  const data = useMemo(() => initialData?.Product || [], [initialData]);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const tableProducts = useReactTable({
@@ -111,96 +85,69 @@ export default function TableProducts(props: TableProductsProps) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const sortableId = useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {}),
-  );
-
-  const dataIds = useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ Id }) => Id) || [],
-    [data],
-  );
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
-      });
-    }
-  }
   return (
     <>
       <div className="overflow-hidden rounded-lg border">
-        <DndContext
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleDragEnd}
-          sensors={sensors}
-          id={sortableId}
-        >
-          <Table>
-            <TableHeader className="sticky top-0 z-10 bg-muted">
-              {tableProducts.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="**:data-[slot=table-cell]:first:w-8">
-              {isLoading ? (
-                Array.from({ length: pagination.pageSize }).map((_, i) => (
-                  <TableRow key={i}>
-                    {Array.from({
-                      length: getColumnsProduct(!!isPageProduct).length,
-                    }).map((_, i) => (
-                      <TableCell key={i} className="h-12 text-center">
-                        <Skeleton className="w-full h-full" />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : tableProducts.getRowModel().rows?.length ? (
-                <SortableContext
-                  items={dataIds}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {tableProducts.getRowModel().rows.map((row) => (
-                    <DraggableRow
-                      key={row.id}
-                      getIsSelected={row.getIsSelected}
-                      getVisibleCells={row.getVisibleCells}
-                      id={row.original.Id}
-                    />
+        <Table>
+          <TableHeader className="sticky top-0 z-10 bg-muted">
+            {tableProducts.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="**:data-[slot=table-cell]:first:w-8">
+            {isLoading ? (
+              Array.from({ length: pagination.pageSize }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({
+                    length: getColumnsProduct(!!isPageProduct).length,
+                  }).map((_, i) => (
+                    <TableCell key={i} className="h-12 text-center">
+                      <Skeleton className="w-full h-full" />
+                    </TableCell>
                   ))}
-                </SortableContext>
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={getColumnsProduct(!!isPageProduct).length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </DndContext>
+              ))
+            ) : tableProducts.getRowModel().rows?.length ? (
+              tableProducts.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.original.Id}
+                  className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={getColumnsProduct(!!isPageProduct).length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
       <div className="flex items-center justify-end px-4">
         <div className="flex w-full items-center gap-8 lg:w-fit">
@@ -230,9 +177,14 @@ export default function TableProducts(props: TableProductsProps) {
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex w-fit items-center justify-center text-sm font-medium">
             Page {tableProducts.getState().pagination.pageIndex + 1} of{" "}
-            {tableProducts.getPageCount()}
+            {initialData ? (
+              initialData.TotalPages
+            ) : (
+              <Skeleton className="h-4 bg-muted-foreground/20 w-5 ms-2" />
+            )}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
             <Button
@@ -249,7 +201,7 @@ export default function TableProducts(props: TableProductsProps) {
               className="size-8"
               size="icon"
               onClick={() => tableProducts.previousPage()}
-              disabled={!tableProducts.getCanPreviousPage()}
+              disabled={pagination.pageIndex + 1 === 1}
             >
               <span className="sr-only">Go to previous page</span>
               <ChevronLeftIcon />
@@ -258,8 +210,13 @@ export default function TableProducts(props: TableProductsProps) {
               variant="outline"
               className="size-8"
               size="icon"
-              onClick={() => tableProducts.nextPage()}
-              disabled={!tableProducts.getCanNextPage()}
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex + 1,
+                }))
+              }
+              disabled={pagination.pageIndex + 1 === initialData?.TotalPages}
             >
               <span className="sr-only">Go to next page</span>
               <ChevronRightIcon />

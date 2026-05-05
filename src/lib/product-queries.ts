@@ -1,6 +1,6 @@
 import ResponseError from "@/error/ResponseError";
 import { DataProductResponse, ResponsePayload } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_SERVER_URL;
@@ -14,7 +14,8 @@ interface UseProducts {
 export function useProducts(params: UseProducts) {
   const { limit = 10, page = 1, userId } = params;
   return useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", userId, limit, page],
+    placeholderData: keepPreviousData,
     queryFn: async () => {
       try {
         const res = await fetch(
@@ -31,6 +32,8 @@ export function useProducts(params: UseProducts) {
         if (json.status === "failed") {
           throw new ResponseError(res.status, "Failed get data products!");
         }
+
+        console.log("Cihuy fetch");
 
         return json.data as DataProductResponse;
       } catch (error) {

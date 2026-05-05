@@ -1,4 +1,3 @@
-import { DragHandle } from "@/components/drag-handle";
 import TableCellViewer from "@/components/TableCellViewer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,11 +27,6 @@ export function getColumnsProduct(
   isPageProduct: boolean,
 ): ColumnDef<z.infer<typeof schema>>[] {
   let columns: ColumnDef<z.infer<typeof schema>>[] = [
-    {
-      id: "drag",
-      header: () => null,
-      cell: ({ row }) => <DragHandle id={row.original.Id} />,
-    },
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -191,11 +185,6 @@ export const columnsTransaction: ColumnDef<
   z.infer<typeof schemaTransactions>
 >[] = [
   {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.product_id} />,
-  },
-  {
     accessorKey: "product_id",
     header: "Product ID",
     cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
@@ -256,11 +245,6 @@ export const columnsTransaction: ColumnDef<
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
 
 export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
-  {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
-  },
   {
     accessorKey: "product_name",
     header: ({ column }) => (
