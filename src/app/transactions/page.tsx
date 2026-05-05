@@ -32,7 +32,10 @@ export default async function TransactionsPage() {
             <CardsTransactions />
           </SectionCards>
           <div className="w-full flex items-center justify-between">
-            <SearchBar placeholder="Find Transactions..." />
+            <SearchBar
+              useFor="transaction"
+              placeholder="Find Transactions..."
+            />
             <DialogAddTransactions userId={session?.user.id || ""} />
           </div>
           <TableTransactions

@@ -18,7 +18,7 @@ export default async function ProductsPage() {
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           <div className="flex w-full justify-between">
-            <SearchBar placeholder="Find Your Products..." />
+            <SearchBar useFor="product" placeholder="Find Your Products..." />
             <DialogAddProduct />
           </div>
           <TableProducts userId={session?.user.id || ""} isPageProduct />

@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "product_name": "Paracetamol",
     "stock": 1200,
     "expired_status": "SAFE",
@@ -8,7 +8,7 @@
     "last_updated": "2026-04-20"
   },
   {
-    "id": 2,
+    "id": "2",
     "product_name": "Amoxicillin",
     "stock": 800,
     "expired_status": "WARNING",
@@ -16,7 +16,7 @@
     "last_updated": "2026-04-20"
   },
   {
-    "id": 3,
+    "id": "3",
     "product_name": "Vitamin C",
     "stock": 2000,
     "expired_status": "SAFE",
@@ -24,7 +24,7 @@
     "last_updated": "2026-04-19"
   },
   {
-    "id": 4,
+    "id": "4",
     "product_name": "Ibuprofen",
     "stock": 600,
     "expired_status": "SAFE",
@@ -32,7 +32,7 @@
     "last_updated": "2026-04-18"
   },
   {
-    "id": 5,
+    "id": "5",
     "product_name": "Antasida",
     "stock": 400,
     "expired_status": "WARNING",
@@ -40,7 +40,7 @@
     "last_updated": "2026-04-18"
   },
   {
-    "id": 6,
+    "id": "6",
     "product_name": "Minyak Kayu Putih",
     "stock": 1500,
     "expired_status": "SAFE",
@@ -48,7 +48,7 @@
     "last_updated": "2026-04-17"
   },
   {
-    "id": 7,
+    "id": "7",
     "product_name": "Betadine",
     "stock": 700,
     "expired_status": "SAFE",
@@ -56,7 +56,7 @@
     "last_updated": "2026-04-17"
   },
   {
-    "id": 8,
+    "id": "8",
     "product_name": "OBH Combi",
     "stock": 900,
     "expired_status": "WARNING",
@@ -64,7 +64,7 @@
     "last_updated": "2026-04-16"
   },
   {
-    "id": 9,
+    "id": "9",
     "product_name": "Tolak Angin",
     "stock": 1800,
     "expired_status": "SAFE",
@@ -72,7 +72,7 @@
     "last_updated": "2026-04-16"
   },
   {
-    "id": 10,
+    "id": "10",
     "product_name": "Panadol",
     "stock": 1100,
     "expired_status": "SAFE",
@@ -80,7 +80,7 @@
     "last_updated": "2026-04-15"
   },
   {
-    "id": 11,
+    "id": "11",
     "product_name": "Bodrex",
     "stock": 500,
     "expired_status": "EXPIRED",
@@ -88,7 +88,7 @@
     "last_updated": "2026-04-15"
   },
   {
-    "id": 12,
+    "id": "12",
     "product_name": "Enervon-C",
     "stock": 1300,
     "expired_status": "SAFE",
@@ -96,7 +96,7 @@
     "last_updated": "2026-04-14"
   },
   {
-    "id": 13,
+    "id": "13",
     "product_name": "Promag",
     "stock": 750,
     "expired_status": "WARNING",
@@ -104,7 +104,7 @@
     "last_updated": "2026-04-14"
   },
   {
-    "id": 14,
+    "id": "14",
     "product_name": "FreshCare",
     "stock": 950,
     "expired_status": "SAFE",
@@ -112,7 +112,7 @@
     "last_updated": "2026-04-13"
   },
   {
-    "id": 15,
+    "id": "15",
     "product_name": "Neozep",
     "stock": 650,
     "expired_status": "SAFE",
@@ -120,7 +120,7 @@
     "last_updated": "2026-04-13"
   },
   {
-    "id": 16,
+    "id": "16",
     "product_name": "Hansaplast",
     "stock": 1400,
     "expired_status": "SAFE",
@@ -128,7 +128,7 @@
     "last_updated": "2026-04-12"
   },
   {
-    "id": 17,
+    "id": "17",
     "product_name": "Diapet",
     "stock": 550,
     "expired_status": "WARNING",
@@ -136,7 +136,7 @@
     "last_updated": "2026-04-12"
   },
   {
-    "id": 18,
+    "id": "18",
     "product_name": "Salonpas",
     "stock": 850,
     "expired_status": "SAFE",
@@ -144,7 +144,7 @@
     "last_updated": "2026-04-11"
   },
   {
-    "id": 19,
+    "id": "19",
     "product_name": "CTM",
     "stock": 450,
     "expired_status": "EXPIRED",
@@ -152,7 +152,7 @@
     "last_updated": "2026-04-11"
   },
   {
-    "id": 20,
+    "id": "20",
     "product_name": "Termometer Digital",
     "stock": 300,
     "expired_status": "SAFE",

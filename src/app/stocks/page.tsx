@@ -24,7 +24,7 @@ export default function StocksPage() {
           <SectionCards>
             <Cards />
           </SectionCards>
-          <SearchBar placeholder="Find Product Stocks..." />
+          <SearchBar useFor="stock" placeholder="Find Product Stocks..." />
           <TableStocks data={data_stocks as z.infer<typeof schemaStocks>[]} />
         </div>
       </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -38,6 +38,7 @@ import {
 import { getColumnsProduct } from "@/lib/columns-table";
 import { useProducts } from "@/lib/product-queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDataStore } from "@/store/data-store";
 
 interface TableProductsProps {
   isPageProduct?: boolean;
@@ -58,12 +59,17 @@ export default function TableProducts(props: TableProductsProps) {
     limit: pagination.pageSize,
     page: pagination.pageIndex + 1,
   });
-
-  const data = useMemo(() => initialData?.Product || [], [initialData]);
+  const setDataProduct = useDataStore((s) => s.setDataProduct);
+  const dataProduct = useDataStore((s) => s.dataProduct);
+  const setOriginalDataProduct = useDataStore((s) => s.setOriginalDataProduct);
+  useEffect(() => {
+    setDataProduct(initialData?.Product || []);
+    setOriginalDataProduct(initialData?.Product || []);
+  }, [initialData, setDataProduct, setOriginalDataProduct]);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const tableProducts = useReactTable({
-    data,
+    data: dataProduct,
     columns: getColumnsProduct(!!isPageProduct),
     state: {
       sorting,
