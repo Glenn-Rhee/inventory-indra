@@ -27,6 +27,7 @@ export function getColumnsProduct(
   isPageProduct: boolean,
 ): ColumnDef<z.infer<typeof schema>>[] {
   let columns: ColumnDef<z.infer<typeof schema>>[] = [
+    { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -184,6 +185,7 @@ export function getColumnsProduct(
 export const columnsTransaction: ColumnDef<
   z.infer<typeof schemaTransactions>
 >[] = [
+  { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
   {
     accessorKey: "product_id",
     header: "Product ID",
@@ -245,6 +247,7 @@ export const columnsTransaction: ColumnDef<
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
 
 export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
+  { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
   {
     accessorKey: "product_name",
     header: ({ column }) => (
