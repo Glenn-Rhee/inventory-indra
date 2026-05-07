@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { searchDataProduct } from "@/helper/searchData";
 import { useDataStore } from "@/store/data-store";
 import { SearchIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 interface SearchBarProps {
@@ -14,14 +15,16 @@ interface SearchBarProps {
 export default function SearchBar(props: SearchBarProps) {
   const { placeholder, useFor } = props;
   const [value, setValue] = useState<string>("");
-  const { setDataProduct, originalDataProduct } = useDataStore();
-
+  const { setDataProduct, originalDataProduct, setIsLoading } = useDataStore();
+  const { data: session } = useSession();
   async function handleSearch() {
+    setIsLoading(true);
     switch (useFor) {
       case "product":
         const dataFiltered = await searchDataProduct({
           currentData: originalDataProduct,
           value,
+          userId: session?.user.id || ""
         });
         setDataProduct(dataFiltered);
         break;
@@ -29,6 +32,7 @@ export default function SearchBar(props: SearchBarProps) {
       default:
         break;
     }
+    setIsLoading(false);
   }
 
   useEffect(() => {

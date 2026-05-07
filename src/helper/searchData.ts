@@ -1,9 +1,13 @@
-import { DataProductResponse } from "@/types";
+import { DataProductResponse, ResponsePayload } from "@/types";
 import { getFormatDate } from "./getFormatDate";
+import ResponseError from "@/error/ResponseError";
+import { toast } from "sonner";
 
+const BASEURL = process.env.NEXT_PUBLIC_BASE_SERVER_URL;
 export async function searchDataProduct(dataSearch: {
   value: string;
   currentData: DataProductResponse["Product"];
+  userId: string;
 }): Promise<DataProductResponse["Product"]> {
   const value = dataSearch.value.toLowerCase();
 
@@ -34,5 +38,29 @@ export async function searchDataProduct(dataSearch: {
 
   if (filterByStatusExp.length > 0) return filterByExpDate;
 
-  return [];
+  try {
+    const res = await fetch(
+      BASEURL + "/product?limit=10&page=1&filter=" + value,
+      {
+        method: "GET",
+        headers: {
+          "x-user-id": dataSearch.userId,
+        },
+      },
+    );
+
+    const dataRes = (await res.json()) as ResponsePayload<DataProductResponse>;
+    if (dataRes.status === "failed") {
+      throw new ResponseError(res.status, dataRes.message);
+    }
+
+    return dataRes.data.Product;
+  } catch (error) {
+    if (error instanceof ResponseError) {
+      toast.error(error.message);
+    } else {
+      toast.error("An error occured! Please try again later");
+    }
+    return [];
+  }
 }

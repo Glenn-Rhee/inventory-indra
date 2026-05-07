@@ -61,6 +61,7 @@ export default function TableProducts(props: TableProductsProps) {
   });
   const setDataProduct = useDataStore((s) => s.setDataProduct);
   const dataProduct = useDataStore((s) => s.dataProduct);
+  const isSearching = useDataStore((s) => s.isLoading);
   const setOriginalDataProduct = useDataStore((s) => s.setOriginalDataProduct);
   useEffect(() => {
     setDataProduct(initialData?.Product || []);
@@ -114,7 +115,7 @@ export default function TableProducts(props: TableProductsProps) {
             ))}
           </TableHeader>
           <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {isLoading ? (
+            {isLoading || isSearching ? (
               Array.from({ length: pagination.pageSize }).map((_, i) => (
                 <TableRow key={i}>
                   {Array.from({
