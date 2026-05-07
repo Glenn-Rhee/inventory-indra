@@ -25,6 +25,7 @@ import {
 import { useState } from "react";
 import { DatePicker } from "../../DatePicker";
 import { useIsMobile } from "@/hooks/use-mobile";
+import DescribeTooltip from "./DescribeTooltip";
 
 export default function DialogAddProduct() {
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
@@ -106,17 +107,26 @@ export default function DialogAddProduct() {
             {category === "MEDICINE" &&
               (unit === "STRIP" ? (
                 <Field>
-                  <Label htmlFor="totalQty">Total Butir per Strip</Label>
+                  <Label htmlFor="totalQty">
+                    Total Butir per Strip{" "}
+                    <DescribeTooltip describe="Total jumlah butir obat dalam satu strip." />
+                  </Label>
                   <Input id="totalQty" name="totalQty" placeholder="10" />
                 </Field>
               ) : unit === "DUS" ? (
                 <div className="flex items-center gap-x-2">
                   <Field>
-                    <Label htmlFor="totalQtyDus">Total Strip per Dus</Label>
+                    <Label htmlFor="totalQtyDus">
+                      Total Strip per Dus
+                      <DescribeTooltip describe="Total jumlah strip obat dalam satu dus." />
+                    </Label>
                     <Input id="totalQtyDus" name="totalQty" placeholder="10" />
                   </Field>
                   <Field>
-                    <Label htmlFor="totalQtyStrip">Total Butir per Strip</Label>
+                    <Label htmlFor="totalQtyStrip">
+                      Total Butir per Strip{" "}
+                      <DescribeTooltip describe="Total jumlah butir obat dalam satu strip." />
+                    </Label>
                     <Input
                       id="totalQtyStrip"
                       name="totalQty"
@@ -127,7 +137,10 @@ export default function DialogAddProduct() {
               ) : null)}
             {category === "ESSENTIALS" && unit === "DUS" && (
               <Field>
-                <Label htmlFor="totalQtyDus">Total Item per Dus</Label>
+                <Label htmlFor="totalQtyDus">
+                  Total Item per Dus{" "}
+                  <DescribeTooltip describe="Total jumlah item brang dalam satu dus." />
+                </Label>
                 <Input id="totalQtyDus" name="totalQty" placeholder="10" />
               </Field>
             )}
