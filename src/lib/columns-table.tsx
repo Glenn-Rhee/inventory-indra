@@ -177,7 +177,10 @@ export function getColumnsProduct(
                 onClick={(e) => e.preventDefault()}
                 variant="destructive"
               >
-                <DialogDelete />
+                <DialogDelete
+                  productId={row.original.Id}
+                  productName={row.original.Name}
+                />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

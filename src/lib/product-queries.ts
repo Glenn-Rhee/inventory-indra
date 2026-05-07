@@ -3,7 +3,7 @@ import { DataProductResponse, ResponsePayload } from "@/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-const BASEURL = process.env.NEXT_PUBLIC_BASE_SERVER_URL;
+export const BASEURL = process.env.NEXT_PUBLIC_BASE_SERVER_URL;
 
 interface UseProducts {
   limit?: number;
