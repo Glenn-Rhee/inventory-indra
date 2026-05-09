@@ -25,7 +25,7 @@ export default async function TransactionsPage() {
           <div className="flex flex-col gap-y-2">
             <h1 className="text-xl font-bold lg:text-3xl">Kelola Transaksi</h1>
             <p>
-              Pantau dan catat aktivitas keluar masuk barang serta penjualan!!!!
+              Pantau dan catat aktivitas keluar masuk barang serta penjualan
             </p>
           </div>
           <SectionCards>
