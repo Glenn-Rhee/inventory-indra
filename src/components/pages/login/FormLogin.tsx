@@ -60,7 +60,6 @@ export default function FormLogin() {
   return (
     <form
       onSubmit={(e) => {
-        console.log("ok");
         e.preventDefault();
 
         form.handleSubmit(handleSubmit)();

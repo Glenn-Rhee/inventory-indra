@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldGroup } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PlusIcon } from "lucide-react";
@@ -22,27 +22,89 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "../../DatePicker";
 import { useIsMobile } from "@/hooks/use-mobile";
 import DescribeTooltip from "./DescribeTooltip";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import ValidationForm from "@/model/validation-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formatRupiah } from "@/helper/getFormatRupiah";
+import { getFormatNumber } from "@/helper/getFormattingNumber";
+
+type CREATEPRODUCT = z.infer<typeof ValidationForm.CREATEPRODUCT>;
 
 export default function DialogAddProduct() {
-  const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
-    "MEDICINE",
-  );
   const isMobile = useIsMobile();
-  const [unit, setUnit] = useState(category === "MEDICINE" ? "STRIP" : "ITEM");
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [stripPerDus, setStripPerDus] = useState<number>(0);
+  const [butirPerStrip, setButirPerStrip] = useState<number>(0);
+  const [itemPerDus, setItemPerDus] = useState<number>(0);
+  const form = useForm<CREATEPRODUCT>({
+    resolver: zodResolver(ValidationForm.CREATEPRODUCT),
+    mode: "onChange",
+    defaultValues: {
+      category: "MEDICINE",
+      expiredDate: new Date(),
+      name: "",
+      price: 0,
+      stock: 0,
+    },
+  });
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const watchedCategory = form.watch("category");
+  const watchedStock = form.watch("stock");
+  const [unit, setUnit] = useState(
+    watchedCategory === "MEDICINE" ? "STRIP" : "ITEM",
+  );
+  const watchedPrice = form.watch("price");
+  const [displayPrice, setDisplayPrice] = useState(formatRupiah(watchedPrice));
+
+  useEffect(() => {
+    const parsed = getFormatNumber(watchedStock);
+
+    if (parsed !== watchedStock) {
+      form.setValue("stock", parsed);
+    }
+  }, [watchedStock, form]);
+
+  useEffect(() => {
+    const parsed = getFormatNumber(watchedPrice);
+    setDisplayPrice(formatRupiah(parsed));
+  }, [watchedPrice]);
+
+  useEffect(() => {
+    setUnit(watchedCategory === "MEDICINE" ? "STRIP" : "ITEM");
+  }, [watchedCategory]);
+
+  async function handleSubmit(v: CREATEPRODUCT) {
+    setLoading(true)
+    
+    console.log(v);
+  }
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        if (loading) return;
+        setOpen(v);
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="py-4.5 text-sm">
+        <Button onClick={() => setOpen(true)} className="py-4.5 text-sm">
           <PlusIcon /> {isMobile ? "Add" : "Add Product"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
-        <form action="">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(handleSubmit)();
+          }}
+        >
           <DialogHeader>
             <DialogTitle>Add New Product</DialogTitle>
             <DialogDescription>
@@ -51,36 +113,85 @@ export default function DialogAddProduct() {
             </DialogDescription>
           </DialogHeader>
           <FieldGroup className="my-4">
-            <Field>
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Paracetamol" />
-            </Field>
-            <Field>
-              <Label htmlFor="category">Category</Label>
-              <Select
-                defaultValue={category}
-                onValueChange={(v: typeof category) => {
-                  setCategory(v);
-                  setUnit(v === "MEDICINE" ? "STRIP" : "ITEM");
-                }}
-              >
-                <SelectTrigger id="category" className="w-full">
-                  <SelectValue placeholder="Select a type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="MEDICINE">MEDICINE</SelectItem>
-                    <SelectItem value="ESSENTIALS">ESSENTIALS</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </Field>
-            <Field>
-              <div className="flex items-center justify-between gap-x-3">
-                <div className="w-full space-y-1">
-                  <Label htmlFor="stock">Stock</Label>
-                  <Input id="stock" name="stock" placeholder="10" />
-                </div>
+            <Controller
+              control={form.control}
+              name="name"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="off"
+                    placeholder="Paracetamol"
+                    type="text"
+                    {...field}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="category"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Label htmlFor="category">Category</Label>
+                  <Select
+                    defaultValue={watchedCategory}
+                    onValueChange={(v: typeof watchedCategory) => {
+                      field.onChange(v);
+                      setUnit(v === "MEDICINE" ? "STRIP" : "ITEM");
+                    }}
+                  >
+                    <SelectTrigger
+                      aria-invalid={fieldState.invalid}
+                      id="category"
+                      className="w-full"
+                    >
+                      <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="MEDICINE">MEDICINE</SelectItem>
+                        <SelectItem value="ESSENTIALS">ESSENTIALS</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <div className="flex items-center justify-between gap-x-3">
+              <Controller
+                control={form.control}
+                name="stock"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="w-full space-y-1">
+                      <Label htmlFor="stock">Stock</Label>
+                      <Input
+                        {...field}
+                        aria-invalid={fieldState.invalid}
+                        autoComplete="off"
+                        type="text"
+                        inputMode="numeric"
+                        id="stock"
+                        name="stock"
+                        placeholder="10"
+                      />
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </div>
+                  </Field>
+                )}
+              />
+              <Field>
                 <div className="w-full">
                   <Label htmlFor="unit">Unit</Label>
                   <Select defaultValue={unit} onValueChange={setUnit}>
@@ -90,7 +201,7 @@ export default function DialogAddProduct() {
                     <SelectContent>
                       <SelectGroup>
                         <SelectItem value="DUS">DUS</SelectItem>
-                        {category === "MEDICINE" ? (
+                        {watchedCategory === "MEDICINE" ? (
                           <>
                             <SelectItem value="STRIP">STRIP</SelectItem>
                             <SelectItem value="BUTIR">BUTIR</SelectItem>
@@ -102,16 +213,26 @@ export default function DialogAddProduct() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-            </Field>
-            {category === "MEDICINE" &&
+              </Field>
+            </div>
+            {watchedCategory === "MEDICINE" &&
               (unit === "STRIP" ? (
                 <Field>
                   <Label htmlFor="totalQty">
                     Total Butir per Strip{" "}
                     <DescribeTooltip describe="Total jumlah butir obat dalam satu strip." />
                   </Label>
-                  <Input id="totalQty" name="totalQty" placeholder="10" />
+                  <Input
+                    value={butirPerStrip}
+                    onChange={(e) =>
+                      setButirPerStrip(getFormatNumber(e.target.value))
+                    }
+                    type="text"
+                    inputMode="numeric"
+                    id="totalQty"
+                    name="totalQty"
+                    placeholder="10"
+                  />
                 </Field>
               ) : unit === "DUS" ? (
                 <div className="flex items-center gap-x-2">
@@ -120,7 +241,17 @@ export default function DialogAddProduct() {
                       Total Strip per Dus
                       <DescribeTooltip describe="Total jumlah strip obat dalam satu dus." />
                     </Label>
-                    <Input id="totalQtyDus" name="totalQty" placeholder="10" />
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      value={stripPerDus}
+                      onChange={(e) =>
+                        setStripPerDus(getFormatNumber(e.target.value))
+                      }
+                      id="totalQtyDus"
+                      name="totalQty"
+                      placeholder="10"
+                    />
                   </Field>
                   <Field>
                     <Label htmlFor="totalQtyStrip">
@@ -128,6 +259,12 @@ export default function DialogAddProduct() {
                       <DescribeTooltip describe="Total jumlah butir obat dalam satu strip." />
                     </Label>
                     <Input
+                      type="text"
+                      inputMode="numeric"
+                      value={butirPerStrip}
+                      onChange={(e) =>
+                        setButirPerStrip(getFormatNumber(e.target.value))
+                      }
                       id="totalQtyStrip"
                       name="totalQty"
                       placeholder="10"
@@ -135,32 +272,82 @@ export default function DialogAddProduct() {
                   </Field>
                 </div>
               ) : null)}
-            {category === "ESSENTIALS" && unit === "DUS" && (
+            {watchedCategory === "ESSENTIALS" && unit === "DUS" && (
               <Field>
                 <Label htmlFor="totalQtyDus">
                   Total Item per Dus{" "}
                   <DescribeTooltip describe="Total jumlah item brang dalam satu dus." />
                 </Label>
-                <Input id="totalQtyDus" name="totalQty" placeholder="10" />
+                <Input
+                  value={itemPerDus}
+                  onChange={(e) =>
+                    setItemPerDus(getFormatNumber(e.target.value))
+                  }
+                  type="text"
+                  inputMode="numeric"
+                  id="totalQtyDus"
+                  name="totalQty"
+                  placeholder="10"
+                />
               </Field>
             )}
-            <Field>
-              <Label htmlFor="price">
-                Price per {unit[0]}
-                {unit.slice(1).toLowerCase()}
-              </Label>
-              <Input id="price" name="price" placeholder="100000" />
-            </Field>
-            <Field>
-              <Label htmlFor="expiredDate">Expired Date</Label>
-              <DatePicker />
-            </Field>
+            <Controller
+              control={form.control}
+              name="price"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Label htmlFor="price">
+                    Price per {unit[0]}
+                    {unit.slice(1).toLowerCase()}
+                  </Label>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    id="price"
+                    name="price"
+                    placeholder="Rp0"
+                    autoComplete="off"
+                    value={displayPrice}
+                    onChange={(e) => {
+                      const parsed = getFormatNumber(e.target.value);
+                      field.onChange(parsed);
+                      setDisplayPrice(formatRupiah(parsed));
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      setDisplayPrice(formatRupiah(field.value));
+                    }}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="expiredDate"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Label htmlFor="expiredDate">Expired Date</Label>
+                  <DatePicker date={field.value} setDate={field.onChange} />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
           </FieldGroup>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button disabled={loading} variant="outline">
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button disabled={loading} type="submit">
+              {loading ? "Saving ..." : "Save changes"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
