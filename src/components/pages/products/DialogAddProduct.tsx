@@ -34,11 +34,16 @@ import { formatRupiah } from "@/helper/getFormatRupiah";
 import { getFormatNumber } from "@/helper/getFormattingNumber";
 import { toast } from "sonner";
 import { parsedStockAndPrice } from "@/helper/getParsingStockAndPrice";
+import { BASEURL } from "@/lib/product-queries";
+import { useSession } from "next-auth/react";
+import { ResponsePayload } from "@/types";
+import ResponseError from "@/error/ResponseError";
 
 type CREATEPRODUCT = z.infer<typeof ValidationForm.CREATEPRODUCT>;
 
 export default function DialogAddProduct() {
   const isMobile = useIsMobile();
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stripPerDus, setStripPerDus] = useState<number>(0);
@@ -55,7 +60,6 @@ export default function DialogAddProduct() {
       stock: 0,
     },
   });
-  // eslint-disable-next-line react-hooks/incompatible-library
   const watchedCategory = form.watch("category");
   const watchedStock = form.watch("stock");
   const [unit, setUnit] = useState(
@@ -115,6 +119,33 @@ export default function DialogAddProduct() {
       price: parsed.price,
       stock: parsed.stock,
     };
+
+    try {
+      const res = await fetch(BASEURL + "/product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": session?.user.id || "",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const dataRes = (await res.json()) as ResponsePayload;
+      if (dataRes.status === "failed") {
+        throw new ResponseError(res.status, dataRes.message);
+      }
+
+      toast.success("Successfully create Product!!");
+      setOpen(false);
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("Internal server error!");
+      }
+    } finally {
+      setLoading(false);
+    }
 
     setLoading(false);
     console.log(v);
