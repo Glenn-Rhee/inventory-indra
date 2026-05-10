@@ -32,6 +32,8 @@ import ValidationForm from "@/model/validation-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatRupiah } from "@/helper/getFormatRupiah";
 import { getFormatNumber } from "@/helper/getFormattingNumber";
+import { toast } from "sonner";
+import { parsedStockAndPrice } from "@/helper/getParsingStockAndPrice";
 
 type CREATEPRODUCT = z.infer<typeof ValidationForm.CREATEPRODUCT>;
 
@@ -80,8 +82,41 @@ export default function DialogAddProduct() {
   }, [watchedCategory]);
 
   async function handleSubmit(v: CREATEPRODUCT) {
-    setLoading(true)
-    
+    setLoading(true);
+    if (v.category === "MEDICINE") {
+      if (unit === "DUS" && (stripPerDus === 0 || butirPerStrip === 0)) {
+        toast.error("Please fill all field!");
+        return;
+      }
+
+      if (unit === "STRIP" && butirPerStrip === 0) {
+        toast.error("Please fill all field!");
+        return;
+      }
+    } else {
+      if (unit === "DUS" && itemPerDus === 0) {
+        toast.error("Please fill all field!");
+        return;
+      }
+    }
+
+    const parsed = parsedStockAndPrice({
+      butirPerStrip,
+      category: v.category,
+      initPrice: v.price,
+      initStock: v.stock,
+      itemPerDus,
+      stripPerDus,
+      unit,
+    });
+
+    const data: CREATEPRODUCT = {
+      ...v,
+      price: parsed.price,
+      stock: parsed.stock,
+    };
+
+    setLoading(false);
     console.log(v);
   }
 
