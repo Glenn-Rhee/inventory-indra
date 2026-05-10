@@ -36,7 +36,7 @@ export function getColumnsProduct(
       },
     },
     {
-      accessorKey: "name",
+      accessorKey: "Name",
       header: ({ column }) => (
         <Button
           variant={"ghost"}
@@ -59,7 +59,7 @@ export function getColumnsProduct(
       enableHiding: false,
     },
     {
-      accessorKey: "category",
+      accessorKey: "Category",
       header: ({ column }) => (
         <Button
           variant={"ghost"}
@@ -85,7 +85,7 @@ export function getColumnsProduct(
       ),
     },
     {
-      accessorKey: "price",
+      accessorKey: "Price",
       header: ({ column }) => (
         <Button
           variant={"ghost"}
@@ -140,7 +140,7 @@ export function getColumnsProduct(
       ),
     },
     {
-      accessorKey: "expiredDate",
+      accessorKey: "ExpiredDate",
       header: "Expired Date",
       cell: ({ row }) => {
         return <span>{getFormatDate(row.original.ExpiredDate)}</span>;
