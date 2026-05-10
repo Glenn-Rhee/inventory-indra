@@ -40,6 +40,9 @@ export function DatePicker(props: DatePickerProps) {
           selected={date}
           onSelect={setDate}
           defaultMonth={date}
+          captionLayout="dropdown"
+          startMonth={new Date(date.getFullYear(), 0)}
+          endMonth={new Date(date.getFullYear() + 10, 0)}
         />
       </PopoverContent>
     </Popover>

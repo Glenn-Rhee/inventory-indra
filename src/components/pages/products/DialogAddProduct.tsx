@@ -150,9 +150,6 @@ export default function DialogAddProduct() {
     } finally {
       setLoading(false);
     }
-
-    setLoading(false);
-    console.log(v);
   }
 
   return (
