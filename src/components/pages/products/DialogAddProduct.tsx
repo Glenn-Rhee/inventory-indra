@@ -38,6 +38,7 @@ import { BASEURL } from "@/lib/product-queries";
 import { useSession } from "next-auth/react";
 import { ResponsePayload } from "@/types";
 import ResponseError from "@/error/ResponseError";
+import { useQueryClient } from "@tanstack/react-query";
 
 type CREATEPRODUCT = z.infer<typeof ValidationForm.CREATEPRODUCT>;
 
@@ -67,6 +68,7 @@ export default function DialogAddProduct() {
   );
   const watchedPrice = form.watch("price");
   const [displayPrice, setDisplayPrice] = useState(formatRupiah(watchedPrice));
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const parsed = getFormatNumber(watchedStock);
@@ -137,6 +139,8 @@ export default function DialogAddProduct() {
 
       toast.success("Successfully create Product!!");
       setOpen(false);
+
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     } catch (error) {
       if (error instanceof ResponseError) {
         toast.error(error.message);

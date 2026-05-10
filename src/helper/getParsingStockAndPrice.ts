@@ -21,7 +21,7 @@ export const parsedStockAndPrice = (params: Params) => {
 
   let price = 0;
   let stock = 0;
-  
+
   if (category === "MEDICINE") {
     switch (unit) {
       case "DUS": {
@@ -51,6 +51,8 @@ export const parsedStockAndPrice = (params: Params) => {
       case "DUS": {
         const totalPriceItem = Math.ceil(initPrice / itemPerDus);
         price = totalPriceItem;
+        const totalStockItem = initStock * itemPerDus;
+        stock = totalStockItem;
         break;
       }
       default: {
