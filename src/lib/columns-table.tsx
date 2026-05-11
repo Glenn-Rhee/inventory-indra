@@ -91,7 +91,7 @@ export function getColumnsProduct(
           variant={"ghost"}
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price
+          Price (butir/item)
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="w-2 h-2" />
           ) : column.getIsSorted() === "desc" ? (
