@@ -34,7 +34,6 @@ export default function DialogEditProduct(props: DialogEditProductProps) {
   const [category, setCategory] = useState<"MEDICINE" | "ESSENTIALS">(
     product.Category,
   );
-  const [unit, setUnit] = useState(category === "MEDICINE" ? "STRIP" : "ITEM");
 
   return (
     <Dialog>
@@ -61,7 +60,6 @@ export default function DialogEditProduct(props: DialogEditProductProps) {
                 defaultValue={category}
                 onValueChange={(v: typeof category) => {
                   setCategory(v);
-                  setUnit(v === "MEDICINE" ? "STRIP" : "ITEM");
                 }}
               >
                 <SelectTrigger id="category" className="w-full">
@@ -76,67 +74,7 @@ export default function DialogEditProduct(props: DialogEditProductProps) {
               </Select>
             </Field>
             <Field>
-              <div className="flex items-center justify-between gap-x-3">
-                <div className="w-full space-y-1">
-                  <Label htmlFor="stock">Stock</Label>
-                  <Input id="stock" name="stock" placeholder="10" />
-                </div>
-                <div className="w-full">
-                  <Label htmlFor="unit">Unit</Label>
-                  <Select defaultValue={unit} onValueChange={setUnit}>
-                    <SelectTrigger id="unit" className="w-full mt-1.5">
-                      <SelectValue placeholder="Select a unit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="DUS">DUS</SelectItem>
-                        {category === "MEDICINE" ? (
-                          <>
-                            <SelectItem value="STRIP">STRIP</SelectItem>
-                            <SelectItem value="BUTIR">BUTIR</SelectItem>
-                          </>
-                        ) : (
-                          <SelectItem value="ITEM">ITEM</SelectItem>
-                        )}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </Field>
-            {category === "MEDICINE" &&
-              (unit === "STRIP" ? (
-                <Field>
-                  <Label htmlFor="totalQty">Total Butir per Strip</Label>
-                  <Input id="totalQty" name="totalQty" placeholder="10" />
-                </Field>
-              ) : unit === "DUS" ? (
-                <div className="flex items-center gap-x-2">
-                  <Field>
-                    <Label htmlFor="totalQtyDus">Total Strip per Dus</Label>
-                    <Input id="totalQtyDus" name="totalQty" placeholder="10" />
-                  </Field>
-                  <Field>
-                    <Label htmlFor="totalQtyStrip">Total Butir per Strip</Label>
-                    <Input
-                      id="totalQtyStrip"
-                      name="totalQty"
-                      placeholder="10"
-                    />
-                  </Field>
-                </div>
-              ) : null)}
-            {category === "ESSENTIALS" && unit === "DUS" && (
-              <Field>
-                <Label htmlFor="totalQtyDus">Total Item per Dus</Label>
-                <Input id="totalQtyDus" name="totalQty" placeholder="10" />
-              </Field>
-            )}
-            <Field>
-              <Label htmlFor="price">
-                Price per {unit[0]}
-                {unit.slice(1).toLowerCase()}
-              </Label>
+              <Label htmlFor="price">Price per butir/item</Label>
               <Input
                 id="price"
                 name="price"
