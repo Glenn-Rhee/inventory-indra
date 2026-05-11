@@ -412,7 +412,11 @@ export default function DialogAddProduct() {
                 Cancel
               </Button>
             </DialogClose>
-            <Button disabled={loading} type="submit">
+            <Button
+              onClick={form.handleSubmit(handleSubmit)}
+              disabled={loading}
+              type="submit"
+            >
               {loading ? "Saving ..." : "Save changes"}
             </Button>
           </DialogFooter>
