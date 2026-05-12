@@ -1,3 +1,6 @@
+import { schemaStocks } from "@/model/schema-table";
+import z from "zod";
+
 export interface ResponsePayload<T = unknown> {
   status: "success" | "failed";
   message: string;
@@ -26,4 +29,11 @@ export interface DataProductResponse {
     StatusExpired: "SAFE" | "WARNING" | "EXPIRED";
     ExpiredDate: Date;
   }[];
+}
+
+export interface DataStockResponse {
+  TotalProduct: number;
+  TotalLowStock: number;
+  TotalProductExpired: number;
+  Products: z.infer<typeof schemaStocks>[]
 }

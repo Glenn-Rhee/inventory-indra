@@ -20,10 +20,11 @@ export const schemaTransactions = z.object({
 });
 
 export const schemaStocks = z.object({
-  id: z.string(),
-  product_name: z.string(),
-  stock: z.number(),
-  expired_date: z.string(),
-  expired_status: z.enum(["SAFE", "WARNING", "EXPIRED"]),
-  last_updated: z.string(),
+  Id: z.string(),
+  Name: z.string(),
+  Stock: z.number(),
+  StatusStock: z.enum(["SAFE", "LOW-STOCK", "SOLD-OUT"]),
+  StatusExpired: z.enum(["SAFE", "WARNING", "EXPIRED"]),
+  ExpiredDate: z.date(),
+  LastUpdate: z.date(),
 });

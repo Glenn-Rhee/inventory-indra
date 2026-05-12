@@ -259,7 +259,7 @@ export const columnsTransaction: ColumnDef<
 export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
   { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
   {
-    accessorKey: "product_name",
+    accessorKey: "Name",
     header: ({ column }) => (
       <Button
         variant={"ghost"}
@@ -276,12 +276,43 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
       </Button>
     ),
     enableSorting: true,
+    cell: ({ row }) => <div className="text-left">{row.original.Name}</div>,
+  },
+  {
+    accessorKey: "StatusStock",
+    header: ({ column }) => (
+      <Button
+        variant={"ghost"}
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Status Stock
+        {column.getIsSorted() === "asc" ? (
+          <ArrowUp className="w-2 h-2" />
+        ) : column.getIsSorted() === "desc" ? (
+          <ArrowDown />
+        ) : (
+          <ArrowUpDown />
+        )}
+      </Button>
+    ),
+    enableSorting: true,
     cell: ({ row }) => (
-      <div className="text-left">{row.original.product_name}</div>
+      <Badge
+        variant={
+          row.original.StatusStock === "SOLD-OUT"
+            ? "destructive"
+            : row.original.StatusStock === "LOW-STOCK"
+              ? "warning"
+              : "secondary"
+        }
+        className={cn("px-1.5 text-white", "")}
+      >
+        {row.original.StatusStock}
+      </Badge>
     ),
   },
   {
-    accessorKey: "stock",
+    accessorKey: "Stock",
     header: ({ column }) => (
       <Button
         variant={"ghost"}
@@ -298,10 +329,10 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
       </Button>
     ),
     enableSorting: true,
-    cell: ({ row }) => <div className="text-left">{row.original.stock}</div>,
+    cell: ({ row }) => <div className="text-left">{row.original.Stock}</div>,
   },
   {
-    accessorKey: "expired_status",
+    accessorKey: "StatusExpired",
     header: ({ column }) => (
       <Button
         variant={"ghost"}
@@ -321,36 +352,36 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
     cell: ({ row }) => (
       <Badge
         variant={
-          row.original.expired_status === "EXPIRED"
+          row.original.StatusExpired === "EXPIRED"
             ? "destructive"
-            : row.original.expired_status === "WARNING"
+            : row.original.StatusExpired === "WARNING"
               ? "warning"
               : "secondary"
         }
         className={cn("px-1.5 text-white", "")}
       >
-        {row.original.expired_status}
+        {row.original.StatusExpired}
       </Badge>
     ),
   },
   {
-    accessorKey: "expired_date",
+    accessorKey: "ExpiredDate",
     header: "Expired Date",
     cell: ({ row }) => (
-      <div className="text-left">{row.original.expired_date}</div>
+      <div className="text-left">{getFormatDate(row.original.ExpiredDate)}</div>
     ),
   },
   {
-    accessorKey: "last_updated",
+    accessorKey: "LastUpdate",
     header: "Last Updated",
     cell: ({ row }) => (
-      <div className="text-left">{row.original.last_updated}</div>
+      <div className="text-left">{getFormatDate(row.original.LastUpdate)}</div>
     ),
   },
   {
     id: "actions",
     cell: ({ row }) => (
-      <Button onClick={() => console.log(row.original.id)} className="text-sm">
+      <Button onClick={() => console.log(row.original.Id)} className="text-sm">
         <PlusIcon className="size-3" /> Restock
       </Button>
     ),

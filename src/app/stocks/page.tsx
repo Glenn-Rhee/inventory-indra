@@ -2,17 +2,18 @@ import SearchBar from "@/components/SearchBar";
 import SectionCards from "@/components/SectionCards";
 import TableStocks from "@/components/pages/stocks/TableStocks";
 import { Metadata } from "next";
-import data_stocks from "@/app/data_stocks.json";
-import z from "zod";
-import { schemaStocks } from "@/model/schema-table";
 import Cards from "@/components/pages/stocks/Cards";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 export const metadata: Metadata = {
   title: "Stocks",
   description:
     "Pantau dan kelola stok produk secara real-time. Lacak ketersediaan, perbarui jumlah stok, dan hindari kehabisan produk dengan mudah.",
 };
 
-export default function StocksPage() {
+export default async function StocksPage() {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -25,7 +26,7 @@ export default function StocksPage() {
             <Cards />
           </SectionCards>
           <SearchBar useFor="stock" placeholder="Find Product Stocks..." />
-          <TableStocks data={data_stocks as z.infer<typeof schemaStocks>[]} />
+          <TableStocks userId={session?.user.id || ""} />
         </div>
       </div>
     </div>

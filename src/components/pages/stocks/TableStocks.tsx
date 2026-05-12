@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -18,7 +19,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { columnsStock } from "@/lib/columns-table";
-import { schemaStocks } from "@/model/schema-table";
+import { useStocks } from "@/lib/stock-queries";
+import { useDataStore } from "@/store/data-store";
 import {
   flexRender,
   getCoreRowModel,
@@ -37,17 +39,13 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from "lucide-react";
-import { useState } from "react";
-import z from "zod";
+import { useEffect, useState } from "react";
 
 interface TableStocksProps {
-  data: z.infer<typeof schemaStocks>[];
+  userId: string;
 }
 export default function TableStocks(props: TableStocksProps) {
-  const { data: initialData } = props;
-  const [data, setData] = useState<z.infer<typeof schemaStocks>[]>(
-    () => initialData as z.infer<typeof schemaStocks>[],
-  );
+  const { userId } = props;
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
@@ -55,16 +53,35 @@ export default function TableStocks(props: TableStocksProps) {
     pageSize: 10,
   });
 
+  const { data: initialData, isLoading } = useStocks({
+    userId: userId,
+    limit: pagination.pageSize,
+    page: pagination.pageIndex + 1,
+  });
+
+  const {
+    dataStock,
+    isLoading: isSearching,
+    setDataStock,
+    setOriginalDataStock,
+  } = useDataStore();
+  useEffect(() => {
+    setDataStock(initialData?.Products || []);
+    setOriginalDataStock(initialData?.Products || []);
+  }, [initialData, setDataStock, setOriginalDataStock]);
+
   // eslint-disable-next-line react-hooks/incompatible-library
   const tableStocks = useReactTable({
-    data,
+    data: dataStock,
     columns: columnsStock,
     state: {
       sorting,
       columnVisibility,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    manualPagination: true,
+    // rowCount:
+    getRowId: (row) => row.Id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
     enableSorting: true,
@@ -101,10 +118,20 @@ export default function TableStocks(props: TableStocksProps) {
             ))}
           </TableHeader>
           <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {tableStocks.getRowModel().rows?.length ? (
+            {isLoading || isSearching ? (
+              Array.from({ length: pagination.pageSize }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: columnsStock.length }).map((_, i) => (
+                    <TableCell key={i} className="h-12 text-center">
+                      <Skeleton className="w-full h-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : tableStocks.getRowModel().rows?.length ? (
               tableStocks.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.original.id}
+                  key={row.original.Id}
                   className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
                 >
                   {row.getVisibleCells().map((cell) => (
