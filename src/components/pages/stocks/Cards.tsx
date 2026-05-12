@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardDescription,
@@ -5,16 +6,34 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useStocks } from "@/lib/stock-queries";
 import { TrendingUp } from "lucide-react";
 
-export default function Cards() {
+interface CardsProps {
+  userId: string;
+}
+
+export default function Cards(props: CardsProps) {
+  const { userId } = props;
+  const { data, isLoading } = useStocks({ userId });
+
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton className="@container/card" />
+        <Skeleton className="@container/card" />
+        <Skeleton className="@container/card" />
+      </>
+    );
+  }
   return (
     <>
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Total Product</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            120
+            {data?.TotalProduct || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
@@ -30,7 +49,7 @@ export default function Cards() {
         <CardHeader>
           <CardDescription>Total Stock Menipis</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            5
+            {data?.TotalLowStock || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
@@ -46,7 +65,7 @@ export default function Cards() {
         <CardHeader>
           <CardDescription>Total Product Expired</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            2
+            {data?.TotalProductExpired || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">

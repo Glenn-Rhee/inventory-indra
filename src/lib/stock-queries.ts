@@ -39,7 +39,7 @@ export function useStocks(params: UseStocks) {
         if (error instanceof ResponseError) {
           toast.error(error.message);
         } else {
-          toast.message("An error occured! Please try again later!");
+          toast.error("An error occured! Please try again later!");
         }
 
         return {

@@ -23,7 +23,7 @@ export default async function StocksPage() {
             <p>Pantau dan kelola stok produk secara real-time</p>
           </div>
           <SectionCards>
-            <Cards />
+            <Cards userId={session?.user.id || ""} />
           </SectionCards>
           <SearchBar useFor="stock" placeholder="Find Product Stocks..." />
           <TableStocks userId={session?.user.id || ""} />
