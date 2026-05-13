@@ -1,4 +1,8 @@
-import { DataProductResponse, ResponsePayload } from "@/types";
+import {
+  DataProductResponse,
+  DataStockResponse,
+  ResponsePayload,
+} from "@/types";
 import { getFormatDate } from "./getFormatDate";
 import ResponseError from "@/error/ResponseError";
 import { toast } from "sonner";
@@ -55,6 +59,44 @@ export async function searchDataProduct(dataSearch: {
     }
 
     return dataRes.data.Product;
+  } catch (error) {
+    if (error instanceof ResponseError) {
+      toast.error(error.message);
+    } else {
+      toast.error("An error occured! Please try again later");
+    }
+    return [];
+  }
+}
+
+export async function searchDataStock(dataSearch: {
+  value: string;
+  currentData: DataStockResponse["Products"];
+  userId: string;
+}) {
+  const value = dataSearch.value.toLowerCase();
+  const filterByName = dataSearch.currentData.filter((curr) =>
+    curr.Name.toLowerCase().includes(value),
+  );
+
+  if (filterByName.length > 0) return filterByName;
+  try {
+    const res = await fetch(
+      BASEURL + "/stock?limit=10&page=1&filter=" + value,
+      {
+        method: "GET",
+        headers: {
+          "x-user-id": dataSearch.userId,
+        },
+      },
+    );
+
+    const dataRes = (await res.json()) as ResponsePayload<DataStockResponse>;
+    if (dataRes.status === "failed") {
+      throw new ResponseError(res.status, dataRes.message);
+    }
+
+    return dataRes.data.Products;
   } catch (error) {
     if (error instanceof ResponseError) {
       toast.error(error.message);

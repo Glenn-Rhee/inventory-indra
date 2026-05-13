@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { searchDataProduct } from "@/helper/searchData";
+import { searchDataProduct, searchDataStock } from "@/helper/searchData";
 import { useDataStore } from "@/store/data-store";
 import { SearchIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -15,7 +15,13 @@ interface SearchBarProps {
 export default function SearchBar(props: SearchBarProps) {
   const { placeholder, useFor } = props;
   const [value, setValue] = useState<string>("");
-  const { setDataProduct, originalDataProduct, setIsLoading } = useDataStore();
+  const {
+    setDataProduct,
+    originalDataProduct,
+    setIsLoading,
+    originalDataStock,
+    setDataStock,
+  } = useDataStore();
   const { data: session } = useSession();
   async function handleSearch() {
     setIsLoading(true);
@@ -24,11 +30,18 @@ export default function SearchBar(props: SearchBarProps) {
         const dataFiltered = await searchDataProduct({
           currentData: originalDataProduct,
           value,
-          userId: session?.user.id || ""
+          userId: session?.user.id || "",
         });
         setDataProduct(dataFiltered);
         break;
-
+      case "stock":
+        const dataFilteredStock = await searchDataStock({
+          currentData: originalDataStock,
+          userId: session?.user.id || "",
+          value: value,
+        });
+        setDataStock(dataFilteredStock);
+        break;
       default:
         break;
     }
@@ -38,8 +51,15 @@ export default function SearchBar(props: SearchBarProps) {
   useEffect(() => {
     if (value === "") {
       setDataProduct(originalDataProduct);
+      setDataStock(originalDataStock);
     }
-  }, [value, originalDataProduct, setDataProduct]);
+  }, [
+    value,
+    originalDataProduct,
+    setDataProduct,
+    originalDataStock,
+    setDataStock,
+  ]);
 
   return (
     <div className="flex items-center gap-x-2">
