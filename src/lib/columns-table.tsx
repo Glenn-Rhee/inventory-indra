@@ -264,7 +264,14 @@ export const columnsTransaction: ColumnDef<
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];
 
 export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
-  { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
+  {
+    id: "no",
+    header: "No",
+    cell: ({ row, table }) => {
+      const { pageIndex, pageSize } = table.getState().pagination;
+      return <span>{pageIndex * pageSize + row.index + 1}</span>;
+    },
+  },
   {
     accessorKey: "Name",
     header: ({ column }) => (
