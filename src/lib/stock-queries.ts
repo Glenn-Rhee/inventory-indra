@@ -47,6 +47,7 @@ export function useStocks(params: UseStocks) {
           TotalLowStock: 0,
           TotalProduct: 0,
           TotalProductExpired: 0,
+          TotalPages: 0,
         } as DataStockResponse;
       }
     },

@@ -78,7 +78,7 @@ export default function TableProducts(props: TableProductsProps) {
       pagination,
     },
     manualPagination: true,
-    rowCount: (initialData?.TotalPages ?? 0) * pagination.pageSize,
+    pageCount: initialData?.TotalPages ?? -1,
     getRowId: (row) => row.Id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
@@ -217,12 +217,7 @@ export default function TableProducts(props: TableProductsProps) {
               variant="outline"
               className="size-8"
               size="icon"
-              onClick={() =>
-                setPagination((prev) => ({
-                  ...prev,
-                  pageIndex: prev.pageIndex + 1,
-                }))
-              }
+              onClick={() => tableProducts.nextPage()}
               disabled={pagination.pageIndex + 1 === initialData?.TotalPages}
             >
               <span className="sr-only">Go to next page</span>

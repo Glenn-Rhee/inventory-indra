@@ -80,7 +80,7 @@ export default function TableStocks(props: TableStocksProps) {
       pagination,
     },
     manualPagination: true,
-    // rowCount:
+    rowCount: initialData?.TotalPages ?? 0,
     getRowId: (row) => row.Id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
@@ -187,7 +187,11 @@ export default function TableStocks(props: TableStocksProps) {
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
             Page {tableStocks.getState().pagination.pageIndex + 1} of{" "}
-            {tableStocks.getPageCount()}
+            {initialData ? (
+              initialData.TotalPages
+            ) : (
+              <Skeleton className="h-4 bg-muted-foreground/20 w-5 ms-2" />
+            )}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
             <Button
@@ -204,7 +208,7 @@ export default function TableStocks(props: TableStocksProps) {
               className="size-8"
               size="icon"
               onClick={() => tableStocks.previousPage()}
-              disabled={!tableStocks.getCanPreviousPage()}
+              disabled={pagination.pageIndex + 1 === 1}
             >
               <span className="sr-only">Go to previous page</span>
               <ChevronLeftIcon />
@@ -213,8 +217,13 @@ export default function TableStocks(props: TableStocksProps) {
               variant="outline"
               className="size-8"
               size="icon"
-              onClick={() => tableStocks.nextPage()}
-              disabled={!tableStocks.getCanNextPage()}
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex + 1,
+                }))
+              }
+              disabled={pagination.pageIndex + 1 === initialData?.TotalPages}
             >
               <span className="sr-only">Go to next page</span>
               <ChevronRightIcon />

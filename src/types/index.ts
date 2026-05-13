@@ -36,4 +36,5 @@ export interface DataStockResponse {
   TotalLowStock: number;
   TotalProductExpired: number;
   Products: z.infer<typeof schemaStocks>[]
+  TotalPages: number;
 }

@@ -195,7 +195,14 @@ export function getColumnsProduct(
 export const columnsTransaction: ColumnDef<
   z.infer<typeof schemaTransactions>
 >[] = [
-  { id: "no", header: "No", cell: ({ row }) => <span>{row.index + 1}</span> },
+  {
+    id: "no",
+    header: "No",
+    cell: ({ row, table }) => {
+      const { pageIndex, pageSize } = table.getState().pagination;
+      return <span>{pageIndex * pageSize + row.index + 1}</span>;
+    },
+  },
   {
     accessorKey: "product_id",
     header: "Product ID",
