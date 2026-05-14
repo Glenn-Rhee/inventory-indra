@@ -12,7 +12,7 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Check, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -39,6 +39,7 @@ import { Input } from "@/components/ui/input";
 import { useProducts } from "@/lib/product-queries";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataProductResponse } from "@/types";
 
 interface DialogAddTransactionsProps {
   userId: string;
@@ -49,10 +50,50 @@ export default function DialogAddTransactions(
 ) {
   const { userId } = props;
   const isMobile = useIsMobile();
-  const { data, isLoading } = useProducts({ userId });
+  const [page, setPage] = useState(0);
+  const { data: initialData, isLoading } = useProducts({
+    userId,
+    page: page + 1,
+  });
   const [open, setOpen] = useState(false);
   const [selectedProductName, setSelectedProductName] = useState("");
   const [transactionType, setTransactionType] = useState<"IN" | "OUT">("IN");
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [dataName, setDataName] = useState<DataProductResponse["Product"]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    if (!isLoading) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDataName((prev) => {
+        const newData = initialData?.Product || [];
+        if (newData.length === 0) {
+          setHasMore(false);
+        }
+        return [...prev, ...newData];
+      });
+    }
+  }, [isLoading, initialData?.Product]);
+
+  const lastItemRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !isLoading && hasMore) {
+            setPage((prev) => prev + 1);
+          }
+        },
+        {
+          threshold: 0.25,
+        },
+      );
+
+      if (node) observerRef.current.observe(node);
+    },
+    [isLoading, hasMore],
+  );
 
   return (
     <Dialog>
@@ -97,10 +138,15 @@ export default function DialogAddTransactions(
                       <CommandGroup>
                         {isLoading ? (
                           <Skeleton className="h-6" />
-                        ) : data ? (
-                          data.Product.map((item) => (
+                        ) : (
+                          dataName.map((item, i) => (
                             <Fragment key={item.Id}>
                               <CommandItem
+                                ref={
+                                  i === dataName.length - 3
+                                    ? lastItemRef
+                                    : undefined
+                                }
                                 value={item.Name}
                                 onSelect={(currentValue) => {
                                   setSelectedProductName(
@@ -124,8 +170,6 @@ export default function DialogAddTransactions(
                               <Separator className="w-full h-1" />
                             </Fragment>
                           ))
-                        ) : (
-                          <CommandEmpty>No Product Found.</CommandEmpty>
                         )}
                       </CommandGroup>
                     </CommandList>
