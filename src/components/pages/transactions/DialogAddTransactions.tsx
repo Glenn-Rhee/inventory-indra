@@ -52,7 +52,9 @@ export default function DialogAddTransactions(
   const [open, setOpen] = useState(false);
   const [selectedProductName, setSelectedProductName] = useState("");
   const [transactionType, setTransactionType] = useState<"IN" | "OUT">("IN");
-  const [productsName, setProductsName] = useState<string[]>([]);
+  const [productsName, setProductsName] = useState<string[]>(() =>
+    !isLoading && data ? data.Product.map((p) => p.Name) : [],
+  );
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -97,9 +99,12 @@ export default function DialogAddTransactions(
                 <PopoverContent align="start">
                   <Command>
                     <CommandInput placeholder="Find Product Name..." />
-                    <CommandList>
+                    <CommandList
+                      className="max-h-50 overflow-y-auto!"
+                      onWheel={(e) => e.stopPropagation()}
+                    >
                       <CommandEmpty>No Product Found.</CommandEmpty>
-                      <CommandGroup className="max-h-50 overflow-y-auto">
+                      <CommandGroup>
                         {productsName.map((item) => (
                           <Fragment key={item}>
                             <CommandItem
