@@ -12,7 +12,7 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Check, ChevronDownIcon, PlusIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useProducts } from "@/lib/product-queries";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DialogAddTransactionsProps {
   userId: string;
@@ -52,17 +53,6 @@ export default function DialogAddTransactions(
   const [open, setOpen] = useState(false);
   const [selectedProductName, setSelectedProductName] = useState("");
   const [transactionType, setTransactionType] = useState<"IN" | "OUT">("IN");
-  const [productsName, setProductsName] = useState<string[]>(() =>
-    !isLoading && data ? data.Product.map((p) => p.Name) : [],
-  );
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      const names = data.Product.map((p) => p.Name);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setProductsName(names);
-    }
-  }, [data, isLoading]);
 
   return (
     <Dialog>
@@ -105,33 +95,38 @@ export default function DialogAddTransactions(
                     >
                       <CommandEmpty>No Product Found.</CommandEmpty>
                       <CommandGroup>
-                        {productsName.map((item) => (
-                          <Fragment key={item}>
-                            <CommandItem
-                              key={item}
-                              value={item}
-                              onSelect={(currentValue) => {
-                                setSelectedProductName(
-                                  currentValue === selectedProductName
-                                    ? ""
-                                    : currentValue,
-                                );
-                                setOpen(false);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  selectedProductName === item
-                                    ? "opacity-100"
-                                    : "opacity-0",
-                                )}
-                              />
-                              {item}
-                            </CommandItem>
-                            <Separator className="w-full h-1" />
-                          </Fragment>
-                        ))}
+                        {isLoading ? (
+                          <Skeleton className="h-6" />
+                        ) : data ? (
+                          data.Product.map((item) => (
+                            <Fragment key={item.Id}>
+                              <CommandItem
+                                value={item.Name}
+                                onSelect={(currentValue) => {
+                                  setSelectedProductName(
+                                    currentValue === selectedProductName
+                                      ? ""
+                                      : currentValue,
+                                  );
+                                  setOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedProductName === item.Name
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                                {item.Name}
+                              </CommandItem>
+                              <Separator className="w-full h-1" />
+                            </Fragment>
+                          ))
+                        ) : (
+                          <CommandEmpty>No Product Found.</CommandEmpty>
+                        )}
                       </CommandGroup>
                     </CommandList>
                   </Command>
