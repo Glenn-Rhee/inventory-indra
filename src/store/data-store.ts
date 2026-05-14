@@ -1,4 +1,8 @@
-import { DataProductResponse, DataStockResponse } from "@/types";
+import {
+  DataProductResponse,
+  DataStockResponse,
+  DataTransactionResponse,
+} from "@/types";
 import { create } from "zustand";
 
 export interface UseDataStore {
@@ -13,6 +17,13 @@ export interface UseDataStore {
   setDataStock: (v: DataStockResponse["Products"]) => void;
   originalDataStock: DataStockResponse["Products"];
   setOriginalDataStock: (v: DataStockResponse["Products"]) => void;
+
+  dataTransaction: DataTransactionResponse["Transactions"];
+  setDataTransaction: (v: DataTransactionResponse["Transactions"]) => void;
+  originalDataTransaction: DataTransactionResponse["Transactions"];
+  setOriginalDataTransaction: (
+    v: DataTransactionResponse["Transactions"],
+  ) => void;
 }
 
 export const useDataStore = create<UseDataStore>((set) => ({
@@ -27,4 +38,9 @@ export const useDataStore = create<UseDataStore>((set) => ({
   originalDataStock: [],
   setDataStock: (v) => set({ dataStock: v }),
   setOriginalDataStock: (v) => set({ originalDataStock: v }),
+
+  dataTransaction: [],
+  originalDataTransaction: [],
+  setDataTransaction: (v) => set({ dataTransaction: v }),
+  setOriginalDataTransaction: (v) => set({ originalDataTransaction: v }),
 }));

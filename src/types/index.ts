@@ -1,4 +1,4 @@
-import { schemaStocks } from "@/model/schema-table";
+import { schemaStocks, schemaTransactions } from "@/model/schema-table";
 import z from "zod";
 
 export interface ResponsePayload<T = unknown> {
@@ -35,6 +35,14 @@ export interface DataStockResponse {
   TotalProduct: number;
   TotalLowStock: number;
   TotalProductExpired: number;
-  Products: z.infer<typeof schemaStocks>[]
+  Products: z.infer<typeof schemaStocks>[];
   TotalPages: number;
+}
+
+export interface DataTransactionResponse {
+  TotalTransaction: number;
+  TotalRevenue: number;
+  TotalPurchase: number;
+  TotalPages: number;
+  Transactions: z.infer<typeof schemaTransactions>[];
 }

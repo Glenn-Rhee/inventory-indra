@@ -1,6 +1,4 @@
 "use client";
-import { z } from "zod";
-
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,10 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import data_transactions from "@/app/data_transactions.json";
 import TableTransactions from "./TableTransactions";
 import TableProducts from "./pages/products/TableProducts";
-import { schemaTransactions } from "@/model/schema-table";
 
 interface DataTableProps {
   userId: string;
@@ -61,9 +57,7 @@ export function DataTable(props: DataTableProps) {
         <TableProducts userId={userId} />
       </TabsContent>
       <TabsContent value="transactions" className="flex flex-col px-4 lg:px-6">
-        <TableTransactions
-          data={data_transactions as z.infer<typeof schemaTransactions>[]}
-        />
+        <TableTransactions userId={userId} />
       </TabsContent>
     </Tabs>
   );

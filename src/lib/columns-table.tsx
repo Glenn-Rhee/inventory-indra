@@ -204,61 +204,63 @@ export const columnsTransaction: ColumnDef<
     },
   },
   {
-    accessorKey: "product_id",
-    header: "Product ID",
-    cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
+    accessorKey: "Id",
+    header: "Transaction Id",
+    cell: ({ row }) => <div className="text-left">{row.original.Id}</div>,
   },
   {
-    accessorKey: "product_name",
+    accessorKey: "ProductName",
     header: "Product Name",
     cell: ({ row }) => (
-      <div className="text-left">{row.original.product_name}</div>
+      <div className="text-left">{row.original.ProductName}</div>
     ),
   },
   {
-    accessorKey: "transaction_type",
+    accessorKey: "TransactionType",
     header: "Transaction Type",
     cell: ({ row }) => (
       <div className="w-32 flex items-center justify-center">
         <Badge
           variant={
-            row.original.transaction_type === "IN" ? "secondary" : "destructive"
+            row.original.TransactionType === "IN" ? "secondary" : "destructive"
           }
           className={"px-1.5 text-white w-10"}
         >
-          {row.original.transaction_type}
+          {row.original.TransactionType}
         </Badge>
       </div>
     ),
   },
   {
-    accessorKey: "quantity",
+    accessorKey: "Quantity",
     header: "Quantity",
-    cell: ({ row }) => <div className="text-left">{row.original.quantity}</div>,
+    cell: ({ row }) => <div className="text-left">{row.original.Quantity}</div>,
   },
   {
-    accessorKey: "price",
+    accessorKey: "Price",
     header: "Price",
     cell: ({ row }) => (
       <div className="text-left">
-        Rp{row.original.price.toLocaleString("id-ID")}
+        Rp{row.original.Price.toLocaleString("id-ID")}
       </div>
     ),
   },
   {
-    accessorKey: "total",
+    accessorKey: "TotalPrice",
     header: "Total Price",
     cell: ({ row }) => (
       <div className="text-left">
-        Rp{row.original.total.toLocaleString("id-ID")}
+        Rp{row.original.TotalPrice.toLocaleString("id-ID")}
       </div>
     ),
   },
   {
-    accessorKey: "transaction_date",
+    accessorKey: "TransactionDate",
     header: "Transaction Date",
     cell: ({ row }) => (
-      <div className="text-left">{row.original.transaction_date}</div>
+      <div className="text-left">
+        {getFormatDate(row.original.TransactionDate)}
+      </div>
     ),
   },
 ] as ColumnDef<z.infer<typeof schemaTransactions>>[];

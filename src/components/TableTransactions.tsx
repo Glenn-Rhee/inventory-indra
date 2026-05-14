@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import z from "zod";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -38,34 +37,52 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { schemaTransactions } from "@/model/schema-table";
+import { useTransactions } from "@/lib/transaction-queries";
+import { useDataStore } from "@/store/data-store";
+import { Skeleton } from "./ui/skeleton";
 
 interface TableProductsProps {
-  data: z.infer<typeof schemaTransactions>[];
+  userId: string;
 }
 
 export default function TableTransactions(props: TableProductsProps) {
-  const { data: initialData } = props;
-  const [data, setData] = useState<z.infer<typeof schemaTransactions>[]>(
-    () => initialData,
-  );
+  const { userId } = props;
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
+  const { data: initialData, isLoading } = useTransactions({
+    userId,
+    limit: pagination.pageSize,
+    page: pagination.pageIndex + 1,
+  });
+
+  const {
+    dataTransaction,
+    setDataTransaction,
+    isLoading: isSearching,
+    setOriginalDataTransaction,
+  } = useDataStore();
+
+  useEffect(() => {
+    setDataTransaction(initialData?.Transactions || []);
+    setOriginalDataTransaction(initialData?.Transactions || []);
+  }, [initialData, setDataTransaction, setOriginalDataTransaction]);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data,
+    data: dataTransaction,
     columns: columnsTransaction,
     state: {
       sorting,
       columnVisibility,
       pagination,
     },
-    getRowId: (row) => row.product_id.toString(),
+    manualPagination: true,
+    pageCount: initialData?.TotalPages ?? -1,
+    getRowId: (row) => row.Id.toString(),
     enableRowSelection: true,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
@@ -101,14 +118,26 @@ export default function TableTransactions(props: TableProductsProps) {
             ))}
           </TableHeader>
           <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {table.getRowModel().rows?.length ? (
+            {isLoading || isSearching ? (
+              Array.from({ length: pagination.pageSize }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: columnsTransaction.length }).map(
+                    (_, i) => (
+                      <TableCell key={i} className="h-12 text-center">
+                        <Skeleton className="w-full h-full" />
+                      </TableCell>
+                    ),
+                  )}
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.original.product_id}
+                  key={row.original.Id}
                   className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className="py-5" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -177,7 +206,7 @@ export default function TableTransactions(props: TableProductsProps) {
               className="size-8"
               size="icon"
               onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              disabled={pagination.pageIndex + 1 === 1}
             >
               <span className="sr-only">Go to previous page</span>
               <ChevronLeftIcon />
@@ -187,7 +216,7 @@ export default function TableTransactions(props: TableProductsProps) {
               className="size-8"
               size="icon"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              disabled={pagination.pageIndex + 1 === initialData?.TotalPages}
             >
               <span className="sr-only">Go to next page</span>
               <ChevronRightIcon />

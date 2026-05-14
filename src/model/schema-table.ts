@@ -10,13 +10,13 @@ export const schema = z.object({
 });
 
 export const schemaTransactions = z.object({
-  product_id: z.string(),
-  product_name: z.string(),
-  transaction_type: z.enum(["IN", "OUT"]),
-  quantity: z.number(),
-  price: z.number(),
-  total: z.number(),
-  transaction_date: z.string(),
+  Id: z.string(),
+  ProductName: z.string(),
+  TransactionType: z.enum(["IN", "OUT"]),
+  Quantity: z.number(),
+  Price: z.number(),
+  TotalPrice: z.number(),
+  TransactionDate: z.date(),
 });
 
 export const schemaStocks = z.object({

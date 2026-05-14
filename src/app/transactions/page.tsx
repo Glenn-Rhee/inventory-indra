@@ -1,9 +1,6 @@
 import CardsTransactions from "@/components/pages/transactions/CardsTransactions";
 import SectionCards from "@/components/SectionCards";
 import TableTransactions from "@/components/TableTransactions";
-import table_transactions from "@/app/data_transactions.json";
-import z from "zod";
-import { schemaTransactions } from "@/model/schema-table";
 import { Metadata } from "next";
 import SearchBar from "@/components/SearchBar";
 import DialogAddTransactions from "@/components/pages/transactions/DialogAddTransactions";
@@ -38,9 +35,7 @@ export default async function TransactionsPage() {
             />
             <DialogAddTransactions userId={session?.user.id || ""} />
           </div>
-          <TableTransactions
-            data={table_transactions as z.infer<typeof schemaTransactions>[]}
-          />
+          <TableTransactions userId={session?.user.id || ""} />
         </div>
       </div>
     </div>
