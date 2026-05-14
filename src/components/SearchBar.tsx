@@ -55,7 +55,7 @@ export default function SearchBar(props: SearchBarProps) {
           userId: session?.user.id || "",
         });
 
-        setDataTransaction(dataFilteredTx)
+        setDataTransaction(dataFilteredTx);
         break;
     }
     setIsLoading(false);
@@ -65,6 +65,7 @@ export default function SearchBar(props: SearchBarProps) {
     if (value === "") {
       setDataProduct(originalDataProduct);
       setDataStock(originalDataStock);
+      setDataTransaction(originalDataTransaction);
     }
   }, [
     value,
@@ -72,6 +73,8 @@ export default function SearchBar(props: SearchBarProps) {
     setDataProduct,
     originalDataStock,
     setDataStock,
+    originalDataTransaction,
+    setDataTransaction,
   ]);
 
   return (
