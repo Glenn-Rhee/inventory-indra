@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardDescription,
@@ -5,16 +6,35 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTransactions } from "@/lib/transaction-queries";
 import { TrendingUp } from "lucide-react";
 
-export default function CardsTransactions() {
+interface CardsTransactionsProps {
+  userId: string;
+}
+
+export default function CardsTransactions(props: CardsTransactionsProps) {
+  const { userId } = props;
+  const { data, isLoading } = useTransactions({ userId });
+
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton className="@container/card h-40" />
+        <Skeleton className="@container/card" />
+        <Skeleton className="@container/card" />
+      </>
+    );
+  }
+
   return (
     <>
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Total Transactions</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            150
+            {data?.TotalTransaction || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
@@ -30,7 +50,7 @@ export default function CardsTransactions() {
         <CardHeader>
           <CardDescription>Total Revenue</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            Rp 12.500.000
+            Rp{data?.TotalRevenue.toLocaleString("id-ID") || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
@@ -46,7 +66,7 @@ export default function CardsTransactions() {
         <CardHeader>
           <CardDescription>Total Purchase</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            Rp8.000.000
+            Rp{data?.TotalPurchase.toLocaleString("id-ID") || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">

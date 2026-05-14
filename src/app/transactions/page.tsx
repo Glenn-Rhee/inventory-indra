@@ -26,7 +26,7 @@ export default async function TransactionsPage() {
             </p>
           </div>
           <SectionCards>
-            <CardsTransactions />
+            <CardsTransactions userId={session?.user.id || ""} />
           </SectionCards>
           <div className="w-full flex items-center justify-between">
             <SearchBar

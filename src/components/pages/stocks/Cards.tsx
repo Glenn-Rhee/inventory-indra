@@ -21,7 +21,7 @@ export default function Cards(props: CardsProps) {
   if (isLoading) {
     return (
       <>
-        <Skeleton className="@container/card" />
+        <Skeleton className="@container/card h-40" />
         <Skeleton className="@container/card" />
         <Skeleton className="@container/card" />
       </>
