@@ -35,4 +35,20 @@ export default class ValidationForm {
       .number({ error: "Please fill price of product properly!" })
       .min(500, { error: "Minimum of price is Rp500" }),
   });
+
+  static readonly CREATETRANSACTION = z.object({
+    productName: z
+      .string({ error: "Please fill product name properly!" })
+      .min(3, { error: "Minimum length of product name is 3!" }),
+    transactionType: z.enum(["IN", "OUT"], {
+      error: "Please fill transaction type between IN or OUT",
+    }),
+    quantity: z.number({ error: "Please fill quantity properly!" }),
+    price: z
+      .number({ error: "Please fill price properly!" })
+      .min(100, { error: "Price can't be lowest than Rp100" }),
+    totalPrice: z
+      .number({ error: "Please fill total price properly!" })
+      .min(100, { error: "Total price can't be lowest than Rp100" }),
+  });
 }
