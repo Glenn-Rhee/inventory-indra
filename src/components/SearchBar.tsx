@@ -1,7 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { searchDataProduct, searchDataStock } from "@/helper/searchData";
+import {
+  searchDataProduct,
+  searchDataStock,
+  searchDataTransaction,
+} from "@/helper/searchData";
 import { useDataStore } from "@/store/data-store";
 import { SearchIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -21,6 +25,8 @@ export default function SearchBar(props: SearchBarProps) {
     setIsLoading,
     originalDataStock,
     setDataStock,
+    originalDataTransaction,
+    setDataTransaction,
   } = useDataStore();
   const { data: session } = useSession();
   async function handleSearch() {
@@ -43,6 +49,13 @@ export default function SearchBar(props: SearchBarProps) {
         setDataStock(dataFilteredStock);
         break;
       default:
+        const dataFilteredTx = await searchDataTransaction({
+          currentData: originalDataTransaction,
+          value,
+          userId: session?.user.id || "",
+        });
+
+        setDataTransaction(dataFilteredTx)
         break;
     }
     setIsLoading(false);

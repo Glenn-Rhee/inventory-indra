@@ -1,6 +1,7 @@
 import {
   DataProductResponse,
   DataStockResponse,
+  DataTransactionResponse,
   ResponsePayload,
 } from "@/types";
 import { getFormatDate } from "./getFormatDate";
@@ -102,6 +103,58 @@ export async function searchDataStock(dataSearch: {
       toast.error(error.message);
     } else {
       toast.error("An error occured! Please try again later");
+    }
+    return [];
+  }
+}
+
+export async function searchDataTransaction(dataSearch: {
+  value: string;
+  currentData: DataTransactionResponse["Transactions"];
+  userId: string;
+}) {
+  const value = dataSearch.value.trim().toLowerCase();
+  const filterByTxId = dataSearch.currentData.filter(
+    (curr) => curr.Id.toLowerCase() === value,
+  );
+
+  if (filterByTxId.length > 0) return filterByTxId;
+
+  const filterByProductName = dataSearch.currentData.filter((curr) =>
+    curr.ProductName.toLowerCase().includes(value),
+  );
+
+  if (filterByProductName.length > 0) return filterByProductName;
+
+  const filterByTxType = dataSearch.currentData.filter(
+    (curr) => curr.TransactionType === value,
+  );
+
+  if (filterByTxType.length > 0) return filterByTxType;
+
+  try {
+    const res = await fetch(
+      BASEURL + "/transaction?limit=10&page=1&filter=" + dataSearch.value,
+      {
+        method: "GET",
+        headers: {
+          "x-user-id": dataSearch.userId,
+        },
+      },
+    );
+
+    const dataRes =
+      (await res.json()) as ResponsePayload<DataTransactionResponse>;
+    if (dataRes.status === "failed") {
+      throw new ResponseError(res.status, dataRes.message);
+    }
+
+    return dataRes.data.Transactions;
+  } catch (error) {
+    if (error instanceof ResponseError) {
+      toast.error(error.message);
+    } else {
+      toast.error("An error occured! Please try again later!");
     }
     return [];
   }
