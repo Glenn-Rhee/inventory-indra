@@ -36,15 +36,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useProducts } from "@/lib/product-queries";
+import { BASEURL, useProducts } from "@/lib/product-queries";
 import { Separator } from "@/components/ui/separator";
-import { DataProductResponse } from "@/types";
+import { DataProductResponse, ResponsePayload } from "@/types";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import ValidationForm from "@/model/validation-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatRupiah } from "@/helper/getFormatRupiah";
 import { getFormatNumber } from "@/helper/getFormattingNumber";
+import ResponseError from "@/error/ResponseError";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface DialogAddTransactionsProps {
   userId: string;
@@ -58,6 +61,7 @@ export default function DialogAddTransactions(
   const { userId } = props;
   const isMobile = useIsMobile();
   const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { data: initialData, isFetching } = useProducts({
     userId,
     page: page + 1,
@@ -65,7 +69,7 @@ export default function DialogAddTransactions(
   const [open, setOpen] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [dataName, setDataName] = useState<DataProductResponse["Product"]>([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const form = useForm<CREATETRANSACTION>({
     resolver: zodResolver(ValidationForm.CREATETRANSACTION),
     mode: "onChange",
@@ -81,17 +85,18 @@ export default function DialogAddTransactions(
   const watchedQuantity = form.watch("quantity");
   const [displayPrice, setDisplayPrice] = useState(formatRupiah(watchedPrice));
   const [displayTotalPrice, setDisplayTotalPrice] = useState("Rp0");
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/incompatible-library
     const subscription = form.watch((values, { name }) => {
       if (name === "productName" && values.productName !== "") {
         const dataPrice = dataName.find((dn) => dn.Name === values.productName);
         form.setValue("price", dataPrice?.Price || 0);
         setDisplayPrice(formatRupiah(dataPrice?.Price || 0));
-        const totalPrice = (dataPrice?.Price || 0) * form.getValues("quantity")
-        form.setValue("totalPrice", totalPrice)
-        setDisplayTotalPrice(formatRupiah(totalPrice))
+        const totalPrice = (dataPrice?.Price || 0) * form.getValues("quantity");
+        form.setValue("totalPrice", totalPrice);
+        setDisplayTotalPrice(formatRupiah(totalPrice));
       }
     });
 
@@ -116,6 +121,7 @@ export default function DialogAddTransactions(
           setHasMore(false);
           return prev;
         }
+        setHasMore(true);
 
         const existingIds = new Set(prev.map((p) => p.Id));
         const filtered = newData.filter((nd) => !existingIds.has(nd.Id));
@@ -131,6 +137,7 @@ export default function DialogAddTransactions(
       observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && !isFetching && hasMore) {
+            console.log("cihuy");
             setPage((prev) => prev + 1);
           }
         },
@@ -145,13 +152,59 @@ export default function DialogAddTransactions(
   );
 
   async function handleSubmit(v: CREATETRANSACTION) {
-    console.log(v);
+    setIsLoading(true);
+    try {
+      const product = dataName.find((dn) => dn.Name === v.productName);
+      if (!product) {
+        throw new ResponseError(403, "Please fill product name properly!");
+      }
+      const data = {
+        productId: product.Id,
+        transactionType: v.transactionType,
+        quantity: v.quantity,
+        price: v.price,
+        totalPrice: v.totalPrice,
+      };
+
+      const res = await fetch(BASEURL + "/transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const dataRes = (await res.json()) as ResponsePayload;
+      if (dataRes.status === "failed") {
+        throw new ResponseError(res.status, dataRes.message);
+      }
+
+      setDialogOpen(false);
+      toast.success(dataRes.message);
+
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occured! Please try again later.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog
+      open={dialogOpen}
+      onOpenChange={(v) => {
+        if (isLoading) return;
+        setDialogOpen(v);
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="py-4.5 text-sm">
+        <Button onClick={() => setDialogOpen(true)} className="py-4.5 text-sm">
           <PlusIcon /> {isMobile ? "Add" : "Add Transaction"}
         </Button>
       </DialogTrigger>
@@ -286,7 +339,7 @@ export default function DialogAddTransactions(
                 name="quantity"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <Label htmlFor="quantity">Quantity</Label>
+                    <Label htmlFor="quantity">Quantity (butir/item)</Label>
                     <Input
                       id="quantity"
                       type="teks"
@@ -313,7 +366,7 @@ export default function DialogAddTransactions(
                       type="teks"
                       inputMode="numeric"
                       {...field}
-                      placeholder="Rp10.000"
+                      placeholder="Rp0"
                       value={displayPrice}
                       onChange={(e) => {
                         const parsed = getFormatNumber(e.target.value);
@@ -355,7 +408,9 @@ export default function DialogAddTransactions(
                 </Field>
               )}
             />
-            <Button type="submit">Save</Button>
+            <Button disabled={isLoading} type="submit">
+              {isLoading ? "Saving ..." : "Save"}
+            </Button>
           </FieldGroup>
         </form>
       </DialogContent>
