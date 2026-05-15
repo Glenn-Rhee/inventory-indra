@@ -30,110 +30,110 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 export const description = "An interactive area chart";
 
 const chartData = [
-  { date: "2024-04-01", medicine: 222, essentials: 150 },
-  { date: "2024-04-02", medicine: 97, essentials: 180 },
-  { date: "2024-04-03", medicine: 167, essentials: 120 },
-  { date: "2024-04-04", medicine: 242, essentials: 260 },
-  { date: "2024-04-05", medicine: 373, essentials: 290 },
-  { date: "2024-04-06", medicine: 301, essentials: 340 },
-  { date: "2024-04-07", medicine: 245, essentials: 180 },
-  { date: "2024-04-08", medicine: 409, essentials: 320 },
-  { date: "2024-04-09", medicine: 59, essentials: 110 },
-  { date: "2024-04-10", medicine: 261, essentials: 190 },
-  { date: "2024-04-11", medicine: 327, essentials: 350 },
-  { date: "2024-04-12", medicine: 292, essentials: 210 },
-  { date: "2024-04-13", medicine: 342, essentials: 380 },
-  { date: "2024-04-14", medicine: 137, essentials: 220 },
-  { date: "2024-04-15", medicine: 120, essentials: 170 },
-  { date: "2024-04-16", medicine: 138, essentials: 190 },
-  { date: "2024-04-17", medicine: 446, essentials: 360 },
-  { date: "2024-04-18", medicine: 364, essentials: 410 },
-  { date: "2024-04-19", medicine: 243, essentials: 180 },
-  { date: "2024-04-20", medicine: 89, essentials: 150 },
-  { date: "2024-04-21", medicine: 137, essentials: 200 },
-  { date: "2024-04-22", medicine: 224, essentials: 170 },
-  { date: "2024-04-23", medicine: 138, essentials: 230 },
-  { date: "2024-04-24", medicine: 387, essentials: 290 },
-  { date: "2024-04-25", medicine: 215, essentials: 250 },
-  { date: "2024-04-26", medicine: 75, essentials: 130 },
-  { date: "2024-04-27", medicine: 383, essentials: 420 },
-  { date: "2024-04-28", medicine: 122, essentials: 180 },
-  { date: "2024-04-29", medicine: 315, essentials: 240 },
-  { date: "2024-04-30", medicine: 454, essentials: 380 },
-  { date: "2024-05-01", medicine: 165, essentials: 220 },
-  { date: "2024-05-02", medicine: 293, essentials: 310 },
-  { date: "2024-05-03", medicine: 247, essentials: 190 },
-  { date: "2024-05-04", medicine: 385, essentials: 420 },
-  { date: "2024-05-05", medicine: 481, essentials: 390 },
-  { date: "2024-05-06", medicine: 498, essentials: 520 },
-  { date: "2024-05-07", medicine: 388, essentials: 300 },
-  { date: "2024-05-08", medicine: 149, essentials: 210 },
-  { date: "2024-05-09", medicine: 227, essentials: 180 },
-  { date: "2024-05-10", medicine: 293, essentials: 330 },
-  { date: "2024-05-11", medicine: 335, essentials: 270 },
-  { date: "2024-05-12", medicine: 197, essentials: 240 },
-  { date: "2024-05-13", medicine: 197, essentials: 160 },
-  { date: "2024-05-14", medicine: 448, essentials: 490 },
-  { date: "2024-05-15", medicine: 473, essentials: 380 },
-  { date: "2024-05-16", medicine: 338, essentials: 400 },
-  { date: "2024-05-17", medicine: 499, essentials: 420 },
-  { date: "2024-05-18", medicine: 315, essentials: 350 },
-  { date: "2024-05-19", medicine: 235, essentials: 180 },
-  { date: "2024-05-20", medicine: 177, essentials: 230 },
-  { date: "2024-05-21", medicine: 82, essentials: 140 },
-  { date: "2024-05-22", medicine: 81, essentials: 120 },
-  { date: "2024-05-23", medicine: 252, essentials: 290 },
-  { date: "2024-05-24", medicine: 294, essentials: 220 },
-  { date: "2024-05-25", medicine: 201, essentials: 250 },
-  { date: "2024-05-26", medicine: 213, essentials: 170 },
-  { date: "2024-05-27", medicine: 420, essentials: 460 },
-  { date: "2024-05-28", medicine: 233, essentials: 190 },
-  { date: "2024-05-29", medicine: 78, essentials: 130 },
-  { date: "2024-05-30", medicine: 340, essentials: 280 },
-  { date: "2024-05-31", medicine: 178, essentials: 230 },
-  { date: "2024-06-01", medicine: 178, essentials: 200 },
-  { date: "2024-06-02", medicine: 470, essentials: 410 },
-  { date: "2024-06-03", medicine: 103, essentials: 160 },
-  { date: "2024-06-04", medicine: 439, essentials: 380 },
-  { date: "2024-06-05", medicine: 88, essentials: 140 },
-  { date: "2024-06-06", medicine: 294, essentials: 250 },
-  { date: "2024-06-07", medicine: 323, essentials: 370 },
-  { date: "2024-06-08", medicine: 385, essentials: 320 },
-  { date: "2024-06-09", medicine: 438, essentials: 480 },
-  { date: "2024-06-10", medicine: 155, essentials: 200 },
-  { date: "2024-06-11", medicine: 92, essentials: 150 },
-  { date: "2024-06-12", medicine: 492, essentials: 420 },
-  { date: "2024-06-13", medicine: 81, essentials: 130 },
-  { date: "2024-06-14", medicine: 426, essentials: 380 },
-  { date: "2024-06-15", medicine: 307, essentials: 350 },
-  { date: "2024-06-16", medicine: 371, essentials: 310 },
-  { date: "2024-06-17", medicine: 475, essentials: 520 },
-  { date: "2024-06-18", medicine: 107, essentials: 170 },
-  { date: "2024-06-19", medicine: 341, essentials: 290 },
-  { date: "2024-06-20", medicine: 408, essentials: 450 },
-  { date: "2024-06-21", medicine: 169, essentials: 210 },
-  { date: "2024-06-22", medicine: 317, essentials: 270 },
-  { date: "2024-06-23", medicine: 480, essentials: 530 },
-  { date: "2024-06-24", medicine: 132, essentials: 180 },
-  { date: "2024-06-25", medicine: 141, essentials: 190 },
-  { date: "2024-06-26", medicine: 434, essentials: 380 },
-  { date: "2024-06-27", medicine: 448, essentials: 490 },
-  { date: "2024-06-28", medicine: 149, essentials: 200 },
-  { date: "2024-06-29", medicine: 103, essentials: 160 },
-  { date: "2024-06-30", medicine: 446, essentials: 400 },
+  { date: "2024-04-01", in: 222, out: 150 },
+  { date: "2024-04-02", in: 97, out: 180 },
+  { date: "2024-04-03", in: 167, out: 120 },
+  { date: "2024-04-04", in: 242, out: 260 },
+  { date: "2024-04-05", in: 373, out: 290 },
+  { date: "2024-04-06", in: 301, out: 340 },
+  { date: "2024-04-07", in: 245, out: 180 },
+  { date: "2024-04-08", in: 409, out: 320 },
+  { date: "2024-04-09", in: 59, out: 110 },
+  { date: "2024-04-10", in: 261, out: 190 },
+  { date: "2024-04-11", in: 327, out: 350 },
+  { date: "2024-04-12", in: 292, out: 210 },
+  { date: "2024-04-13", in: 342, out: 380 },
+  { date: "2024-04-14", in: 137, out: 220 },
+  { date: "2024-04-15", in: 120, out: 170 },
+  { date: "2024-04-16", in: 138, out: 190 },
+  { date: "2024-04-17", in: 446, out: 360 },
+  { date: "2024-04-18", in: 364, out: 410 },
+  { date: "2024-04-19", in: 243, out: 180 },
+  { date: "2024-04-20", in: 89, out: 150 },
+  { date: "2024-04-21", in: 137, out: 200 },
+  { date: "2024-04-22", in: 224, out: 170 },
+  { date: "2024-04-23", in: 138, out: 230 },
+  { date: "2024-04-24", in: 387, out: 290 },
+  { date: "2024-04-25", in: 215, out: 250 },
+  { date: "2024-04-26", in: 75, out: 130 },
+  { date: "2024-04-27", in: 383, out: 420 },
+  { date: "2024-04-28", in: 122, out: 180 },
+  { date: "2024-04-29", in: 315, out: 240 },
+  { date: "2024-04-30", in: 454, out: 380 },
+  { date: "2024-05-01", in: 165, out: 220 },
+  { date: "2024-05-02", in: 293, out: 310 },
+  { date: "2024-05-03", in: 247, out: 190 },
+  { date: "2024-05-04", in: 385, out: 420 },
+  { date: "2024-05-05", in: 481, out: 390 },
+  { date: "2024-05-06", in: 498, out: 520 },
+  { date: "2024-05-07", in: 388, out: 300 },
+  { date: "2024-05-08", in: 149, out: 210 },
+  { date: "2024-05-09", in: 227, out: 180 },
+  { date: "2024-05-10", in: 293, out: 330 },
+  { date: "2024-05-11", in: 335, out: 270 },
+  { date: "2024-05-12", in: 197, out: 240 },
+  { date: "2024-05-13", in: 197, out: 160 },
+  { date: "2024-05-14", in: 448, out: 490 },
+  { date: "2024-05-15", in: 473, out: 380 },
+  { date: "2024-05-16", in: 338, out: 400 },
+  { date: "2024-05-17", in: 499, out: 420 },
+  { date: "2024-05-18", in: 315, out: 350 },
+  { date: "2024-05-19", in: 235, out: 180 },
+  { date: "2024-05-20", in: 177, out: 230 },
+  { date: "2024-05-21", in: 82, out: 140 },
+  { date: "2024-05-22", in: 81, out: 120 },
+  { date: "2024-05-23", in: 252, out: 290 },
+  { date: "2024-05-24", in: 294, out: 220 },
+  { date: "2024-05-25", in: 201, out: 250 },
+  { date: "2024-05-26", in: 213, out: 170 },
+  { date: "2024-05-27", in: 420, out: 460 },
+  { date: "2024-05-28", in: 233, out: 190 },
+  { date: "2024-05-29", in: 78, out: 130 },
+  { date: "2024-05-30", in: 340, out: 280 },
+  { date: "2024-05-31", in: 178, out: 230 },
+  { date: "2024-06-01", in: 178, out: 200 },
+  { date: "2024-06-02", in: 470, out: 410 },
+  { date: "2024-06-03", in: 103, out: 160 },
+  { date: "2024-06-04", in: 439, out: 380 },
+  { date: "2024-06-05", in: 88, out: 140 },
+  { date: "2024-06-06", in: 294, out: 250 },
+  { date: "2024-06-07", in: 323, out: 370 },
+  { date: "2024-06-08", in: 385, out: 320 },
+  { date: "2024-06-09", in: 438, out: 480 },
+  { date: "2024-06-10", in: 155, out: 200 },
+  { date: "2024-06-11", in: 92, out: 150 },
+  { date: "2024-06-12", in: 492, out: 420 },
+  { date: "2024-06-13", in: 81, out: 130 },
+  { date: "2024-06-14", in: 426, out: 380 },
+  { date: "2024-06-15", in: 307, out: 350 },
+  { date: "2024-06-16", in: 371, out: 310 },
+  { date: "2024-06-17", in: 475, out: 520 },
+  { date: "2024-06-18", in: 107, out: 170 },
+  { date: "2024-06-19", in: 341, out: 290 },
+  { date: "2024-06-20", in: 408, out: 450 },
+  { date: "2024-06-21", in: 169, out: 210 },
+  { date: "2024-06-22", in: 317, out: 270 },
+  { date: "2024-06-23", in: 480, out: 530 },
+  { date: "2024-06-24", in: 132, out: 180 },
+  { date: "2024-06-25", in: 141, out: 190 },
+  { date: "2024-06-26", in: 434, out: 380 },
+  { date: "2024-06-27", in: 448, out: 490 },
+  { date: "2024-06-28", in: 149, out: 200 },
+  { date: "2024-06-29", in: 103, out: 160 },
+  { date: "2024-06-30", in: 446, out: 400 },
 ];
 
 const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-  desktop: {
-    label: "Desktop",
+  in: {
+    label: "Pemasukan",
     color: "var(--primary)",
   },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
+  out: {
+    label: "Pengeluaran",
+    color: "var(--destructive)",
   },
 } satisfies ChartConfig;
 
@@ -216,28 +216,28 @@ export function ChartAreaInteractive() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillPengeluaran" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={1.0}
+                  stopColor="var(--color-out)"
+                  stopOpacity={0.4}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
+                  stopColor="var(--color-out)"
+                  stopOpacity={0.05}
                 />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillPemasukan" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
+                  stopColor="var(--color-in)"
+                  stopOpacity={0.4}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
+                  stopColor="var(--color-in)"
+                  stopOpacity={0.05}
                 />
               </linearGradient>
             </defs>
@@ -271,18 +271,18 @@ export function ChartAreaInteractive() {
               }
             />
             <Area
-              dataKey="medicine"
+              dataKey="out"
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
+              fill="url(#fillPengeluaran)"
+              stroke="var(--color-out)"
+              strokeWidth={2}
             />
             <Area
-              dataKey="essentials"
+              dataKey="in"
               type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
+              fill="url(#fillPemasukan)"
+              stroke="var(--color-in)"
+              strokeWidth={2}
             />
           </AreaChart>
         </ChartContainer>
