@@ -72,33 +72,41 @@ export default function DialogAddTransactions(
     defaultValues: {
       price: 0,
       productName: "",
-      quantity: 0,
+      quantity: 1,
       totalPrice: 0,
       transactionType: "IN",
     },
   });
   const watchedPrice = form.watch("price");
+  const watchedQuantity = form.watch("quantity");
   const [displayPrice, setDisplayPrice] = useState(formatRupiah(watchedPrice));
+  const [displayTotalPrice, setDisplayTotalPrice] = useState("Rp0");
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/incompatible-library
     const subscription = form.watch((values, { name }) => {
-      if (name === "quantity") {
-        const parsed = getFormatNumber(values.quantity ?? 0);
-        if (parsed !== values.quantity) {
-          form.setValue("quantity", parsed);
-        }
-      }
-
       if (name === "productName" && values.productName !== "") {
         const dataPrice = dataName.find((dn) => dn.Name === values.productName);
         form.setValue("price", dataPrice?.Price || 0);
         setDisplayPrice(formatRupiah(dataPrice?.Price || 0));
+        const totalPrice = (dataPrice?.Price || 0) * form.getValues("quantity")
+        form.setValue("totalPrice", totalPrice)
+        setDisplayTotalPrice(formatRupiah(totalPrice))
       }
     });
 
     return () => subscription.unsubscribe();
   }, [form, dataName]);
+
+  useEffect(() => {
+    const parsed = getFormatNumber(watchedQuantity);
+    if (parsed !== watchedQuantity) {
+      form.setValue("quantity", parsed);
+      const totalPrice = parsed * form.getValues("price");
+      form.setValue("totalPrice", totalPrice);
+      setDisplayTotalPrice(formatRupiah(totalPrice));
+    }
+  }, [watchedQuantity, form]);
 
   useEffect(() => {
     if (!isFetching) {
@@ -136,7 +144,9 @@ export default function DialogAddTransactions(
     [isFetching, hasMore],
   );
 
-  async function handleSubmit(v: CREATETRANSACTION) {}
+  async function handleSubmit(v: CREATETRANSACTION) {
+    console.log(v);
+  }
 
   return (
     <Dialog>
@@ -333,10 +343,11 @@ export default function DialogAddTransactions(
                     id="totalPrice"
                     type="teks"
                     inputMode="numeric"
-                    placeholder="Rp10.000.000"
-                    disabled
+                    placeholder="Rp0"
+                    // disabled
                     className="pointer-events-none select-none"
                     {...field}
+                    value={displayTotalPrice}
                   />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
