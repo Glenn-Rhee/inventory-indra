@@ -23,6 +23,7 @@ export const schemaStocks = z.object({
   Id: z.string(),
   Name: z.string(),
   Stock: z.number(),
+  Price: z.number(),
   StatusStock: z.enum(["SAFE", "LOW-STOCK", "SOLD-OUT"]),
   StatusExpired: z.enum(["SAFE", "WARNING", "EXPIRED"]),
   ExpiredDate: z.date(),

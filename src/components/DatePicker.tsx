@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/popover";
 
 interface DatePickerProps {
-  date: Date;
+  date: Date | undefined;
   setDate: (...event: unknown[]) => void;
 }
 
 export function DatePicker(props: DatePickerProps) {
   const { date, setDate } = props;
   const [isActive, setIsActive] = React.useState(false);
-
+  const now = new Date();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,8 +41,8 @@ export function DatePicker(props: DatePickerProps) {
           onSelect={setDate}
           defaultMonth={date}
           captionLayout="dropdown"
-          startMonth={new Date(date.getFullYear(), 0)}
-          endMonth={new Date(date.getFullYear() + 10, 0)}
+          startMonth={new Date(now.getFullYear(), 0)}
+          endMonth={new Date(now.getFullYear() + 10, 0)}
         />
       </PopoverContent>
     </Popover>

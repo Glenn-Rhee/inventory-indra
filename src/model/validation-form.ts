@@ -21,7 +21,11 @@ export default class ValidationForm {
     price: z
       .number({ error: "Please fill price of product properly!" })
       .min(500, { error: "Minimum of price is Rp500" }),
-    expiredDate: z.date({ error: "Please fill expired date properly!" }),
+    expiredDate: z
+      .date({ error: "Please fill expired date properly!" })
+      .refine((date) => date >= new Date(new Date().setHours(0, 0, 0, 0)), {
+        error: "Expired date can't be earlier than today!",
+      }),
   });
 
   static readonly EDITPRODUCT = z.object({
@@ -50,5 +54,11 @@ export default class ValidationForm {
     totalPrice: z
       .number({ error: "Please fill total price properly!" })
       .min(100, { error: "Total price can't be lowest than Rp100" }),
+    expiredDate: z
+      .date({ error: "Please fill expired date properly!" })
+      .refine((date) => date >= new Date(new Date().setHours(0, 0, 0, 0)), {
+        error: "Expired date can't be earlier than today!",
+      })
+      .nullish(),
   });
 }

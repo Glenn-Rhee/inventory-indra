@@ -48,9 +48,13 @@ import { getFormatNumber } from "@/helper/getFormattingNumber";
 import ResponseError from "@/error/ResponseError";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { DatePicker } from "@/components/DatePicker";
 
 interface DialogAddTransactionsProps {
   userId: string;
+  useForPage?: "transaction" | "stock";
+  productName?: string;
+  price?: number;
 }
 
 type CREATETRANSACTION = z.infer<typeof ValidationForm.CREATETRANSACTION>;
@@ -58,7 +62,7 @@ type CREATETRANSACTION = z.infer<typeof ValidationForm.CREATETRANSACTION>;
 export default function DialogAddTransactions(
   props: DialogAddTransactionsProps,
 ) {
-  const { userId } = props;
+  const { userId, useForPage = "transaction", productName, price = 0 } = props;
   const isMobile = useIsMobile();
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -66,25 +70,30 @@ export default function DialogAddTransactions(
     userId,
     page: page + 1,
   });
+  const [dataName, setDataName] = useState<DataProductResponse["Product"]>([]);
   const [open, setOpen] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const [dataName, setDataName] = useState<DataProductResponse["Product"]>([]);
   const [hasMore, setHasMore] = useState(false);
   const form = useForm<CREATETRANSACTION>({
     resolver: zodResolver(ValidationForm.CREATETRANSACTION),
     mode: "onChange",
     defaultValues: {
-      price: 0,
-      productName: "",
+      price,
+      productName,
       quantity: 1,
-      totalPrice: 0,
-      transactionType: "IN",
+      totalPrice: price * 1,
+      transactionType: useForPage === "transaction" ? "IN" : "OUT",
+      expiredDate: null,
     },
   });
+
   const watchedPrice = form.watch("price");
   const watchedQuantity = form.watch("quantity");
+  const watchedTransactionType = form.watch("transactionType");
   const [displayPrice, setDisplayPrice] = useState(formatRupiah(watchedPrice));
-  const [displayTotalPrice, setDisplayTotalPrice] = useState("Rp0");
+  const [displayTotalPrice, setDisplayTotalPrice] = useState(
+    formatRupiah(price * 1),
+  );
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
@@ -158,12 +167,18 @@ export default function DialogAddTransactions(
       if (!product) {
         throw new ResponseError(403, "Please fill product name properly!");
       }
+
+      if (v.transactionType === "OUT" && !v.expiredDate) {
+        form.setError("expiredDate", { message: "Expired date is required!" });
+        return;
+      }
+
       const data = {
         productId: product.Id,
         transactionType: v.transactionType,
         quantity: v.quantity,
         price: v.price,
-        totalPrice: v.totalPrice,
+        expiredDate: v.expiredDate,
       };
 
       const res = await fetch(BASEURL + "/transaction", {
@@ -184,6 +199,7 @@ export default function DialogAddTransactions(
       toast.success(dataRes.message);
 
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["stocks"] });
     } catch (error) {
       if (error instanceof ResponseError) {
         toast.error(error.message);
@@ -204,9 +220,18 @@ export default function DialogAddTransactions(
       }}
     >
       <DialogTrigger asChild>
-        <Button onClick={() => setDialogOpen(true)} className="py-4.5 text-sm">
-          <PlusIcon /> {isMobile ? "Add" : "Add Transaction"}
-        </Button>
+        {useForPage === "transaction" ? (
+          <Button
+            onClick={() => setDialogOpen(true)}
+            className="py-4.5 text-sm"
+          >
+            <PlusIcon /> {isMobile ? "Add" : "Add Transaction"}
+          </Button>
+        ) : (
+          <Button onClick={() => setDialogOpen(true)} className="text-sm">
+            <PlusIcon className="size-3" /> Restock
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <form
@@ -231,6 +256,7 @@ export default function DialogAddTransactions(
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <Button
+                        disabled={useForPage !== "transaction"}
                         id="productName"
                         variant="outline"
                         role="combobox"
@@ -308,6 +334,7 @@ export default function DialogAddTransactions(
                 <Field data-invalid={fieldState.invalid}>
                   <Label htmlFor="transactionType">Transaction Type</Label>
                   <Select
+                    disabled={useForPage !== "transaction"}
                     aria-invalid={fieldState.invalid}
                     defaultValue={field.value}
                     onValueChange={(
@@ -408,6 +435,24 @@ export default function DialogAddTransactions(
                 </Field>
               )}
             />
+            {watchedTransactionType === "OUT" && (
+              <Controller
+                control={form.control}
+                name="expiredDate"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Label htmlFor="expiredDate">Expired Date</Label>
+                    <DatePicker
+                      date={field.value || undefined}
+                      setDate={field.onChange}
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            )}
             <Button disabled={isLoading} type="submit">
               {isLoading ? "Saving ..." : "Save"}
             </Button>

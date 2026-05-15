@@ -14,7 +14,6 @@ import {
   ArrowUp,
   ArrowUpDown,
   EllipsisVerticalIcon,
-  PlusIcon,
 } from "lucide-react";
 import z from "zod";
 import { cn } from "./utils";
@@ -22,6 +21,7 @@ import DialogEditProduct from "@/components/pages/products/DialogEditProduct";
 import DialogDelete from "@/components/DialogDelete";
 import { schema, schemaStocks, schemaTransactions } from "@/model/schema-table";
 import { getFormatDate } from "@/helper/getFormatDate";
+import DialogRestock from "@/components/pages/stocks/DialogRestock";
 
 export function getColumnsProduct(
   isPageProduct: boolean,
@@ -397,9 +397,10 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
   {
     id: "actions",
     cell: ({ row }) => (
-      <Button onClick={() => console.log(row.original.Id)} className="text-sm">
-        <PlusIcon className="size-3" /> Restock
-      </Button>
+      <DialogRestock
+        productName={row.original.Name}
+        price={row.original.Price}
+      />
     ),
   },
 ];
