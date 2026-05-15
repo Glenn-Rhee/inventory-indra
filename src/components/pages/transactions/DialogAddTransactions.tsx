@@ -146,7 +146,6 @@ export default function DialogAddTransactions(
       observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && !isFetching && hasMore) {
-            console.log("cihuy");
             setPage((prev) => prev + 1);
           }
         },

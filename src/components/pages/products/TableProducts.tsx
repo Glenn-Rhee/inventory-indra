@@ -51,7 +51,7 @@ export default function TableProducts(props: TableProductsProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 20,
   });
 
   const { data: initialData, isLoading } = useProducts({
