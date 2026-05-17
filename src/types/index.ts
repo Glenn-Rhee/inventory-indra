@@ -46,3 +46,15 @@ export interface DataTransactionResponse {
   TotalPages: number;
   Transactions: z.infer<typeof schemaTransactions>[];
 }
+
+export interface DataStatsResponse {
+  TotalRevenue: number;
+  TotalTransactions: number;
+  Stocks: number;
+  BestSeller: string;
+  DataChart: {
+    Date: string;
+    In: number;
+    Out: number;
+  }[];
+}
