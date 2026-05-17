@@ -44,9 +44,12 @@ export default async function Page() {
           )}
           <div className="px-4 lg:px-6">
             {dataRes.status === "failed" ? (
-              <ChartAreaInteractive data={[]} />
+              <ChartAreaInteractive userId={session?.user.id || ""} data={[]} />
             ) : (
-              <ChartAreaInteractive data={data.DataChart} />
+              <ChartAreaInteractive
+                userId={session?.user.id || ""}
+                data={data.DataChart}
+              />
             )}
           </div>
           <DataTable userId={session?.user.id || ""} />

@@ -25,8 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { DataStatsResponse } from "@/types";
+import { useStats } from "@/lib/stats-queries";
+import { cn } from "@/lib/utils";
 
 export const description = "An interactive area chart";
 
@@ -46,19 +47,28 @@ const chartConfig = {
 
 interface ChartAreaInteractiveProps {
   data: DataStatsResponse["DataChart"];
+  userId: string;
 }
 
 export function ChartAreaInteractive(props: ChartAreaInteractiveProps) {
-  const { data: chartData } = props;
+  const { data: chartData, userId } = props;
   const isMobile = useIsMobile();
-  const [timeRange, setTimeRange] = React.useState("90d");
+  const [timeRange, setTimeRange] = React.useState<"90d" | "30d" | "7d">("90d");
   React.useEffect(() => {
     if (isMobile) {
       setTimeRange("7d");
     }
   }, [isMobile]);
+  const [dataChart, setDataChart] =
+    React.useState<DataStatsResponse["DataChart"]>(chartData);
+  const { data: dataRefetch, isLoading } = useStats({ timeRange, userId });
 
-  const filteredData = chartData.filter((item) => {
+  React.useEffect(() => {
+    if (!isLoading) {
+      setDataChart(dataRefetch ?? []);
+    }
+  }, [timeRange, isLoading, dataRefetch]);
+  const filteredData = dataChart.filter((item) => {
     const date = new Date(item.Date);
     const referenceDate = new Date("2024-06-30");
     let daysToSubtract = 90;
@@ -88,18 +98,28 @@ export function ChartAreaInteractive(props: ChartAreaInteractiveProps) {
           <span className="@[540px]/card:hidden">Last 3 months</span>
         </CardDescription>
         <CardAction>
-          <ToggleGroup
-            type="single"
+          {[
+            { label: "Last 3 months", value: "90d" },
+            { label: "Last 30 days", value: "30d" },
+            { label: "Last 7 days", value: "7d" },
+          ].map((item) => (
+            <button
+              key={item.value}
+              onClick={() => setTimeRange(item.value as typeof timeRange)}
+              className={cn(
+                `px-4 py-1 rounded-md border text-sm transition-colors`,
+                timeRange === item.value
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background text-muted-foreground border-border hover:bg-muted",
+              )}
+            >
+              {item.label}
+            </button>
+          ))}
+          <Select
             value={timeRange}
-            onValueChange={setTimeRange}
-            variant="outline"
-            className="hidden *:data-[slot=toggle-group-item]:px-4! @[767px]/card:flex"
+            onValueChange={(e: typeof timeRange) => setTimeRange(e)}
           >
-            <ToggleGroupItem value="90d">Last 3 months</ToggleGroupItem>
-            <ToggleGroupItem value="30d">Last 30 days</ToggleGroupItem>
-            <ToggleGroupItem value="7d">Last 7 days</ToggleGroupItem>
-          </ToggleGroup>
-          <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger
               className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
               size="sm"
