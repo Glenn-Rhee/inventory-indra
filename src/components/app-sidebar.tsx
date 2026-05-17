@@ -55,7 +55,7 @@ const data = {
   ],
   documents: [
     {
-      name: "Data Medicines",
+      name: "Data Products",
       icon: <DatabaseIcon />,
     },
     {
