@@ -107,6 +107,12 @@ export default function DialogAddTransactions(
         form.setValue("totalPrice", totalPrice);
         setDisplayTotalPrice(formatRupiah(totalPrice));
       }
+
+      if(name === "price"){
+        const totalPrice = (values.price ?? 0) * (values.quantity ?? 1)
+        form.setValue("totalPrice", totalPrice)
+        setDisplayTotalPrice(formatRupiah(totalPrice))
+      }
     });
 
     return () => subscription.unsubscribe();
