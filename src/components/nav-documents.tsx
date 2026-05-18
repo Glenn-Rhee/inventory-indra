@@ -7,8 +7,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import ResponseError from "@/error/ResponseError";
+import { fetchExcelFile } from "@/helper/fetchExcelFile";
 import { BASEURL } from "@/lib/product-queries";
-import { ResponsePayload } from "@/types";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -24,33 +24,34 @@ export function NavDocuments({
   const { data: session } = useSession();
   const [itemClick, setItemClick] = useState<string | null>(null);
   async function handleDownloadExcelFile(itemName: string) {
-    if (!itemName.includes("reports")) {
+    const userId = session?.user.id ?? "";
+    if (!itemName.toLowerCase().includes("reports")) {
       setItemClick(itemName);
       try {
-        const res = await fetch(BASEURL + "/stats/medicine", {
-          method: "GET",
-          headers: {
-            "x-user-id": session?.user.id || "",
-          },
-        });
-
-        if (!res.ok) {
-          const dataRes = (await res.json()) as ResponsePayload;
-
-          throw new ResponseError(res.status, dataRes.message);
+        await fetchExcelFile(
+          BASEURL + "/stats/medicine",
+          userId,
+          "Data-Obat.xlsx",
+        );
+        toast.success("File downloaded!");
+      } catch (error) {
+        if (error instanceof ResponseError) {
+          toast.error(error.message);
+        } else {
+          toast.error("An error occured. Please try again later!");
         }
+      } finally {
+        setItemClick(null);
+      }
+    } else {
+      setItemClick(itemName);
+      try {
+        await fetchExcelFile(
+          BASEURL + "/stats/reports",
+          userId,
+          "Data-Reports.xlsx",
+        );
 
-        const disposition = res.headers.get("Content-Disposition");
-        const fileName = disposition
-          ? disposition.split("filename=")[1]
-          : "data-obat.xlsx";
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(url);
         toast.success("File downloaded!");
       } catch (error) {
         if (error instanceof ResponseError) {
