@@ -38,12 +38,18 @@ export default function Cards(props: CardsProps) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <p className="line-clamp-1 flex gap-2 font-medium">
-            Naik 12.5% dari bulan lalu <TrendingUp className="size-4" />
-          </p>
-          <p className="text-muted-foreground">
-            Pertumbuhan positif dalam jumlah produk.
-          </p>
+          {data?.TotalProduct === 0 ? (
+            "Belum ada produk"
+          ) : (
+            <>
+              <p className="line-clamp-1 flex gap-2 font-medium">
+                Naik 12.5% dari bulan lalu <TrendingUp className="size-4" />
+              </p>
+              <p className="text-muted-foreground">
+                Pertumbuhan positif dalam jumlah produk.
+              </p>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
