@@ -7,6 +7,13 @@ export const schema = z.object({
   Price: z.number(),
   StatusExpired: z.enum(["SAFE", "WARNING", "EXPIRED"]),
   ExpiredDate: z.coerce.date(),
+  Transactions: z.array(
+    z.object({
+      Month: z.string(),
+      In: z.number(),
+      Out: z.number(),
+    }),
+  ),
 });
 
 export const schemaTransactions = z.object({

@@ -43,22 +43,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
 export default function TableCellViewer({
   item,
 }: {
   item: z.infer<typeof schema>;
 }) {
   const isMobile = useIsMobile();
-
+  const chartData = item.Transactions;
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
@@ -87,7 +78,7 @@ export default function TableCellViewer({
                 >
                   <CartesianGrid vertical={false} />
                   <XAxis
-                    dataKey="month"
+                    dataKey="Month"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
@@ -99,7 +90,7 @@ export default function TableCellViewer({
                     content={<ChartTooltipContent indicator="dot" />}
                   />
                   <Area
-                    dataKey="mobile"
+                    dataKey="In"
                     type="natural"
                     fill="var(--color-mobile)"
                     fillOpacity={0.6}
@@ -107,7 +98,7 @@ export default function TableCellViewer({
                     stackId="a"
                   />
                   <Area
-                    dataKey="desktop"
+                    dataKey="Out"
                     type="natural"
                     fill="var(--color-desktop)"
                     fillOpacity={0.4}
@@ -120,12 +111,12 @@ export default function TableCellViewer({
               <div className="grid gap-2">
                 <div className="text-muted-foreground">
                   Menampilkan grafik transaksi {item.Name} selama 6 bulan
-                  terakhir. Grafik di atas menunjukkan jumlah transaksi pembelian
-                  dan penjualan untuk produk {item.Name} selama periode
-                  tersebut. Dengan informasi ini, Anda dapat menganalisis tren
-                  penjualan dan pembelian untuk produk ini, serta membuat
-                  keputusan yang lebih baik terkait persediaan dan strategi
-                  pemasaran.
+                  terakhir. Grafik di atas menunjukkan jumlah transaksi
+                  pembelian dan penjualan untuk produk {item.Name} selama
+                  periode tersebut. Dengan informasi ini, Anda dapat
+                  menganalisis tren penjualan dan pembelian untuk produk ini,
+                  serta membuat keputusan yang lebih baik terkait persediaan dan
+                  strategi pemasaran.
                 </div>
               </div>
               <Separator />

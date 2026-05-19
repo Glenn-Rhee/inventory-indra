@@ -32,9 +32,6 @@ import { cn } from "@/lib/utils";
 export const description = "An interactive area chart";
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
   in: {
     label: "Pemasukan",
     color: "var(--primary)",

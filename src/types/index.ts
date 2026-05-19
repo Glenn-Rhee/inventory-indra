@@ -28,7 +28,14 @@ export interface DataProductResponse {
     Price: number;
     StatusExpired: "SAFE" | "WARNING" | "EXPIRED";
     ExpiredDate: Date;
+    Transactions: TransactionsProduct[];
   }[];
+}
+
+interface TransactionsProduct {
+  Month: string;
+  In: number;
+  Out: number;
 }
 
 export interface DataStockResponse {
