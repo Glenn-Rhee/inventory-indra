@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getProductLowStock } from "@/helper/getProductLowStock";
 import { useStocks } from "@/lib/stock-queries";
 import { TrendingUp } from "lucide-react";
 
@@ -17,7 +18,6 @@ interface CardsProps {
 export default function Cards(props: CardsProps) {
   const { userId } = props;
   const { data, isLoading } = useStocks({ userId });
-
   if (isLoading) {
     return (
       <>
@@ -54,10 +54,10 @@ export default function Cards(props: CardsProps) {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <p className="line-clamp-1 flex gap-2 font-medium">
-            5 produk mendekati habis
+            {data?.TotalLowStock ?? 0} produk mendekati habis
           </p>
           <p className="text-muted-foreground">
-            Paracetamol, Amoxicillin, Vitamin C, Ibuprofen, dan Cetirizine.
+            {getProductLowStock(data?.Products || [])}
           </p>
         </CardFooter>
       </Card>
