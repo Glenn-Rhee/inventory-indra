@@ -30,7 +30,7 @@ export function useProducts(params: UseProducts) {
 
         const json = (await res.json()) as ResponsePayload<DataProductResponse>;
         if (json.status === "failed") {
-          throw new ResponseError(res.status, "Failed get data products!");
+          throw new ResponseError(res.status, json.message);
         }
 
         return json.data as DataProductResponse;

@@ -25,20 +25,28 @@ export function SectionCards(props: SectionCardsProps) {
         <CardHeader>
           <CardDescription>Total Penjualan Obat</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {formatRupiah(data.TotalRevenue)}
+            {formatRupiah(data.TotalRevenue) || "Rp0"}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon />
-              +12.5%
-            </Badge>
-          </CardAction>
+          {data.TotalRevenue > 0 && (
+            <CardAction>
+              <Badge variant="outline">
+                <TrendingUpIcon />
+                +12.5%
+              </Badge>
+            </CardAction>
+          )}
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Meningkat bulan ini <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Penjualan stabil</div>
+          {data.TotalRevenue === 0 ? (
+            "Belum ada penjualan"
+          ) : (
+            <>
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Meningkat bulan ini <TrendingUpIcon className="size-4" />
+              </div>
+              <div className="text-muted-foreground">Penjualan stabil</div>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -47,20 +55,29 @@ export function SectionCards(props: SectionCardsProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {data.Stocks.toLocaleString("id-ID")}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingDownIcon />
-              -20%
-            </Badge>
-          </CardAction>
+          {data.Stocks > 0 && (
+            <CardAction>
+              <Badge variant="outline">
+                <TrendingDownIcon />
+                -20%
+              </Badge>
+            </CardAction>
+          )}
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Turun 20% dari minggu lalu <TrendingDownIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Mungkin dipengaruhi oleh faktor musiman atau promosi
-          </div>
+          {data.Stocks === 0 ? (
+            "Belum ada transaksi"
+          ) : (
+            <>
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Turun 20% dari minggu lalu{" "}
+                <TrendingDownIcon className="size-4" />
+              </div>
+              <div className="text-muted-foreground">
+                Mungkin dipengaruhi oleh faktor musiman atau promosi
+              </div>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -71,23 +88,36 @@ export function SectionCards(props: SectionCardsProps) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <div className="line-clamp-1 flex gap-2 font-medium">Stok Aman</div>
-          <div className="text-muted-foreground">
-            Tidak ada kekurangan stok yang signifikan
-          </div>
+          {data.Stocks === 0 ? (
+            "Stok masih kosong"
+          ) : (
+            <>
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Stok Aman
+              </div>
+              <div className="text-muted-foreground">
+                Tidak ada kekurangan stok yang signifikan
+              </div>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Produk terlaris</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {data.BestSeller}
+            {data.BestSeller || "-"}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Penjualan tertinggi bulan ini <TrendingUpIcon className="size-4" />
-          </div>
+          {data.BestSeller === "" ? (
+            "Belum ada data produk terlaris"
+          ) : (
+            <div className="line-clamp-1 flex gap-2 font-medium">
+              Penjualan tertinggi bulan ini{" "}
+              <TrendingUpIcon className="size-4" />
+            </div>
+          )}
         </CardFooter>
       </Card>
     </div>
