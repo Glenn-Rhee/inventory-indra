@@ -18,7 +18,6 @@ import {
 } from "./ui/chart";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { Separator } from "./ui/separator";
-import { TrendingUpIcon } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import {
@@ -31,6 +30,7 @@ import {
 } from "./ui/select";
 import z from "zod";
 import { schema } from "@/model/schema-table";
+import { getFormatDate } from "@/helper/getFormatDate";
 
 const chartConfig = {
   desktop: {
@@ -70,7 +70,7 @@ export default function TableCellViewer({
         <DrawerHeader className="gap-1">
           <DrawerTitle>{item.Name}</DrawerTitle>
           <DrawerDescription>
-            Showing total visitors for the last 6 months
+            Menampilkan transaksi {item.Name} selama 6 bulan terakhir.
           </DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
@@ -118,14 +118,14 @@ export default function TableCellViewer({
               </ChartContainer>
               <Separator />
               <div className="grid gap-2">
-                <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
-                  <TrendingUpIcon className="size-4" />
-                </div>
                 <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just
-                  some random text to test the layout. It spans multiple lines
-                  and should wrap around.
+                  Menampilkan grafik transaksi {item.Name} selama 6 bulan
+                  terakhir. Grafik di atas menunjukkan jumlah transaksi pembelian
+                  dan penjualan untuk produk {item.Name} selama periode
+                  tersebut. Dengan informasi ini, Anda dapat menganalisis tren
+                  penjualan dan pembelian untuk produk ini, serta membuat
+                  keputusan yang lebih baik terkait persediaan dan strategi
+                  pemasaran.
                 </div>
               </div>
               <Separator />
@@ -178,7 +178,7 @@ export default function TableCellViewer({
               <Input
                 disabled
                 id="expired_date"
-                defaultValue={item.ExpiredDate.toString()}
+                defaultValue={getFormatDate(item.ExpiredDate)}
               />
             </div>
           </form>
