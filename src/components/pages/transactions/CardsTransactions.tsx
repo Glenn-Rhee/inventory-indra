@@ -38,12 +38,18 @@ export default function CardsTransactions(props: CardsTransactionsProps) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <p className="line-clamp-1 flex gap-2 font-medium">
-            Naik 12.5% dari bulan lalu <TrendingUp className="size-4" />
-          </p>
-          <p className="text-muted-foreground">
-            Aktivitas transaksi meningkat.
-          </p>
+          {data?.TotalTransaction === 0 ? (
+            "Belum ada transaksi"
+          ) : (
+            <>
+              <p className="line-clamp-1 flex gap-2 font-medium">
+                Naik 12.5% dari bulan lalu <TrendingUp className="size-4" />
+              </p>
+              <p className="text-muted-foreground">
+                Aktivitas transaksi meningkat.
+              </p>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -54,12 +60,18 @@ export default function CardsTransactions(props: CardsTransactionsProps) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <p className="line-clamp-1 flex gap-2 font-medium">
-            +8% dari periode sebelumnya <TrendingUp className="size-4" />
-          </p>
-          <p className="text-muted-foreground">
-            Pendapatan dari penjualan meningkat.
-          </p>
+          {data?.TotalRevenue === 0 ? (
+            "Belum ada pendapatan"
+          ) : (
+            <>
+              <p className="line-clamp-1 flex gap-2 font-medium">
+                +8% dari periode sebelumnya <TrendingUp className="size-4" />
+              </p>
+              <p className="text-muted-foreground">
+                Pendapatan dari penjualan meningkat.
+              </p>
+            </>
+          )}
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -70,12 +82,19 @@ export default function CardsTransactions(props: CardsTransactionsProps) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          <p className="line-clamp-1 flex gap-2 font-medium">
-            Restock bulan ini meningkat 15% <TrendingUp className="size-4" />
-          </p>
-          <p className="text-muted-foreground">
-            Pengeluaran untuk pembelian stok meningkat.
-          </p>
+          {data?.TotalPurchase === 0 ? (
+            "Belum ada pembelian"
+          ) : (
+            <>
+              <p className="line-clamp-1 flex gap-2 font-medium">
+                Restock bulan ini meningkat 15%{" "}
+                <TrendingUp className="size-4" />
+              </p>
+              <p className="text-muted-foreground">
+                Pengeluaran untuk pembelian stok meningkat.
+              </p>
+            </>
+          )}
         </CardFooter>
       </Card>
     </>
