@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getProductExpired } from "@/helper/getProductExpired";
 import { getProductLowStock } from "@/helper/getProductLowStock";
 import { useStocks } from "@/lib/stock-queries";
 import { TrendingUp } from "lucide-react";
@@ -70,10 +71,10 @@ export default function Cards(props: CardsProps) {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <p className="line-clamp-1 flex gap-2 font-medium">
-            2 produk sudah kadaluarsa
+            {data?.TotalProductExpired ?? 0} produk sudah kadaluarsa
           </p>
           <p className="text-muted-foreground">
-            Paracetamol dan Amoxicillin sudah kadaluarsa.
+            {getProductExpired(data?.Products ?? [])}
           </p>
         </CardFooter>
       </Card>
