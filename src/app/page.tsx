@@ -8,7 +8,7 @@ import { DataStatsResponse, ResponsePayload } from "@/types";
 import ResponseError from "@/error/ResponseError";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title:,
   description:
     "Dashboard manajemen toko obat untuk memantau stok, penjualan, dan data obat secara real-time dengan sistem yang efisien dan terintegrasi.",
 };
