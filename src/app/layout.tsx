@@ -15,7 +15,15 @@ export const metadata: Metadata = {
     default: "Inventory Indra",
     template: "%s | Inventory Indra",
   },
-  
+  description:
+    "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
+  keywords: [
+    "inventory",
+    "manajemen stok",
+    "sistem inventaris",
+    "inventory management",
+    "transaksi produk",
+  ],
 };
 
 export default function RootLayout({
