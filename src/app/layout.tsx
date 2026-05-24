@@ -26,6 +26,16 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Ariel Rizki Muhtamad Bakri" }],
   creator: "Ariel Rizki Muhtamad Bakri",
+  metadataBase: new URL("https://inventory-indra.vercel.app"),
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://inventory-indra.vercel.app",
+    title: "Inventory Indra",
+    description:
+      "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
+    siteName: "Inventory Indra",
+  },
 };
 
 export default function RootLayout({
