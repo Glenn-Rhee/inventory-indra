@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     "inventory management",
     "transaksi produk",
   ],
+  authors: [{ name: "Ariel Rizki Muhtamad Bakri" }],
+  
 };
 
 export default function RootLayout({
