@@ -10,7 +10,13 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {}
+export const metadata: Metadata = {
+  title: {
+    default: "Inventory Indra",
+    template: "%s | Inventory Indra",
+  },
+  
+};
 
 export default function RootLayout({
   children,
