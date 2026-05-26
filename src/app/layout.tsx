@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     description:
       "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
     images: ["/og-image.png"],
-    creator: "@arielrizki", // ganti dengan username Twitter kamu
+    creator: "@arielrizki",
   },
 };
 
