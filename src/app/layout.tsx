@@ -36,6 +36,9 @@ export const metadata: Metadata = {
       "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
     siteName: "Inventory Indra",
   },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
