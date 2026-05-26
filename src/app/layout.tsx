@@ -78,6 +78,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Inventory Indra",
+    description:
+      "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
+    images: ["/og-image.png"],
+    creator: "@arielrizki", // ganti dengan username Twitter kamu
+  },
 };
 
 export default function RootLayout({
