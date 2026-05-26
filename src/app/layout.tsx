@@ -35,6 +35,14 @@ export const metadata: Metadata = {
     description:
       "Sistem manajemen inventaris untuk memantau stok produk, transaksi, dan laporan bisnis secara efisien.",
     siteName: "Inventory Indra",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Inventory Indra - Sistem Manajemen Inventaris",
+      },
+    ],
   },
   alternates: {
     canonical: "/",
