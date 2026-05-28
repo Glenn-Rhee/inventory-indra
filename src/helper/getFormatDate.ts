@@ -34,9 +34,12 @@ export function getFormatDate(date: Date, isForExpDate?: boolean) {
   let result = `${day} ${month} ${year}`;
   if (!isForExpDate) {
     const hours = expDate.getHours();
+    const hoursStr = hours < 10 ? `0${hours}` : hours.toString();
     const minutes = expDate.getMinutes();
+    const minutesStr = minutes < 10 ? `0${minutes}` : minutes.toString();
     const seconds = expDate.getSeconds();
-    result += `, ${hours}:${minutes}:${seconds}`;
+    const secondsStr = seconds < 10 ? `0${seconds}` : seconds.toString();
+    result += `, ${hoursStr}:${minutesStr}:${secondsStr}`;
   }
 
   return result;
