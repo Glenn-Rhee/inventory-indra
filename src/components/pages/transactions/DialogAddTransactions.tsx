@@ -108,10 +108,10 @@ export default function DialogAddTransactions(
         setDisplayTotalPrice(formatRupiah(totalPrice));
       }
 
-      if(name === "price"){
-        const totalPrice = (values.price ?? 0) * (values.quantity ?? 1)
-        form.setValue("totalPrice", totalPrice)
-        setDisplayTotalPrice(formatRupiah(totalPrice))
+      if (name === "price") {
+        const totalPrice = (values.price ?? 0) * (values.quantity ?? 1);
+        form.setValue("totalPrice", totalPrice);
+        setDisplayTotalPrice(formatRupiah(totalPrice));
       }
     });
 
@@ -248,123 +248,128 @@ export default function DialogAddTransactions(
           <DialogHeader>
             <DialogTitle>Add New Transaction</DialogTitle>
             <DialogDescription>
-              Fill in the details for the new transaction. Click save when
+              Fill in the details for the new transaction. Click save when you
+              are done.
             </DialogDescription>
           </DialogHeader>
           <FieldGroup className="my-4 mt-6">
-            <Controller
-              control={form.control}
-              name="productName"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <Label htmlFor="productName">Product Name</Label>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        disabled={useForPage !== "transaction"}
-                        id="productName"
-                        variant="outline"
-                        role="combobox"
-                        className="flex items-center justify-between font-normal"
-                      >
-                        {field.value ? field.value : "Find Product Name"}
-                        <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent align="start">
-                      <Command>
-                        <CommandInput
-                          aria-invalid={fieldState.invalid}
-                          placeholder="Find Product Name..."
-                        />
-                        <CommandList
-                          className="max-h-50 overflow-y-auto!"
-                          onWheel={(e) => e.stopPropagation()}
+            {useForPage === "transaction" ? (
+              <Controller
+                control={form.control}
+                name="productName"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Label htmlFor="productName">Product Name</Label>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          disabled={useForPage !== "transaction"}
+                          id="productName"
+                          variant="outline"
+                          role="combobox"
+                          className="flex items-center justify-between font-normal"
                         >
-                          {!isFetching && (
-                            <CommandEmpty>No Product Found.</CommandEmpty>
-                          )}
-                          <CommandGroup>
-                            {dataName.map((item, i) => (
-                              <Fragment key={item.Id}>
-                                <CommandItem
-                                  ref={
-                                    i === dataName.length - 3
-                                      ? lastItemRef
-                                      : undefined
-                                  }
-                                  value={item.Name}
-                                  onSelect={(currentValue) => {
-                                    field.onChange(
-                                      currentValue === field.value
-                                        ? ""
-                                        : currentValue,
-                                    );
-                                    setOpen(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      field.value === item.Name
-                                        ? "opacity-100"
-                                        : "opacity-0",
-                                    )}
-                                  />
-                                  {item.Name}
-                                </CommandItem>
-                                <Separator className="w-full h-1" />
-                              </Fragment>
-                            ))}
-                            {isFetching && (
-                              <div className="flex mt-4 items-center justify-center w-full h-4">
-                                <Loader2 className="size-4 animate-spin text-primary" />
-                              </div>
+                          {field.value ? field.value : "Find Product Name"}
+                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent align="start">
+                        <Command>
+                          <CommandInput
+                            aria-invalid={fieldState.invalid}
+                            placeholder="Find Product Name..."
+                          />
+                          <CommandList
+                            className="max-h-50 overflow-y-auto!"
+                            onWheel={(e) => e.stopPropagation()}
+                          >
+                            {!isFetching && (
+                              <CommandEmpty>No Product Found.</CommandEmpty>
                             )}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="transactionType"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <Label htmlFor="transactionType">Transaction Type</Label>
-                  <Select
-                    disabled={useForPage !== "transaction"}
-                    aria-invalid={fieldState.invalid}
-                    defaultValue={field.value}
-                    onValueChange={(
-                      v: CREATETRANSACTION["transactionType"],
-                    ) => {
-                      field.onChange(v);
-                    }}
-                    {...field}
-                  >
-                    <SelectTrigger id="transactionType">
-                      <SelectValue placeholder="Select Transaction Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="IN">IN</SelectItem>
-                        <SelectItem value="OUT">OUT</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+                            <CommandGroup>
+                              {dataName.map((item, i) => (
+                                <Fragment key={item.Id}>
+                                  <CommandItem
+                                    ref={
+                                      i === dataName.length - 3
+                                        ? lastItemRef
+                                        : undefined
+                                    }
+                                    value={item.Name}
+                                    onSelect={(currentValue) => {
+                                      field.onChange(
+                                        currentValue === field.value
+                                          ? ""
+                                          : currentValue,
+                                      );
+                                      setOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === item.Name
+                                          ? "opacity-100"
+                                          : "opacity-0",
+                                      )}
+                                    />
+                                    {item.Name}
+                                  </CommandItem>
+                                  <Separator className="w-full h-1" />
+                                </Fragment>
+                              ))}
+                              {isFetching && (
+                                <div className="flex mt-4 items-center justify-center w-full h-4">
+                                  <Loader2 className="size-4 animate-spin text-primary" />
+                                </div>
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            ) : null}
+            {useForPage === "transaction" ? (
+              <Controller
+                control={form.control}
+                name="transactionType"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Label htmlFor="transactionType">Transaction Type</Label>
+                    <Select
+                      disabled={useForPage !== "transaction"}
+                      aria-invalid={fieldState.invalid}
+                      defaultValue={field.value}
+                      onValueChange={(
+                        v: CREATETRANSACTION["transactionType"],
+                      ) => {
+                        field.onChange(v);
+                      }}
+                      {...field}
+                    >
+                      <SelectTrigger id="transactionType">
+                        <SelectValue placeholder="Select Transaction Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="IN">IN</SelectItem>
+                          <SelectItem value="OUT">OUT</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            ) : null}
             <div className="flex items-center justify-between gap-x-2">
               <Controller
                 control={form.control}
