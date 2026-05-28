@@ -1,4 +1,4 @@
-export function getFormatDate(date: Date) {
+export function getFormatDate(date: Date, isForExpDate?: boolean) {
   const expDate = new Date(date);
   const dateDay = expDate.getDate();
   let day = "";
@@ -31,5 +31,13 @@ export function getFormatDate(date: Date) {
   const month = months[dateMonth];
 
   const year = expDate.getFullYear();
-  return `${day} - ${month} - ${year}`;
+  let result = `${day} ${month} ${year}`;
+  if (!isForExpDate) {
+    const hours = expDate.getHours();
+    const minutes = expDate.getMinutes();
+    const seconds = expDate.getSeconds();
+    result += `, ${hours}:${minutes}:${seconds}`;
+  }
+
+  return result;
 }

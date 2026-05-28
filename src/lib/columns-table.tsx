@@ -143,7 +143,7 @@ export function getColumnsProduct(
       accessorKey: "ExpiredDate",
       header: "Expired Date",
       cell: ({ row }) => {
-        return <span>{getFormatDate(row.original.ExpiredDate)}</span>;
+        return <span>{getFormatDate(row.original.ExpiredDate, true)}</span>;
       },
     },
   ];
@@ -384,7 +384,7 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
     accessorKey: "ExpiredDate",
     header: "Expired Date",
     cell: ({ row }) => (
-      <div className="text-left">{getFormatDate(row.original.ExpiredDate)}</div>
+      <div className="text-left">{getFormatDate(row.original.ExpiredDate, true)}</div>
     ),
   },
   {
