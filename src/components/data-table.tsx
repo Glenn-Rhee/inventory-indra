@@ -1,5 +1,4 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -45,9 +44,7 @@ export function DataTable(props: DataTableProps) {
         </Select>
         <TabsList className="hiddean **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
           <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="transactions">
-            Transactions <Badge variant="secondary">3</Badge>
-          </TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
         </TabsList>
       </div>
       <TabsContent

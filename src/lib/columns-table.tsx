@@ -234,7 +234,11 @@ export const columnsTransaction: ColumnDef<
   {
     accessorKey: "Quantity",
     header: "Quantity",
-    cell: ({ row }) => <div className="text-left">{row.original.Quantity}</div>,
+    cell: ({ row }) => (
+      <div className="text-left">
+        {row.original.Quantity.toLocaleString("id-ID")}
+      </div>
+    ),
   },
   {
     accessorKey: "Price",
@@ -345,7 +349,11 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
       </Button>
     ),
     enableSorting: true,
-    cell: ({ row }) => <div className="text-left">{row.original.Stock}</div>,
+    cell: ({ row }) => (
+      <div className="text-left">
+        {row.original.Stock.toLocaleString("id-ID")}
+      </div>
+    ),
   },
   {
     accessorKey: "StatusExpired",
@@ -384,7 +392,9 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
     accessorKey: "ExpiredDate",
     header: "Expired Date",
     cell: ({ row }) => (
-      <div className="text-left">{getFormatDate(row.original.ExpiredDate, true)}</div>
+      <div className="text-left">
+        {getFormatDate(row.original.ExpiredDate, true)}
+      </div>
     ),
   },
   {
