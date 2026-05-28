@@ -1,9 +1,6 @@
 "use client";
-
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -32,14 +29,6 @@ export function SectionCards(props: SectionCardsProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {formatRupiah(data.TotalRevenue) || "Rp0"}
           </CardTitle>
-          {data.TotalRevenue > 0 && (
-            <CardAction>
-              <Badge variant="outline">
-                <TrendingUpIcon />
-                +12.5%
-              </Badge>
-            </CardAction>
-          )}
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           {data.TotalRevenue === 0 ? (
@@ -60,14 +49,6 @@ export function SectionCards(props: SectionCardsProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {data.Stocks.toLocaleString("id-ID")}
           </CardTitle>
-          {data.Stocks > 0 && (
-            <CardAction>
-              <Badge variant="outline">
-                <TrendingDownIcon />
-                -20%
-              </Badge>
-            </CardAction>
-          )}
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           {data.Stocks === 0 ? (
