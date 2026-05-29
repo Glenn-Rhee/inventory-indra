@@ -21,9 +21,9 @@ import {
   FolderIcon,
   DatabaseIcon,
   FileChartColumnIcon,
-  CommandIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const data = {
   user: {
@@ -86,8 +86,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
-                <CommandIcon className="size-5!" />
-                <span className="text-xl font-semibold">IndraFarma</span>
+                <Image
+                  src={"/logo-icon.png"}
+                  alt="Logo Indra Farma"
+                  width={60}
+                  height={40}
+                />
+                <Image
+                  src={"/logo-text.png"}
+                  alt="Logo Indra Farma"
+                  width={90}
+                  height={40}
+                />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
