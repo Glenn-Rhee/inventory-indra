@@ -33,13 +33,13 @@ import { schema } from "@/model/schema-table";
 import { getFormatDate } from "@/helper/getFormatDate";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  in: {
+    label: "Income",
     color: "var(--primary)",
   },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
+  out: {
+    label: "Outcome",
+    color: "var(--destructive)",
   },
 } satisfies ChartConfig;
 
@@ -92,18 +92,18 @@ export default function TableCellViewer({
                   <Area
                     dataKey="In"
                     type="natural"
-                    fill="var(--color-mobile)"
+                    fill="var(--color-in)"
                     fillOpacity={0.6}
-                    stroke="var(--color-mobile)"
-                    stackId="a"
+                    stroke="var(--color-in)"
+                    strokeWidth={2}
                   />
                   <Area
                     dataKey="Out"
                     type="natural"
-                    fill="var(--color-desktop)"
+                    fill="var(--color-out)"
                     fillOpacity={0.4}
-                    stroke="var(--color-desktop)"
-                    stackId="a"
+                    strokeWidth={2}
+                    stroke="var(--color-out)"
                   />
                 </AreaChart>
               </ChartContainer>
@@ -169,7 +169,7 @@ export default function TableCellViewer({
               <Input
                 disabled
                 id="expired_date"
-                defaultValue={getFormatDate(item.ExpiredDate)}
+                defaultValue={getFormatDate(item.ExpiredDate, true)}
               />
             </div>
           </form>
