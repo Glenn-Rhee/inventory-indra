@@ -163,14 +163,14 @@ export default function TableCellViewer({
                 <Label htmlFor="price">Price</Label>
                 <Input disabled id="price" defaultValue={item.Price} />
               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="expired_date">Expired Date</Label>{" "}
-              <Input
-                disabled
-                id="expired_date"
-                defaultValue={getFormatDate(item.ExpiredDate, true)}
-              />
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="expired_date">Expired Date</Label>{" "}
+                <Input
+                  disabled
+                  id="expired_date"
+                  defaultValue={getFormatDate(item.ExpiredDate, true)}
+                />
+              </div>
             </div>
           </form>
         </div>
