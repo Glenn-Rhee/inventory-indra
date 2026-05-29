@@ -143,7 +143,7 @@ export default function TableCellViewer({
                 </Select>
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Expired Status</Label>
+                <Label htmlFor="status">Status Expired</Label>
                 <Select disabled defaultValue={item.StatusExpired}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
