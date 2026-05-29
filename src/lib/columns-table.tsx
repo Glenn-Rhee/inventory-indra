@@ -362,7 +362,7 @@ export const columnsStock: ColumnDef<z.infer<typeof schemaStocks>>[] = [
         variant={"ghost"}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Expired Status
+        Status Expired
         {column.getIsSorted() === "asc" ? (
           <ArrowUp className="w-2 h-2" />
         ) : column.getIsSorted() === "desc" ? (
