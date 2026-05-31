@@ -37,7 +37,7 @@ export default class ValidationForm {
     }),
     price: z
       .number({ error: "Please fill price of product properly!" })
-      .min(500, { error: "Minimum of price is Rp100" }),
+      .min(100, { error: "Minimum of price is Rp100" }),
   });
 
   static readonly CREATETRANSACTION = z.object({
