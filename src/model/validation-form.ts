@@ -20,7 +20,7 @@ export default class ValidationForm {
     stock: z.number({ error: "Please fill stock of product properly!" }),
     price: z
       .number({ error: "Please fill price of product properly!" })
-      .min(500, { error: "Minimum of price is Rp500" }),
+      .min(100, { error: "Minimum of price is Rp500" }),
     expiredDate: z
       .date({ error: "Please fill expired date properly!" })
       .refine((date) => date >= new Date(new Date().setHours(0, 0, 0, 0)), {
