@@ -47,11 +47,11 @@ export function SectionCards(props: SectionCardsProps) {
         <CardHeader>
           <CardDescription>Jumlah Transaksi</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {data.Stocks.toLocaleString("id-ID")}
+            {data.TotalTransactions.toLocaleString("id-ID")}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
-          {data.Stocks === 0 ? (
+          {data.TotalTransactions === 0 ? (
             "Belum ada transaksi"
           ) : (
             <>
