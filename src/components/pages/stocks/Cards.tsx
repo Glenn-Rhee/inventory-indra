@@ -54,14 +54,14 @@ export default function Cards(props: CardsProps) {
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Stock Menipis</CardDescription>
+          <CardDescription>Total Stock Menipis atau Sold Out</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {data?.TotalLowStock || 0}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm h-full">
           <p className="line-clamp-1 flex gap-2 font-medium">
-            {data?.TotalLowStock ?? 0} produk mendekati habis
+            {data?.TotalLowStock ?? 0} produk mendekati habis atau habis
           </p>
           <p className="text-muted-foreground">
             {getProductLowStock(data?.Products || [])}

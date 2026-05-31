@@ -3,8 +3,9 @@ import { DataStockResponse } from "@/types";
 export function getProductLowStock(products: DataStockResponse["Products"]) {
   if (products.length === 0) return "Produk masih kosong";
   const lowStock = products.filter(
-    (product) => product.StatusStock === "LOW-STOCK",
+    (product) => product.StatusStock === "LOW-STOCK" || product.StatusStock === "SOLD-OUT",
   );
+  
   if (lowStock.length === 0) return "Tidak ada produk dengan stok rendah";
   if (lowStock.length === 1) return lowStock[0].Name;
   if (lowStock.length === 2)
