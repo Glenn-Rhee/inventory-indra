@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     "inventory management",
     "transaksi produk",
   ],
+  verification: {
+    google: "CvbgLpKdkWcCyNRmI7maqMd0Ov7jCKTxNplM5s5779U"
+  },
   authors: [{ name: "Ariel Rizki Muhtamad Bakri" }],
   creator: "Ariel Rizki Muhtamad Bakri",
   metadataBase: new URL("https://inventory-indra.vercel.app"),
@@ -87,7 +90,6 @@ export const metadata: Metadata = {
     creator: "@arielrizki",
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{

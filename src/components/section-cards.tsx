@@ -91,7 +91,7 @@ export function SectionCards(props: SectionCardsProps) {
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Produk terlaris</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl truncate">
             {data.BestSeller || "-"}
           </CardTitle>
         </CardHeader>

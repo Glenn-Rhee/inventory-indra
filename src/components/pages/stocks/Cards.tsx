@@ -63,7 +63,7 @@ export default function Cards(props: CardsProps) {
           <p className="line-clamp-1 flex gap-2 font-medium">
             {data?.TotalLowStock ?? 0} produk mendekati habis atau habis
           </p>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground truncate">
             {getProductLowStock(data?.Products || [])}
           </p>
         </CardFooter>
@@ -79,7 +79,7 @@ export default function Cards(props: CardsProps) {
           <p className="line-clamp-1 flex gap-2 font-medium">
             {data?.TotalProductExpired ?? 0} produk sudah kadaluarsa
           </p>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground truncate">
             {getProductExpired(data?.Products ?? [])}
           </p>
         </CardFooter>
