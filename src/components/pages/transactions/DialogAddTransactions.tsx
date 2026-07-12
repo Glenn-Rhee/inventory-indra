@@ -49,6 +49,7 @@ import ResponseError from "@/error/ResponseError";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { DatePicker } from "@/components/DatePicker";
+import { searchDataProduct } from "@/helper/searchData";
 
 interface DialogAddTransactionsProps {
   userId: string;
@@ -168,9 +169,19 @@ export default function DialogAddTransactions(
   async function handleSubmit(v: CREATETRANSACTION) {
     setIsLoading(true);
     try {
-      const product = dataName.find((dn) => dn.Name === v.productName);
-      if (!product) {
-        throw new ResponseError(403, "Please fill product name properly!");
+      let productResult = dataName.find((dn) => dn.Name === v.productName);
+      if (!productResult) {
+        const result = await searchDataProduct({
+          currentData: dataName,
+          userId,
+          value: v.productName,
+        });
+
+        productResult = result.find((dn) => dn.Name === v.productName);
+      }
+
+      if (!productResult) {
+        throw new ResponseError(404, "Product is not found!");
       }
 
       if (v.transactionType === "OUT" && !v.expiredDate) {
@@ -179,7 +190,7 @@ export default function DialogAddTransactions(
       }
 
       const data = {
-        productId: product.Id,
+        productId: productResult.Id,
         transactionType: v.transactionType,
         quantity: v.quantity,
         price: v.price,
