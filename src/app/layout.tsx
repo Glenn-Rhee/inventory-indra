@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "transaksi produk",
   ],
   verification: {
-    google: "CvbgLpKdkWcCyNRmI7maqMd0Ov7jCKTxNplM5s5779U"
+    google: "CvbgLpKdkWcCyNRmI7maqMd0Ov7jCKTxNplM5s5779U",
   },
   authors: [{ name: "Ariel Rizki Muhtamad Bakri" }],
   creator: "Ariel Rizki Muhtamad Bakri",
